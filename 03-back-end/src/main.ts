@@ -57,7 +57,7 @@ async function main() {
 }
 
 process.on('uncaughtException', error => {
-    console.error('ERROR:', error);
+    console.error('Error:', error);
 });
 
 main();
