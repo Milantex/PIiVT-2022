@@ -1,5 +1,6 @@
 import { Request, response, Response } from "express";
 import IAddIngredient, { AddIngredientValidator, IAddIngredientDto } from "../ingredient/dto/IAddIngredient.dto";
+import { EditIngredientValidator, IEditIngredientDto } from "../ingredient/dto/IEditIngredient.dto";
 import IngredientService from "../ingredient/IngredientService.service";
 import CategoryService, { DefaultCategoryAdapterOptions } from "./CategoryService.service";
 import IAddCategory, { AddCategoryValidator } from "./dto/IAddCategory.dto";
@@ -111,16 +112,49 @@ class CategoryController {
                     name: data.name,
                     category_id: categoryId
                 })
-                    .then(result => {
-                        res.send(result);
-                    })
-                    .catch(error => {
-                        res.status(400).send(error?.message);
-                    });
+                .then(result => {
+                    res.send(result);
+                });
             })
             .catch(error => {
                 res.status(500).send(error?.message);
             });
+    }
+
+    async editIngredient(req: Request, res: Response) {
+        const categoryId: number       = +req.params?.cid;
+        const ingredientId: number     = +req.params?.iid;
+        const data: IEditIngredientDto =  req.body as IEditIngredientDto;
+
+        if (!EditIngredientValidator(data)) {
+            return res.status(400).send(EditIngredientValidator.errors);
+        }
+
+        this.categoryService.getById(categoryId, { loadIngredients: false })
+        .then(result => {
+            if (result === null) {
+                return res.status(404).send('Category not found!');
+            }
+
+            this.ingredientService.getById(ingredientId, {})
+            .then(result => {
+                if (result === null) {
+                    return res.status(404).send('Ingredient not found!');
+                }
+
+                if (result.categoryId !== categoryId) {
+                    return res.status(400).send('This ingredient does not belong to this category!');
+                }
+
+                this.ingredientService.editById(ingredientId, data)
+                .then(result => {
+                    res.send(result);
+                });
+            });
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        });
     }
 }
 

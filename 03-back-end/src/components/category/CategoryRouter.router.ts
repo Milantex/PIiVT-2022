@@ -12,11 +12,12 @@ class CategoryRouter implements IRouter {
 
         const categoryController: CategoryController = new CategoryController(categoryService, ingredientService);
 
-        application.get("/api/category",                  categoryController.getAll.bind(categoryController));
-        application.get("/api/category/:id",              categoryController.getById.bind(categoryController));
-        application.post("/api/category",                 categoryController.add.bind(categoryController));
-        application.put("/api/category/:cid",             categoryController.edit.bind(categoryController));
-        application.post("/api/category/:cid/ingredient", categoryController.addIngredient.bind(categoryController));
+        application.get("/api/category",                      categoryController.getAll.bind(categoryController));
+        application.get("/api/category/:id",                  categoryController.getById.bind(categoryController));
+        application.post("/api/category",                     categoryController.add.bind(categoryController));
+        application.put("/api/category/:cid",                 categoryController.edit.bind(categoryController));
+        application.post("/api/category/:cid/ingredient",     categoryController.addIngredient.bind(categoryController));
+        application.put("/api/category/:cid/ingredient/:iid", categoryController.editIngredient.bind(categoryController));
     }
 }
 

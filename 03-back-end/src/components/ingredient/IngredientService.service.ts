@@ -2,6 +2,7 @@ import IngredientModel from "./IngredientModel.model";
 import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import IAddIngredient from "./dto/IAddIngredient.dto";
+import IEditIngredient from "./dto/IEditIngredient.dto";
 
 class IngredientAdapterOptions implements IAdapterOptions {
 
@@ -28,6 +29,10 @@ class IngredientService extends BaseService<IngredientModel, IngredientAdapterOp
 
     public async add(data: IAddIngredient): Promise<IngredientModel> {
         return this.baseAdd(data, {});
+    }
+
+    public async editById(ingredientId: number, data: IEditIngredient): Promise<IngredientModel> {
+        return this.baseEditById(ingredientId, data, {});
     }
 }
 
