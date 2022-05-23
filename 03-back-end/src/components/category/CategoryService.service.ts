@@ -1,9 +1,9 @@
 import CategoryModel from "./CategoryModel.model";
-import * as mysql2 from "mysql2/promise";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import IngredientService from "../ingredient/IngredientService.service";
 import IAddCategory from "./dto/IAddCategory.dto";
 import BaseService from "../../common/BaseService";
+import IEditCategory from "./dto/IEditCategory.dto";
 
 interface ICategoryAdapterOptions extends IAdapterOptions {
     loadIngredients: boolean;
@@ -35,27 +35,11 @@ class CategoryService extends BaseService<CategoryModel, ICategoryAdapterOptions
     }
 
     public async add(data: IAddCategory): Promise<CategoryModel> {
-        return new Promise<CategoryModel>((resolve, reject) => {
-            const sql: string = "INSERT `category` SET `name` = ?;";
+        return this.baseAdd(data, DefaultCategoryAdapterOptions);
+    }
 
-            this.db.execute(sql, [ data.name ])
-                .then(async result => {
-                    const info: any = result;
-
-                    const newCategoryId = +(info[0]?.insertId);
-
-                    const newCategory: CategoryModel|null = await this.getById(newCategoryId, DefaultCategoryAdapterOptions);
-
-                    if (newCategory === null) {
-                        return reject({ message: 'Duplicate category name!', });
-                    }
-
-                    resolve(newCategory);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
+    public async editById(categoryId: number, data: IEditCategory, options: ICategoryAdapterOptions = DefaultCategoryAdapterOptions): Promise<CategoryModel> {
+        return this.baseEditById(categoryId, data, options);
     }
 }
 

@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
-import IAddIngredient, { AddIngredientValidator } from "../ingredient/dto/IAddIngredient.dto";
+import { Request, response, Response } from "express";
+import IAddIngredient, { AddIngredientValidator, IAddIngredientDto } from "../ingredient/dto/IAddIngredient.dto";
 import IngredientService from "../ingredient/IngredientService.service";
 import CategoryService, { DefaultCategoryAdapterOptions } from "./CategoryService.service";
 import IAddCategory, { AddCategoryValidator } from "./dto/IAddCategory.dto";
+import IEditCategory, { EditCategoryValidator, IEditCategoryDto } from "./dto/IEditCategory.dto";
 
 class CategoryController {
     private categoryService: CategoryService;
@@ -57,9 +58,44 @@ class CategoryController {
             });
     }
 
+    async edit(req: Request, res: Response) {
+        const id: number = +req.params?.cid;
+        const data = req.body as IEditCategoryDto;
+
+        if (!EditCategoryValidator(data)) {
+            return res.status(400).send(EditCategoryValidator.errors);
+        }
+
+        this.categoryService.getById(id, { loadIngredients: false })
+        .then(result => {
+            if (result === null) {
+                return res.sendStatus(404);
+            }
+
+            this.categoryService.editById(
+                id,
+                {
+                    name: data.name
+                },
+                {
+                    loadIngredients: true,
+                }
+            )
+            .then(result => {
+                res.send(result);
+            })
+            .catch(error => {
+                res.status(400).send(error?.message);
+            })
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        });
+    }
+
     async addIngredient(req: Request, res: Response) {
         const categoryId: number = +req.params?.cid;
-        const data               =  req.body as IAddIngredient;
+        const data               =  req.body as IAddIngredientDto;
 
         if (!AddIngredientValidator(data)) {
             return res.status(400).send(AddIngredientValidator.errors);
@@ -73,7 +109,7 @@ class CategoryController {
 
                 this.ingredientService.add({
                     name: data.name,
-                    categoryId: categoryId
+                    category_id: categoryId
                 })
                     .then(result => {
                         res.send(result);
