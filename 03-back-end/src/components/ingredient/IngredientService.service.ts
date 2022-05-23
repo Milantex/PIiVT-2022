@@ -34,6 +34,10 @@ class IngredientService extends BaseService<IngredientModel, IngredientAdapterOp
     public async editById(ingredientId: number, data: IEditIngredient): Promise<IngredientModel> {
         return this.baseEditById(ingredientId, data, {});
     }
+
+    public async deleteById(ingredientId: number): Promise<true> {
+        return this.baseDeleteById(ingredientId);
+    }
 }
 
 export default IngredientService;

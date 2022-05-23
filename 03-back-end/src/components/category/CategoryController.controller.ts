@@ -149,7 +149,47 @@ class CategoryController {
                 this.ingredientService.editById(ingredientId, data)
                 .then(result => {
                     res.send(result);
+                })
+                .catch(error => {
+                    res.status(500).send(error?.message);
                 });
+            });
+        })
+        .catch(error => {
+            res.status(500).send(error?.message);
+        });
+    }
+
+    async deleteIngredient(req: Request, res: Response) {
+        const categoryId: number       = +req.params?.cid;
+        const ingredientId: number     = +req.params?.iid;
+
+        this.categoryService.getById(categoryId, { loadIngredients: false })
+        .then(result => {
+            if (result === null) {
+                return res.status(404).send('Category not found!');
+            }
+
+            this.ingredientService.getById(ingredientId, {})
+            .then(result => {
+                if (result === null) {
+                    return res.status(404).send('Ingredient not found!');
+                }
+
+                if (result.categoryId !== categoryId) {
+                    return res.status(400).send('This ingredient does not belong to this category!');
+                }
+
+                this.ingredientService.deleteById(ingredientId)
+                .then(result => {
+                    res.send('This ingredient has been deleted!');
+                })
+                .catch(error => {
+                    res.status(406).send('Could not delete this ingredient due to an integrity constraint check.');
+                })
+            })
+            .catch(error => {
+                res.status(500).send(error?.message);
             });
         })
         .catch(error => {
