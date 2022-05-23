@@ -89,14 +89,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/category/10",
+							"raw": "{{API_URL}}/api/category/1",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"category",
-								"10"
+								"1"
 							]
 						}
 					},
@@ -224,7 +224,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"New\"\r\n}\r\n",
+							"raw": "{\r\n    \"name\": \"Nova kategorija\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -439,6 +439,34 @@
 							"body": "[\n    {\n        \"instancePath\": \"/name\",\n        \"schemaPath\": \"#/properties/name/minLength\",\n        \"keyword\": \"minLength\",\n        \"params\": {\n            \"limit\": 4\n        },\n        \"message\": \"must NOT have fewer than 4 characters\"\n    }\n]"
 						}
 					]
+				},
+				{
+					"name": "Edit a single category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Kategorija najnovija!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/category/12",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"12"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -460,15 +488,219 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/category/2/ingredient",
+							"raw": "{{API_URL}}/api/category/12/ingredient",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"category",
-								"2",
+								"12",
 								"ingredient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single ingredient",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Povrce\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/category/12/ingredient/10",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"12",
+								"ingredient",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single ingredient",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/ingredient/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"ingredient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administrator",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/administrator",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"administrator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single administrator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/administrator/2",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"administrator",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new administrator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"administrator-dva\",\r\n    \"password\": \"Cista lozinka koja se Vidi 1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/administrator",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"administrator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit an administrator",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"2Abc1!e\",\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/administrator/2",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"administrator",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit an administrator - only password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"2Abc1!e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/administrator/2",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"administrator",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit an administrator - only status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/administrator/2",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"administrator",
+								"2"
 							]
 						}
 					},
