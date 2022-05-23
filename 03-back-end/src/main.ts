@@ -9,6 +9,7 @@ import * as mysql2 from "mysql2/promise";
 import CategoryService from "./components/category/CategoryService.service";
 import IngredientService from "./components/ingredient/IngredientService.service";
 import AdministratorService from "./components/administrator/AdministratorService.service";
+import SizeService from "./components/size/SizeService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -31,12 +32,14 @@ async function main() {
 
     const applicationResources: IApplicationResources = {
         databaseConnection: db,
-        services: {
-            category: new CategoryService(db),
-            ingredient: new IngredientService(db),
-            administrator: new AdministratorService(db),
-            // ...
-        }
+    };
+
+    applicationResources.services = {
+        category: new CategoryService(applicationResources),
+        ingredient: new IngredientService(applicationResources),
+        administrator: new AdministratorService(applicationResources),
+        size: new SizeService(applicationResources),
+        // ...
     };
 
     const application: express.Application = express();

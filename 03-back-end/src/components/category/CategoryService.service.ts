@@ -1,6 +1,5 @@
 import CategoryModel from "./CategoryModel.model";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
-import IngredientService from "../ingredient/IngredientService.service";
 import IAddCategory from "./dto/IAddCategory.dto";
 import BaseService from "../../common/BaseService";
 import IEditCategory from "./dto/IEditCategory.dto";
@@ -25,10 +24,8 @@ class CategoryService extends BaseService<CategoryModel, ICategoryAdapterOptions
         category.name = data?.name;
 
         if (options.loadIngredients) {
-            const ingredientService: IngredientService = new IngredientService(this.db);
-
             // Async/Await pristup:
-            category.ingredients = await ingredientService.getAllByCategoryId(category.categoryId, {});
+            category.ingredients = await this.services.ingredient.getAllByCategoryId(category.categoryId, {});
         }
 
         return category;

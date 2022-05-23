@@ -24,7 +24,7 @@ class IngredientService extends BaseService<IngredientModel, IngredientAdapterOp
     }
 
     public async getAllByCategoryId(categoryId: number, options: IngredientAdapterOptions): Promise<IngredientModel[]> {
-        return this.getAllByFieldNameAnValue('category_id', categoryId, options);
+        return this.getAllByFieldNameAndValue('category_id', categoryId, options);
     }
 
     public async add(data: IAddIngredient): Promise<IngredientModel> {
