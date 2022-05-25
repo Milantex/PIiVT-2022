@@ -3,9 +3,15 @@ import IAdapterOptions from "../../common/IAdapterOptions.interface"
 import ItemModel from "./ItemModel.model"
 
 export interface IItemAdapterOptions extends IAdapterOptions {
-    loadCategory: false,
-    loadSizes: false,
-    loadIngredients: false,
+    loadCategory: boolean,
+    loadSizes: boolean,
+    loadIngredients: boolean,
+}
+
+export class DefaultItemAdapterOptions implements IItemAdapterOptions {
+    loadCategory: false;
+    loadSizes: false;
+    loadIngredients: false;
 }
 
 export default class ItemService extends BaseService<ItemModel, IItemAdapterOptions> {
@@ -30,15 +36,20 @@ export default class ItemService extends BaseService<ItemModel, IItemAdapterOpti
             }
 
             if (options.loadSizes) {
+                console.log(this.services);
+
                 item.sizes = await this.services.size.getAllByItemId(item.itemId, {});
             }
 
             if (options.loadIngredients) {
-                // TODO:
-                // +Ingredient
+                item.ingredients = await this.services.ingredient.getAllByItemId(item.itemId, {});
             }
 
             resolve(item);
         })
+    }
+
+    async getAllByCategoryId(categoryId: number, options: IItemAdapterOptions) {
+        return this.getAllByFieldNameAndValue("category_id", categoryId, options);
     }
 }
