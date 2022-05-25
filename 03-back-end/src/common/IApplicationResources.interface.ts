@@ -2,6 +2,7 @@ import * as mysql2 from "mysql2/promise";
 import AdministratorService from "../components/administrator/AdministratorService.service";
 import CategoryService from "../components/category/CategoryService.service";
 import IngredientService from "../components/ingredient/IngredientService.service";
+import ItemService from "../components/item/ItemService.service";
 import SizeService from "../components/size/SizeService.service";
 
 export interface IServices {
@@ -9,9 +10,10 @@ export interface IServices {
     ingredient: IngredientService;
     administrator: AdministratorService;
     size: SizeService;
+    item: ItemService;
 }
 
 export default interface IApplicationResources {
     databaseConnection: mysql2.Connection;
-    services?: IServices;
+    services: IServices;
 }

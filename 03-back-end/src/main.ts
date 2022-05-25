@@ -10,6 +10,7 @@ import CategoryService from "./components/category/CategoryService.service";
 import IngredientService from "./components/ingredient/IngredientService.service";
 import AdministratorService from "./components/administrator/AdministratorService.service";
 import SizeService from "./components/size/SizeService.service";
+import ItemService from "./components/item/ItemService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -32,15 +33,20 @@ async function main() {
 
     const applicationResources: IApplicationResources = {
         databaseConnection: db,
+        services: {
+            category: null,
+            ingredient: null,
+            administrator: null,
+            size: null,
+            item: null,
+        }
     };
 
-    applicationResources.services = {
-        category: new CategoryService(applicationResources),
-        ingredient: new IngredientService(applicationResources),
-        administrator: new AdministratorService(applicationResources),
-        size: new SizeService(applicationResources),
-        // ...
-    };
+    applicationResources.services.category      = new CategoryService(applicationResources);
+    applicationResources.services.ingredient    = new IngredientService(applicationResources);
+    applicationResources.services.administrator = new AdministratorService(applicationResources);
+    applicationResources.services.size          = new SizeService(applicationResources);
+    applicationResources.services.item          = new ItemService(applicationResources);
 
     const application: express.Application = express();
 
