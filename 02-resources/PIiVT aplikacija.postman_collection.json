@@ -707,6 +707,118 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "Get all items from a category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item/2",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Item 3 - API added\",\r\n    \"description\": \"Najnovija stavka koja ima duzi naziv od 32 karaktera!\",\r\n    \"ingredientIds\": [ 3, 5 ],\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 1,\r\n            \"price\": 100.05,\r\n            \"kcal\": 89.45\r\n        },\r\n        {\r\n            \"sizeId\": 3,\r\n            \"price\": 200.10,\r\n            \"kcal\": 190.90\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload item photos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file1",
+									"type": "file",
+									"src": "/C:/Users/mtair/Desktop/slika2-small.jpg"
+								},
+								{
+									"key": "file2",
+									"type": "file",
+									"src": "/C:/Users/mtair/Desktop/jpeg2000-home.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item/7/photo",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item",
+								"7",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
