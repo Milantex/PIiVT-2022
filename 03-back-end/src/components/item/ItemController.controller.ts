@@ -8,8 +8,9 @@ import { extname, basename } from "path";
 import sizeOf from "image-size";
 import * as uuid from "uuid";
 import PhotoModel from "../photo/PhotoModel.model";
-import IConfig from "../../common/IConfig.interface";
+import IConfig, { IResize } from "../../common/IConfig.interface";
 import { DevConfig } from "../../configs";
+import * as sharp from "sharp";
 
 export default class ItemController extends BaseController {
     async getAllItemsByCategoryId(req: Request, res: Response) {
@@ -191,7 +192,7 @@ export default class ItemController extends BaseController {
 
                 const photos: PhotoModel[] = [];
 
-                for (let singleFile of uploadedFiles) {
+                for (let singleFile of await uploadedFiles) {
                     const filename = basename(singleFile);
 
                     const photo = await this.services.photo.add({
@@ -220,7 +221,7 @@ export default class ItemController extends BaseController {
         });
     }
 
-    private doFileUpload(req: Request, res: Response): string[]|null {
+    private async doFileUpload(req: Request, res: Response): Promise<string[] | null> {
         const config: IConfig = DevConfig;
 
         if (!req.files || Object.keys(req.files).length === 0) {
@@ -281,10 +282,14 @@ export default class ItemController extends BaseController {
 
             const fileDestinationPath = uploadDestinationRoot + destinationDirectory + fileNameRandomPart + "-" + file.name;
 
-            file.mv(fileDestinationPath, error => {
+            file.mv(fileDestinationPath, async error => {
                 if (error) {
                     res.status(500).send(`File ${fileFieldName} - could not be saved on the server!`);
                     return null;
+                }
+
+                for (let resizeOptions of config.fileUploads.photos.resize) {
+                    await this.createResizedPhotos(destinationDirectory, fileNameRandomPart + "-" + file.name, resizeOptions);
                 }
             });
 
@@ -292,5 +297,19 @@ export default class ItemController extends BaseController {
         }
 
         return uploadedFiles;
+    }
+
+    private async createResizedPhotos(directory: string, filename: string, resizeOptions: IResize) {
+        const config: IConfig = DevConfig;
+
+        await sharp(config.server.static.path + "/" + directory + filename)
+        .resize({
+            width: resizeOptions.width,
+            height: resizeOptions.height,
+            fit: resizeOptions.fit,
+            background: resizeOptions.defaultBackground,
+            withoutEnlargement: true,
+        })
+        .toFile(config.server.static.path + "/" + directory + resizeOptions.prefix + filename);
     }
 }

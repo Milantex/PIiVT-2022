@@ -1,5 +1,18 @@
 import IRouter from "./IRouter.interface";
 
+export interface IResize {
+    prefix: string,
+    width: number,
+    height: number,
+    fit: "contain" | "cover",
+    defaultBackground: {
+        r: number,
+        g: number,
+        b: number,
+        alpha: number,
+    },
+}
+
 interface IConfig {
     server: {
         port: number;
@@ -44,7 +57,8 @@ interface IConfig {
             height: {
                 min: number,
                 max: number,
-            }
+            },
+            resize: IResize[],
         },
     }
 }
