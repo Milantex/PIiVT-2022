@@ -11,6 +11,8 @@ import IngredientService from "./components/ingredient/IngredientService.service
 import AdministratorService from "./components/administrator/AdministratorService.service";
 import SizeService from "./components/size/SizeService.service";
 import ItemService from "./components/item/ItemService.service";
+import fileUpload = require("express-fileupload");
+import PhotoService from "./components/photo/PhotoService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -39,6 +41,7 @@ async function main() {
             administrator: null,
             size: null,
             item: null,
+            photo: null,
         }
     };
 
@@ -47,6 +50,7 @@ async function main() {
     applicationResources.services.administrator = new AdministratorService(applicationResources);
     applicationResources.services.size          = new SizeService(applicationResources);
     applicationResources.services.item          = new ItemService(applicationResources);
+    applicationResources.services.photo         = new PhotoService(applicationResources);
 
     const application: express.Application = express();
 
@@ -55,6 +59,23 @@ async function main() {
     }));
 
     application.use(cors());
+
+    application.use(express.urlencoded({ extended: true, }));
+
+    application.use(fileUpload({
+        limits: {
+            files: config.fileUploads.maxFiles,
+            fileSize: config.fileUploads.maxFileSize,
+        },
+        abortOnLimit: true,
+
+        useTempFiles: true,
+        tempFileDir: config.fileUploads.temporaryFileDirecotry,
+        createParentPath: true,
+        safeFileNames: true,
+        preserveExtension: true,
+    }));
+
     application.use(express.json());
 
     application.use(config.server.static.route, express.static(config.server.static.path, {

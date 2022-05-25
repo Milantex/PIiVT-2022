@@ -29,6 +29,24 @@ interface IConfig {
         supportBigNumbers: boolean,
     },
     routers: IRouter[],
+    fileUploads: {
+        maxFiles: number,
+        maxFileSize: number,
+        temporaryFileDirecotry: string,
+        destinationDirectoryRoot: string,
+        photos: {
+            allowedTypes: string[],
+            allowedExtensions: string[],
+            width: {
+                min: number,
+                max: number,
+            },
+            height: {
+                min: number,
+                max: number,
+            }
+        },
+    }
 }
 
 export default IConfig;

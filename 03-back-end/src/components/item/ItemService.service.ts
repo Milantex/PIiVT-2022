@@ -1,5 +1,6 @@
 import BaseService from "../../common/BaseService"
 import IAdapterOptions from "../../common/IAdapterOptions.interface"
+import IAddItem, { IItemIngredient, IItemSize } from "./dto/IAddItem.dto";
 import ItemModel from "./ItemModel.model"
 
 export interface IItemAdapterOptions extends IAdapterOptions {
@@ -51,5 +52,43 @@ export default class ItemService extends BaseService<ItemModel, IItemAdapterOpti
 
     async getAllByCategoryId(categoryId: number, options: IItemAdapterOptions) {
         return this.getAllByFieldNameAndValue("category_id", categoryId, options);
+    }
+
+    async add(data: IAddItem): Promise<ItemModel> {
+        return this.baseAdd(data, {
+            loadCategory: false,
+            loadSizes: false,
+            loadIngredients: false,
+        });
+    }
+
+    async addItemIngredient(data: IItemIngredient): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "INSERT item_ingredient SET item_id = ?, ingredient_id = ?;";
+
+            this.db.execute(sql, [ data.item_id, data.ingredient_id ])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.insertId));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+
+    async addItemSize(data: IItemSize): Promise<number> {
+        return new Promise((resolve, reject) => {
+            const sql: string = "INSERT item_size SET item_id = ?, size_id = ?, price = ?, kcal = ?;";
+
+            this.db.execute(sql, [ data.item_id, data.size_id, data.price, data.kcal ])
+            .then(async result => {
+                const info: any = result;
+                resolve(+(info[0]?.insertId));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
     }
 }
