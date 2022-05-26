@@ -166,68 +166,69 @@ export default class ItemController extends BaseController {
 
         this.services.category.getById(categoryId, { loadIngredients: false })
         .then(result => {
-            if (result === null) {
-                return res.status(404).send("Category not found!");
-            }
+            if (result === null) throw {
+                code: 400,
+                message: "Category not found!",
+            };
 
-            this.services.item.getById(itemId, {
+            return result;
+        })
+        .then(() => {
+            return this.services.item.getById(itemId, {
                 loadCategory: false,
                 loadIngredients: false,
                 loadSizes: false,
-            })
-            .then(async result => {
-                if (result === null) {
-                    return res.status(404).send("Item not found!");
-                }
-
-                if (result.categoryId !== categoryId) {
-                    return res.status(404).send("Item not found in this category!");
-                }
-
-                const uploadedFiles = this.doFileUpload(req, res);
-
-                if (uploadedFiles === null) {
-                    return;
-                }
-
-                const photos: PhotoModel[] = [];
-
-                for (let singleFile of await uploadedFiles) {
-                    const filename = basename(singleFile);
-
-                    const photo = await this.services.photo.add({
-                        name: filename,
-                        file_path: singleFile,
-                        item_id: itemId,
-                    });
-
-                    if (photo === null) {
-                        return res.status(500).send("Failed to add this photo into the database!");
-                    }
-
-                    photos.push(photo);
-                }
-
-                res.send(photos);
-            })
-            .catch(error => {
-                if (!res.headersSent) {
-                    res.status(500).send(error?.message);
-                }
             });
         })
+        .then(result => {
+            if (result === null) throw {
+                code: 404,
+                message: "Item not found!",
+            };
+
+            if (result.categoryId !== categoryId) throw {
+                code: 404,
+                message: "Item not found in this category!",
+            };
+
+            return this.doFileUpload(req);
+        })
+        .then(async uploadedFiles => {
+            const photos: PhotoModel[] = [];
+
+            for (let singleFile of await uploadedFiles) {
+                const filename = basename(singleFile);
+
+                const photo = await this.services.photo.add({
+                    name: filename,
+                    file_path: singleFile,
+                    item_id: itemId,
+                });
+
+                if (photo === null) {
+                    throw {
+                        code: 500,
+                        message: "Failed to add this photo into the database!",
+                    };
+                }
+
+                photos.push(photo);
+            }
+
+            res.send(photos);
+        })
         .catch(error => {
-            res.status(500).send(error?.message);
+            res.status(error?.code).send(error?.message);
         });
     }
 
-    private async doFileUpload(req: Request, res: Response): Promise<string[] | null> {
+    private async doFileUpload(req: Request): Promise<string[] | null> {
         const config: IConfig = DevConfig;
 
-        if (!req.files || Object.keys(req.files).length === 0) {
-            res.status(400).send("No file were uploaded!");
-            return null;
-        }
+        if (!req.files || Object.keys(req.files).length === 0) throw {
+            code: 400,
+            message: "No file were uploaded!",
+        };
 
         const fileFieldNames = Object.keys(req.files);
 
@@ -252,30 +253,40 @@ export default class ItemController extends BaseController {
 
             if (!config.fileUploads.photos.allowedTypes.includes(type)) {
                 unlinkSync(file.tempFilePath);
-                res.status(415).send(`File ${fileFieldName} - type is not supported!`);
-                return null;
+                throw {
+                    code: 415,
+                    message: `File ${fileFieldName} - type is not supported!`,
+                };
             }
+
+            file.name = file.name.toLocaleLowerCase();
 
             const declaredExtension = extname(file.name);
 
             if (!config.fileUploads.photos.allowedExtensions.includes(declaredExtension)) {
                 unlinkSync(file.tempFilePath);
-                res.status(415).send(`File ${fileFieldName} - extension is not supported!`);
-                return null;
+                throw {
+                    code: 415,
+                    message: `File ${fileFieldName} - extension is not supported!`,
+                };
             }
 
             const size = sizeOf(file.tempFilePath);
 
             if ( size.width < config.fileUploads.photos.width.min || size.width > config.fileUploads.photos.width.max ) {
                 unlinkSync(file.tempFilePath);
-                res.status(415).send(`File ${fileFieldName} - image width is not supported!`);
-                return null;
+                throw {
+                    code: 415,
+                    message: `File ${fileFieldName} - image width is not supported!`,
+                };
             }
 
             if ( size.height < config.fileUploads.photos.height.min || size.height > config.fileUploads.photos.height.max ) {
                 unlinkSync(file.tempFilePath);
-                res.status(415).send(`File ${fileFieldName} - image height is not supported!`);
-                return null;
+                throw {
+                    code: 415,
+                    message: `File ${fileFieldName} - image height is not supported!`,
+                };
             }
 
             const fileNameRandomPart = uuid.v4();
@@ -284,8 +295,10 @@ export default class ItemController extends BaseController {
 
             file.mv(fileDestinationPath, async error => {
                 if (error) {
-                    res.status(500).send(`File ${fileFieldName} - could not be saved on the server!`);
-                    return null;
+                    throw {
+                        code: 500,
+                        message: `File ${fileFieldName} - could not be saved on the server!`,
+                    };
                 }
 
                 for (let resizeOptions of config.fileUploads.photos.resize) {
