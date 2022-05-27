@@ -1,5 +1,7 @@
+import { resolve } from "path";
 import BaseService from "../../common/BaseService"
 import IAdapterOptions from "../../common/IAdapterOptions.interface"
+import { DevConfig } from "../../configs";
 import IAddItem, { IItemIngredient, IItemSize } from "./dto/IAddItem.dto";
 import IEditItem from "./dto/IEditItem.dto";
 import ItemModel from "./ItemModel.model"
@@ -137,6 +139,150 @@ export default class ItemService extends BaseService<ItemModel, IItemAdapterOpti
             })
             .catch(error => {
                 reject(error);
+            });
+        })
+    }
+
+    async deleteById(itemId: number): Promise<{ filesToDelete: string[] }> {
+        return new Promise(resolve => {
+            this.deleteAllOrdersByItemId(itemId)
+            .then(() => this.deleteCartContentByItemId(itemId))
+            .then(() => this.deleteCartsByItemId(itemId))
+            .then(() => this.deleteAllItemIngredientsByItemId(itemId))
+            .then(() => this.deleteAllItemSizesByItemId(itemId))
+            .then(() => this.getById(itemId, {
+                loadIngredients: false,
+                loadSizes: false,
+                hideInactiveSizes: false,
+                loadCategory: false,
+                loadPhotos: true, // !
+            }))
+            .then(item => {
+                if (item === null) throw { status: 404, message: "Item not found!" }
+                return item;
+            })
+            .then(async item => {
+                const filesToDelete = item.photos.map(photo => DevConfig.server.static.path + "/" + photo.filePath);
+
+                for (let photo of item.photos) {
+                    await this.services.photo.deleteById(photo.photoId);
+                }
+
+                return filesToDelete;
+            })
+            .then(async filesToDelete => {
+                await this.baseDeleteById(itemId);
+                return filesToDelete;
+            })
+            .then(filesToDelete => {
+                resolve({
+                    filesToDelete: filesToDelete,
+                });
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete this item!",
+                }
+            });
+        })
+    }
+
+    private async deleteAllOrdersByItemId(itemId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM \`order\` WHERE \`order\`.cart_id IN (
+                            SELECT
+                                cart.cart_id
+                            FROM
+                                cart
+                            INNER JOIN cart_content ON cart.cart_id = cart_content.cart_id
+                            INNER JOIN item_size ON cart_content.item_size_id = item_size.item_size_id
+                            WHERE
+                                item_size.item_id = ?
+                        );`;
+            this.db.execute(sql, [ itemId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete orders!",
+                }
+            });
+        })
+    }
+
+    private async deleteCartContentByItemId(itemId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM cart_content WHERE cart_content.item_size_id IN (
+                            SELECT
+                                item_size_id
+                            FROM
+                                item_size
+                            WHERE
+                                item_size.item_id = ?
+                        );`;
+            this.db.execute(sql, [ itemId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete cart content!",
+                }
+            });
+        })
+    }
+
+    private async deleteCartsByItemId(itemId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM cart WHERE cart.cart_id IN (
+                            SELECT
+                                cart.cart_id
+                            FROM
+                                cart
+                            INNER JOIN cart_content ON cart.cart_id = cart_content.cart_id
+                            INNER JOIN item_size ON cart_content.item_size_id = item_size.item_size_id
+                            WHERE
+                                item_size.item_id = ?
+                        );`;
+            this.db.execute(sql, [ itemId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete carts!",
+                }
+            });
+        })
+    }
+
+    private async deleteAllItemIngredientsByItemId(itemId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM item_ingredient WHERE item_id = ?;`;
+            this.db.execute(sql, [ itemId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete item ingredients!",
+                }
+            });
+        })
+    }
+
+    private async deleteAllItemSizesByItemId(itemId: number): Promise<true> {
+        return new Promise(resolve => {
+            const sql = `DELETE FROM item_size WHERE item_id = ?;`;
+            this.db.execute(sql, [ itemId ])
+            .then(() => {
+                resolve(true);
+            })
+            .catch(error => {
+                throw {
+                    message: error?.message ?? "Could not delete item sizes!",
+                }
             });
         })
     }

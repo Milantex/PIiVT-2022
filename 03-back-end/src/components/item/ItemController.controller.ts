@@ -15,6 +15,7 @@ import CategoryModel from "../category/CategoryModel.model";
 import ItemModel from "./ItemModel.model";
 import { EditItemValidator, IEditItemDto } from "./dto/IEditItem.dto";
 import { DefaultCategoryAdapterOptions } from "../category/CategoryService.service";
+import { DefaultItemAdapterOptions } from "./ItemService.service";
 
 export default class ItemController extends BaseController {
     async getAllItemsByCategoryId(req: Request, res: Response) {
@@ -572,6 +573,50 @@ export default class ItemController extends BaseController {
 
             unlinkSync( DevConfig.server.static.path + "/" + photo.filePath);
 
+            res.send("Deleted!");
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message ?? "Server side error!");
+        });
+    }
+
+    async delete(req: Request, res: Response) {
+        const categoryId: number = +(req.params?.cid);
+        const itemId: number = +(req.params?.iid);
+
+        this.services.category.getById(categoryId, DefaultCategoryAdapterOptions)
+        .then(result => {
+            if (result === null) throw { status: 404, message: "Category not found!" };
+            return result;
+        })
+        .then(async category => {
+            return {
+                category: category,
+                item: await this.services.item.getById(itemId, DefaultItemAdapterOptions),
+            };
+        })
+        .then( ({ category, item }) => {
+            if (item === null) throw { status: 404, message: "Item not found!" };
+            if (item.categoryId !== category.categoryId) throw { status: 404, message: "Item not found in this category!" };
+            return item;
+        })
+        .then(item => {
+            return this.services.item.deleteById(item.itemId)
+        })
+        .then(result => {
+            for (let filePath of result.filesToDelete) {
+                const directoryPart = dirname(filePath);
+                const fileName      = basename(filePath);
+
+                for (let resize of DevConfig.fileUploads.photos.resize) {
+                    const filePath = directoryPart + "/" + resize.prefix + fileName;
+                    unlinkSync(filePath);
+                }
+
+                unlinkSync( filePath);
+            }
+        })
+        .then(() => {
             res.send("Deleted!");
         })
         .catch(error => {
