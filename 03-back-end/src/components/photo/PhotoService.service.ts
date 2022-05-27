@@ -31,4 +31,8 @@ export default class PhotoService extends BaseService<PhotoModel, IPhotoAdapterO
     public async getAllByItemId(itemId: number, options: IPhotoAdapterOptions = {}): Promise<PhotoModel[]> {
         return this.getAllByFieldNameAndValue("item_id", itemId, options);
     }
+
+    public async deleteById(photoId: number): Promise<true> {
+        return this.baseDeleteById(photoId);
+    }
 }

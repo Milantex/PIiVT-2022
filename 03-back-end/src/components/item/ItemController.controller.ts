@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
 import { AddItemValidator, IAddItemDto } from "./dto/IAddItem.dto";
-import { mkdirSync, readFileSync, unlinkSync } from "fs";
+import { fstat, mkdirSync, readFileSync, unlinkSync } from "fs";
 import { UploadedFile } from "express-fileupload";
 import filetype from 'magic-bytes.js'
-import { extname, basename } from "path";
+import { extname, basename, dirname } from "path";
 import sizeOf from "image-size";
 import * as uuid from "uuid";
 import PhotoModel from "../photo/PhotoModel.model";
@@ -14,6 +14,7 @@ import * as sharp from "sharp";
 import CategoryModel from "../category/CategoryModel.model";
 import ItemModel from "./ItemModel.model";
 import { EditItemValidator, IEditItemDto } from "./dto/IEditItem.dto";
+import { DefaultCategoryAdapterOptions } from "../category/CategoryService.service";
 
 export default class ItemController extends BaseController {
     async getAllItemsByCategoryId(req: Request, res: Response) {
@@ -522,5 +523,59 @@ export default class ItemController extends BaseController {
         }
 
         return result;
+    }
+
+    async deletePhoto(req: Request, res: Response) {
+        const categoryId: number = +(req.params?.cid);
+        const itemId: number = +(req.params?.iid);
+        const photoId: number = +(req.params?.pid);
+
+        this.services.category.getById(categoryId, DefaultCategoryAdapterOptions)
+        .then(result => {
+            if (result === null) throw { status: 404, message: "Category not found!" };
+            return result;
+        })
+        .then(async category => {
+            return {
+                category: category,
+                item: await this.services.item.getById(itemId, {
+                    loadPhotos: true,
+                    hideInactiveSizes: false,
+                    loadCategory: false,
+                    loadIngredients: false,
+                    loadSizes: false,
+                }),
+            };
+        })
+        .then( ({ category, item }) => {
+            if (item === null) throw { status: 404, message: "Item not found!" };
+            if (item.categoryId !== category.categoryId) throw { status: 404, message: "Item not found in this category!" };
+            return item;
+        })
+        .then(item => {
+            const photo = item.photos?.find(photo => photo.photoId === photoId);
+            if (!photo) throw { status: 404, message: "Photo not found in this item!" };
+            return photo;
+        })
+        .then(async photo => {
+            await this.services.photo.deleteById(photo.photoId);
+            return photo;
+        })
+        .then(photo => {
+            const directoryPart = DevConfig.server.static.path + "/" + dirname(photo.filePath);
+            const fileName      = basename(photo.filePath);
+
+            for (let resize of DevConfig.fileUploads.photos.resize) {
+                const filePath = directoryPart + "/" + resize.prefix + fileName;
+                unlinkSync(filePath);
+            }
+
+            unlinkSync( DevConfig.server.static.path + "/" + photo.filePath);
+
+            res.send("Deleted!");
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message ?? "Server side error!");
+        });
     }
 }
