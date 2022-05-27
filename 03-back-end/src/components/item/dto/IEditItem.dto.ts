@@ -3,9 +3,10 @@ import IServiceData from "../../../common/IServiceData.interface";
 
 const ajv = new Ajv();
 
-export interface IAddItemDto {
+export interface IEditItemDto {
     name: string;
     description: string;
+    isActive: boolean;
     ingredientIds: number[];
     sizes: {
         sizeId: number;
@@ -14,26 +15,13 @@ export interface IAddItemDto {
     }[];
 }
 
-export default interface IAddItem extends IServiceData {
+export default interface IEditItem extends IServiceData {
     name: string;
     description: string;
-    category_id: number;
+    is_active: number;
 }
 
-export interface IItemIngredient extends IServiceData {
-    item_id: number;
-    ingredient_id: number;
-}
-
-export interface IItemSize extends IServiceData {
-    item_id: number;
-    size_id: number;
-    price: number;
-    kcal: number;
-    is_active?: number;
-}
-
-const AddItemValidator = ajv.compile({
+const EditItemValidator = ajv.compile({
     type: "object",
     properties: {
         name: {
@@ -45,6 +33,9 @@ const AddItemValidator = ajv.compile({
             type: "string",
             minLength: 32,
             maxLength: 500,
+        },
+        isActive: {
+            type: "boolean",
         },
         ingredientIds: {
             type: "array",
@@ -87,10 +78,11 @@ const AddItemValidator = ajv.compile({
     required: [
         "name",
         "description",
+        "isActive",
         "ingredientIds",
         "sizes",
     ],
     additionalProperties: false,
 });
 
-export { AddItemValidator };
+export { EditItemValidator };

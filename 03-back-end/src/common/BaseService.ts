@@ -21,6 +21,18 @@ export default abstract class BaseService<ReturnModel extends IModel, AdaterOpti
         return this.serviceInstances;
     }
 
+    public startTransaction() {
+        return this.database.beginTransaction();
+    }
+
+    public commitChanges() {
+        return this.database.commit();
+    }
+
+    public rollbackChanges() {
+        return this.database.rollback();
+    }
+
     abstract tableName(): string;
 
     protected abstract adaptToModel(data: any, options: AdaterOptions): Promise<ReturnModel>;

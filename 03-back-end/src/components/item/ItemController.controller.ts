@@ -11,6 +11,9 @@ import PhotoModel from "../photo/PhotoModel.model";
 import IConfig, { IResize } from "../../common/IConfig.interface";
 import { DevConfig } from "../../configs";
 import * as sharp from "sharp";
+import CategoryModel from "../category/CategoryModel.model";
+import ItemModel from "./ItemModel.model";
+import { EditItemValidator, IEditItemDto } from "./dto/IEditItem.dto";
 
 export default class ItemController extends BaseController {
     async getAllItemsByCategoryId(req: Request, res: Response) {
@@ -26,6 +29,8 @@ export default class ItemController extends BaseController {
                 loadCategory: false,
                 loadIngredients: true,
                 loadSizes: true,
+                hideInactiveSizes: true,
+                loadPhotos: true,
             })
             .then(result => {
                 res.send(result);
@@ -53,6 +58,8 @@ export default class ItemController extends BaseController {
                 loadCategory: true,
                 loadIngredients: true,
                 loadSizes: true,
+                hideInactiveSizes: true,
+                loadPhotos: true,
             })
             .then(result => {
                 if (result === null) {
@@ -128,6 +135,7 @@ export default class ItemController extends BaseController {
                             size_id: givenSizeInformation.sizeId,
                             price: givenSizeInformation.price,
                             kcal: givenSizeInformation.kcal,
+                            is_active: 1,
                         })
                         .catch(error => {
                             // TODO: Ovde bi istao rollback!
@@ -139,6 +147,8 @@ export default class ItemController extends BaseController {
                         loadCategory: true,
                         loadIngredients: true,
                         loadSizes: true,
+                        hideInactiveSizes: true,
+                        loadPhotos: false,
                     })
                     .then(result => {
                         res.send(result);
@@ -178,6 +188,8 @@ export default class ItemController extends BaseController {
                 loadCategory: false,
                 loadIngredients: false,
                 loadSizes: false,
+                hideInactiveSizes: true,
+                loadPhotos: false,
             });
         })
         .then(result => {
@@ -324,5 +336,191 @@ export default class ItemController extends BaseController {
             withoutEnlargement: true,
         })
         .toFile(config.server.static.path + "/" + directory + resizeOptions.prefix + filename);
+    }
+
+    async edit(req: Request, res: Response) {
+        const categoryId: number = +req.params?.cid;
+
+        const data = req.body as IEditItemDto;
+
+        if (!EditItemValidator(data)) {
+            return res.status(400).send(EditItemValidator.errors);
+        }
+
+        this.services.category.getById(categoryId, { loadIngredients: true, })
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: "Category not found!"
+                };
+            }
+
+            return result as CategoryModel;
+        })
+        .then(async category => {
+            const itemId: number = +req.params?.iid;
+
+            return this.retrieveItem(category, itemId);
+        })
+        .then(this.checkItem)
+        .then(async result => {
+            await this.services.item.startTransaction();
+            return result;
+        })
+        .then(async result => {
+            const currentIngredientIds  = result.item.ingredients?.map(ingredient => ingredient.ingredientId);
+            const newIngredientIds      = data.ingredientIds;
+
+            const availableIngredientIds = result.category.ingredients?.map(i => i.ingredientId);
+
+            for (let id of data.ingredientIds) {
+                if (!availableIngredientIds.includes(id)) {
+                    throw {
+                        status: 400,
+                        message: "Ingredient " + id + " is not available for items in this category!",
+                    }
+                }
+            }
+
+            const ingredientIdsToAdd = newIngredientIds.filter(id => !currentIngredientIds.includes(id));
+            for (let id of ingredientIdsToAdd) {
+                if (!await this.services.item.addItemIngredient({
+                    item_id: result.item.itemId,
+                    ingredient_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error adding a new ingredient to this item!"
+                    }
+                };
+            }
+
+            const ingredientIdsToDelete = currentIngredientIds.filter(id => !newIngredientIds.includes(id));
+            for (let id of ingredientIdsToDelete) {
+                if (!await this.services.item.deleteItemIngredient({
+                    item_id: result.item.itemId,
+                    ingredient_id: id,
+                })) {
+                    throw {
+                        status: 500,
+                        message: "Error delete an existing ingredient from this item!"
+                    }
+                }
+            }
+
+            return result;
+        })
+        .then(async result => {
+            const currentSizeIds          = result.item.sizes?.map(sizeInfo => sizeInfo.size.sizeId);
+            const currentVisibleSizeIds   = result.item.sizes?.filter(sizeInfo => sizeInfo.isActive).map(sizeInfo => sizeInfo.size.sizeId);
+            const currentInvisibleSizeIds = result.item.sizes?.filter(sizeInfo => !sizeInfo.isActive).map(sizeInfo => sizeInfo.size.sizeId);
+
+            const newSizeIds     = data.sizes?.map(size => size.sizeId);
+
+            const sizeIdsToHide = currentVisibleSizeIds.filter(id => !newSizeIds.includes(id));
+            const sizeIdsToShow = currentInvisibleSizeIds.filter(id => newSizeIds.includes(id));
+            const sizeIdsToAdd  = newSizeIds.filter(id => !currentSizeIds.includes(id));
+            const sizeIdsUnion  = [ ... new Set( [ ...newSizeIds, ...sizeIdsToShow ] ) ];
+            const sizeIdsToEdit = sizeIdsUnion.filter(id => !sizeIdsToAdd.includes(id));
+
+            for (let id of sizeIdsToHide) {
+                await this.services.size.hideItemSize(result.item.itemId, id);
+            }
+
+            for (let id of sizeIdsToShow) {
+                await this.services.size.showItemSize(result.item.itemId, id);
+            }
+
+            for (let id of sizeIdsToAdd) {
+                const size = data.sizes?.find(size => size.sizeId === id);
+
+                if (!size) continue;
+
+                await this.services.item.addItemSize({
+                    item_id: result.item.itemId,
+                    size_id: id,
+                    price: size.price,
+                    kcal: size.kcal,
+                    is_active: 1,
+                });
+            }
+
+            for (let id of sizeIdsToEdit) {
+                const size = data.sizes?.find(size => size.sizeId === id);
+
+                if (!size) continue;
+
+                await this.services.item.editItemSize({
+                    item_id: result.item.itemId,
+                    size_id: id,
+                    price: size.price,
+                    kcal: size.kcal,
+                });
+            }
+
+            await this.services.item.edit(result.item.itemId, {
+                name: data.name,
+                description: data.description,
+                is_active: data.isActive ? 1 : 0,
+            }, {
+                loadCategory: false,
+                loadIngredients: false,
+                loadSizes: false,
+                hideInactiveSizes: false,
+                loadPhotos: false,
+            });
+
+            return result;
+        })
+        .then(async result => {
+            await this.services.item.commitChanges();
+
+            res.send(
+                await this.services.item.getById(result.item.itemId, {
+                    loadCategory: true,
+                    loadIngredients: true,
+                    loadSizes: true,
+                    hideInactiveSizes: true,
+                    loadPhotos: true,
+                })
+            );
+        })
+        .catch(async error => {
+            await this.services.item.rollbackChanges();
+
+            res.status(error?.status ?? 500).send(error?.message);
+        });
+    }
+
+    private async retrieveItem(category: CategoryModel, itemId: number): Promise<{ category: CategoryModel, item: ItemModel|null }> {
+        return {
+            category: category,
+            item: await this.services.item.getById(itemId, {
+                loadCategory: false,
+                loadIngredients: true,
+                loadSizes: true,
+                hideInactiveSizes: false,
+                loadPhotos: false,
+            })
+        }
+    }
+
+    private checkItem(result: { category: CategoryModel, item: ItemModel|null }): { category: CategoryModel, item: ItemModel } {
+        if (result.item === null) {
+            throw {
+                status: 404,
+                message: "Item not found!"
+            };
+        }
+
+        if (result.item.categoryId !== result.category.categoryId) {
+            throw {
+                status: 404,
+                message: "Item not found in this category!"
+            };
+        }
+
+        return result;
     }
 }
