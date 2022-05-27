@@ -2,6 +2,8 @@ import { resolve } from "path";
 import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import { IItemSize } from "../item/ItemModel.model";
+import IAddSize from "./dto/IAddSize.dto";
+import IEditSize from "./dto/IEditSize.dto";
 import SizeModel from "./SizeModel.model";
 
 export interface ISizeAdapterOptions extends IAdapterOptions {
@@ -152,5 +154,13 @@ export default class SizeService extends BaseService<SizeModel, ISizeAdapterOpti
                 }
             });
         })
+    }
+
+    public async add(data: IAddSize): Promise<SizeModel> {
+        return this.baseAdd(data, {});
+    }
+
+    public async editById(sizeId: number, data: IEditSize): Promise<SizeModel> {
+        return this.baseEditById(sizeId, data, {});
     }
 }

@@ -1,6 +1,7 @@
 import IConfig from "./common/IConfig.interface";
 import AdministratorRouter from "./components/administrator/AdministratorRouter.router";
 import CategoryRouter from "./components/category/CategoryRouter.router";
+import SizeRouter from "./components/size/SizeRouter.router";
 
 const DevConfig: IConfig = {
     server: {
@@ -33,6 +34,7 @@ const DevConfig: IConfig = {
     routers: [
         new CategoryRouter(),
         new AdministratorRouter(),
+        new SizeRouter(),
     ],
     fileUploads: {
         maxFiles: 5,
