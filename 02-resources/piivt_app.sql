@@ -7,9 +7,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+DROP DATABASE IF EXISTS `piivt_app`;
 CREATE DATABASE IF NOT EXISTS `piivt_app` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `piivt_app`;
 
+DROP TABLE IF EXISTS `address`;
 CREATE TABLE IF NOT EXISTS `address` (
   `address_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `street_and_nmber` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -25,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `address` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+DROP TABLE IF EXISTS `administrator`;
 CREATE TABLE IF NOT EXISTS `administrator` (
   `administrator_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -40,6 +43,7 @@ INSERT INTO `administrator` (`administrator_id`, `username`, `password_hash`, `c
 	(2, 'administrator', '$2b$10$.I.71G5pvIIXbbYka5fzO.ITueBDwiz6BWisQMDWyXb/bgorNNuii', '2022-05-23 14:07:04', 1),
 	(4, 'administrator-dva', '$2b$10$yCd8maWT9TO3PbTorZDykOTKum4hztr4.2JYBg9LiuMEqc/.0YDgy', '2022-05-23 14:10:13', 1);
 
+DROP TABLE IF EXISTS `cart`;
 CREATE TABLE IF NOT EXISTS `cart` (
   `cart_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
@@ -50,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+DROP TABLE IF EXISTS `cart_content`;
 CREATE TABLE IF NOT EXISTS `cart_content` (
   `cart_content_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cart_id` int(10) unsigned NOT NULL,
@@ -63,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `cart_content` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
   `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -81,6 +87,7 @@ INSERT INTO `category` (`category_id`, `name`) VALUES
 	(6, 'Veganska jela'),
 	(5, 'Vegetarijanska jela');
 
+DROP TABLE IF EXISTS `ingredient`;
 CREATE TABLE IF NOT EXISTS `ingredient` (
   `ingredient_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -101,6 +108,7 @@ INSERT INTO `ingredient` (`ingredient_id`, `name`, `category_id`) VALUES
 	(7, 'Povrće', 2),
 	(6, 'Začini', 2);
 
+DROP TABLE IF EXISTS `item`;
 CREATE TABLE IF NOT EXISTS `item` (
   `item_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
@@ -111,11 +119,14 @@ CREATE TABLE IF NOT EXISTS `item` (
   UNIQUE KEY `uq_item_name_category_id` (`name`,`category_id`),
   KEY `fk_item_category_id` (`category_id`),
   CONSTRAINT `fk_item_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item` (`item_id`, `name`, `description`, `category_id`, `is_active`) VALUES
-	(2, 'Item 1', 'Opis stavke 1', 1, 1);
+	(2, 'Item 1', 'Opis stavke 1', 1, 1),
+	(3, 'Item 2', 'Drugi opis neke stavke.', 1, 1),
+	(7, 'Item 3 - API added', 'Najnovija stavka koja ima duzi naziv od 32 karaktera!', 1, 1);
 
+DROP TABLE IF EXISTS `item_ingredient`;
 CREATE TABLE IF NOT EXISTS `item_ingredient` (
   `item_ingredient_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `item_id` int(10) unsigned NOT NULL,
@@ -125,25 +136,39 @@ CREATE TABLE IF NOT EXISTS `item_ingredient` (
   KEY `fk_ingredient_ingredient_id` (`ingredient_id`),
   CONSTRAINT `fk_ingredient_ingredient_id` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`ingredient_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_ingredient_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item_ingredient` (`item_ingredient_id`, `item_id`, `ingredient_id`) VALUES
-	(1, 2, 1);
+	(1, 2, 1),
+	(2, 3, 1),
+	(3, 3, 4),
+	(4, 3, 6),
+	(11, 7, 2),
+	(12, 7, 3);
 
+DROP TABLE IF EXISTS `item_size`;
 CREATE TABLE IF NOT EXISTS `item_size` (
   `item_size_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `item_id` int(10) unsigned NOT NULL,
   `size_id` int(10) unsigned NOT NULL,
   `price` decimal(10,2) unsigned NOT NULL,
   `kcal` decimal(10,2) unsigned NOT NULL,
+  `is_active` tinyint(1) unsigned NOT NULL DEFAULT 1,
   PRIMARY KEY (`item_size_id`),
   UNIQUE KEY `uq_item_size_item_id_size_id` (`item_id`,`size_id`),
   KEY `fk_item_size_size_id` (`size_id`),
   CONSTRAINT `fk_item_size_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_item_size_size_id` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `item_size` (`item_size_id`, `item_id`, `size_id`, `price`, `kcal`, `is_active`) VALUES
+	(1, 2, 1, 250.00, 240.00, 1),
+	(2, 2, 3, 500.00, 480.00, 1),
+	(3, 3, 1, 75.00, 53.00, 1),
+	(8, 7, 1, 200.00, 20.00, 1),
+	(9, 7, 3, 100.00, 10.00, 1);
 
+DROP TABLE IF EXISTS `order`;
 CREATE TABLE IF NOT EXISTS `order` (
   `order_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cart_id` int(10) unsigned NOT NULL,
@@ -162,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+DROP TABLE IF EXISTS `photo`;
 CREATE TABLE IF NOT EXISTS `photo` (
   `photo_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -171,17 +197,26 @@ CREATE TABLE IF NOT EXISTS `photo` (
   UNIQUE KEY `uq_photo_file_path` (`file_path`) USING HASH,
   KEY `fk_photo_item_id` (`item_id`),
   CONSTRAINT `fk_photo_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `photo` (`photo_id`, `name`, `file_path`, `item_id`) VALUES
+	(1, '625ba03a-e446-4c55-8938-0cf61b8fc2dc-slika2-small.jpg', 'uploads/2022/05/625ba03a-e446-4c55-8938-0cf61b8fc2dc-slika2-small.jpg', 7),
+	(2, '3e3d0baa-5149-4c60-ba99-b07203ea02a0-jpeg2000-home.jpg', 'uploads/2022/05/3e3d0baa-5149-4c60-ba99-b07203ea02a0-jpeg2000-home.jpg', 7);
 
+DROP TABLE IF EXISTS `size`;
 CREATE TABLE IF NOT EXISTS `size` (
   `size_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`size_id`),
   UNIQUE KEY `uq_size_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `size` (`size_id`, `name`) VALUES
+	(1, 'Mala porcija'),
+	(2, 'Srednja porcjia'),
+	(3, 'Velika porcija');
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
