@@ -737,7 +737,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/category/1/item/2",
+							"raw": "{{API_URL}}/api/category/1/item/7",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -746,7 +746,7 @@
 								"category",
 								"1",
 								"item",
-								"2"
+								"7"
 							]
 						}
 					},
@@ -782,6 +782,62 @@
 					"response": []
 				},
 				{
+					"name": "Edit an item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Item 3 - API edited 1\",\r\n    \"description\": \"Najnovija stavka koja ima duzi naziv od 32 karaktera!!!\",\r\n    \"isActive\": true,\r\n    \"ingredientIds\": [ 1, 2, 4, 5 ],\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 1,\r\n            \"price\": 999.99,\r\n            \"kcal\": 99.99\r\n        },\r\n        {\r\n            \"sizeId\": 2,\r\n            \"price\": 3000.30,\r\n            \"kcal\": 300.50\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item/7",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item/7",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"item": [
+				{
 					"name": "Upload item photos",
 					"request": {
 						"method": "POST",
@@ -792,12 +848,12 @@
 								{
 									"key": "file1",
 									"type": "file",
-									"src": "/C:/Users/mtair/Desktop/slika2-small.jpg"
+									"src": "/C:/Users/mtair/Desktop/slika1.jpg"
 								},
 								{
 									"key": "file2",
 									"type": "file",
-									"src": "/C:/Users/mtair/Desktop/jpeg2000-home.jpg"
+									"src": "/C:/Users/mtair/Desktop/slika2.jpg"
 								}
 							]
 						},
@@ -813,6 +869,126 @@
 								"item",
 								"7",
 								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a single photo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/category/1/item/7/photo/6",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"category",
+								"1",
+								"item",
+								"7",
+								"photo",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Size",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/size",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"size"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single size",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/size/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"size",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new size",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"VIP valičina\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/size",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"size"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single size",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"VIP size\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/size/4",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"size",
+								"4"
 							]
 						}
 					},
