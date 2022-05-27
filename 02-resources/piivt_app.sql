@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS `address` (
   CONSTRAINT `fk_address_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `address` (`address_id`, `street_and_nmber`, `floor`, `apartment`, `city`, `phone_number`, `user_id`, `is_active`) VALUES
+	(1, 'Neka ulica 22', 1, 5, 'Belgrad', '+3816699999999', 1, 1);
 
 DROP TABLE IF EXISTS `administrator`;
 CREATE TABLE IF NOT EXISTS `administrator` (
@@ -53,6 +55,8 @@ CREATE TABLE IF NOT EXISTS `cart` (
   CONSTRAINT `fk_cart_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `cart` (`cart_id`, `user_id`, `created_at`) VALUES
+	(1, 1, '2022-05-27 14:26:40');
 
 DROP TABLE IF EXISTS `cart_content`;
 CREATE TABLE IF NOT EXISTS `cart_content` (
@@ -67,6 +71,8 @@ CREATE TABLE IF NOT EXISTS `cart_content` (
   CONSTRAINT `fk_cart_content_item_size_id` FOREIGN KEY (`item_size_id`) REFERENCES `item_size` (`item_size_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `cart_content` (`cart_content_id`, `cart_id`, `item_size_id`, `quantity`) VALUES
+	(1, 1, 10, 2);
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
@@ -124,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `item` (
 INSERT INTO `item` (`item_id`, `name`, `description`, `category_id`, `is_active`) VALUES
 	(2, 'Item 1', 'Opis stavke 1', 1, 1),
 	(3, 'Item 2', 'Drugi opis neke stavke.', 1, 1),
-	(7, 'Item 3 - API added', 'Najnovija stavka koja ima duzi naziv od 32 karaktera!', 1, 1);
+	(7, 'Test 7', 'neki opis ove stavke ide ovde', 1, 1);
 
 DROP TABLE IF EXISTS `item_ingredient`;
 CREATE TABLE IF NOT EXISTS `item_ingredient` (
@@ -143,8 +149,10 @@ INSERT INTO `item_ingredient` (`item_ingredient_id`, `item_id`, `ingredient_id`)
 	(2, 3, 1),
 	(3, 3, 4),
 	(4, 3, 6),
+	(13, 7, 1),
 	(11, 7, 2),
-	(12, 7, 3);
+	(14, 7, 4),
+	(15, 7, 5);
 
 DROP TABLE IF EXISTS `item_size`;
 CREATE TABLE IF NOT EXISTS `item_size` (
@@ -165,8 +173,9 @@ INSERT INTO `item_size` (`item_size_id`, `item_id`, `size_id`, `price`, `kcal`, 
 	(1, 2, 1, 250.00, 240.00, 1),
 	(2, 2, 3, 500.00, 480.00, 1),
 	(3, 3, 1, 75.00, 53.00, 1),
-	(8, 7, 1, 200.00, 20.00, 1),
-	(9, 7, 3, 100.00, 10.00, 1);
+	(8, 7, 1, 999.99, 99.99, 1),
+	(9, 7, 3, 400.40, 100.10, 0),
+	(10, 7, 2, 3000.30, 300.50, 1);
 
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE IF NOT EXISTS `order` (
@@ -186,6 +195,8 @@ CREATE TABLE IF NOT EXISTS `order` (
   CONSTRAINT `fk_order_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `order` (`order_id`, `cart_id`, `address_id`, `created_at`, `deliver_at`, `note`, `status`, `mark_value`, `mark_note`) VALUES
+	(1, 1, 1, '2022-05-27 14:28:23', '2022-05-27 20:00:00', 'Zvonite na interfon 5', 'pending', NULL, NULL);
 
 DROP TABLE IF EXISTS `photo`;
 CREATE TABLE IF NOT EXISTS `photo` (
@@ -199,9 +210,6 @@ CREATE TABLE IF NOT EXISTS `photo` (
   CONSTRAINT `fk_photo_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `photo` (`photo_id`, `name`, `file_path`, `item_id`) VALUES
-	(1, '625ba03a-e446-4c55-8938-0cf61b8fc2dc-slika2-small.jpg', 'uploads/2022/05/625ba03a-e446-4c55-8938-0cf61b8fc2dc-slika2-small.jpg', 7),
-	(2, '3e3d0baa-5149-4c60-ba99-b07203ea02a0-jpeg2000-home.jpg', 'uploads/2022/05/3e3d0baa-5149-4c60-ba99-b07203ea02a0-jpeg2000-home.jpg', 7);
 
 DROP TABLE IF EXISTS `size`;
 CREATE TABLE IF NOT EXISTS `size` (
@@ -226,6 +234,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `uq_user_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `user` (`user_id`, `email`, `password_hash`, `is_active`) VALUES
+	(1, 'mail@domain.com', '####', 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
