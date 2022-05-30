@@ -8,6 +8,7 @@ class AuthRouter implements IRouter {
         const authController: AuthController = new AuthController(resources.services);
 
         application.post("/api/auth/administrator/login",         authController.administratorLogin.bind(authController));
+        application.post("/api/auth/administrator/refresh",       authController.administratorRefresh.bind(authController));
     }
 }
 
