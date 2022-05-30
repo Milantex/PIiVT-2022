@@ -13,6 +13,14 @@ export interface IResize {
     },
 }
 
+export interface IMailConfiguration {
+    host: string,
+    port: number,
+    email: string,
+    password: string,
+    debug: boolean,
+}
+
 interface IConfig {
     server: {
         port: number;
@@ -60,7 +68,8 @@ interface IConfig {
             },
             resize: IResize[],
         },
-    }
+    },
+    mail: IMailConfiguration,
 }
 
 export default IConfig;

@@ -3,6 +3,7 @@ import AdministratorRouter from "./components/administrator/AdministratorRouter.
 import CategoryRouter from "./components/category/CategoryRouter.router";
 import SizeRouter from "./components/size/SizeRouter.router";
 import UserRouter from "./components/user/UserRouter.router";
+import { MailConfigurationParameters } from "./config.mail";
 
 const DevConfig: IConfig = {
     server: {
@@ -71,7 +72,16 @@ const DevConfig: IConfig = {
                 },
             ],
         },
+    },
+    mail: {
+        host: "smtp.office365.com",
+        port: 587,
+        email: "",
+        password: "",
+        debug: true,
     }
 };
+
+DevConfig.mail = MailConfigurationParameters;
 
 export { DevConfig };

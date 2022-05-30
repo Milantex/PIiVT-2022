@@ -43,7 +43,7 @@ export default class UserService extends BaseService<UserModel, UserAdapterOptio
 
     public async add(data: IAddUser): Promise<UserModel> {
         return this.baseAdd(data, {
-            removeActivationCode: true,
+            removeActivationCode: false,
             removePassword: true,
         });
     }
