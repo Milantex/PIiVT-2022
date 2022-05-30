@@ -1,9 +1,11 @@
 import IConfig from "./common/IConfig.interface";
 import AdministratorRouter from "./components/administrator/AdministratorRouter.router";
+import AuthRouter from "./components/auth/AuthRouter.router";
 import CategoryRouter from "./components/category/CategoryRouter.router";
 import SizeRouter from "./components/size/SizeRouter.router";
 import UserRouter from "./components/user/UserRouter.router";
 import { MailConfigurationParameters } from "./config.mail";
+import { readFileSync } from "fs";
 
 const DevConfig: IConfig = {
     server: {
@@ -38,6 +40,7 @@ const DevConfig: IConfig = {
         new AdministratorRouter(),
         new SizeRouter(),
         new UserRouter(),
+        new AuthRouter(),
     ],
     fileUploads: {
         maxFiles: 5,
@@ -79,7 +82,49 @@ const DevConfig: IConfig = {
         email: "",
         password: "",
         debug: true,
-    }
+    },
+    auth: {
+        administrator: {
+            algorithm: "RS256",
+            issuer: "PIiVT",
+            tokens: {
+                auth: {
+                    duration: 60 * 60 * 24, // Za dev: 24h - inace treba par minuta
+                    keys: {
+                        public: readFileSync("./.keystore/app.public", "ascii"),
+                        private: readFileSync("./.keystore/app.private", "ascii"),
+                    },
+                },
+                refresh: {
+                    duration: 60 * 60 * 24 * 60, // Za dev: 60 dana - inace treba oko mesec dana
+                    keys: {
+                        public: readFileSync("./.keystore/app.public", "ascii"),
+                        private: readFileSync("./.keystore/app.private", "ascii"),
+                    },
+                },
+            },
+        },
+        user: {
+            algorithm: "RS256",
+            issuer: "PIiVT",
+            tokens: {
+                auth: {
+                    duration: 60 * 60 * 24, // Za dev: 24h - inace treba par minuta
+                    keys: {
+                        public: readFileSync("./.keystore/app.public", "ascii"),
+                        private: readFileSync("./.keystore/app.private", "ascii"),
+                    },
+                },
+                refresh: {
+                    duration: 60 * 60 * 24 * 60, // Za dev: 60 dana - inace treba oko mesec dana
+                    keys: {
+                        public: readFileSync("./.keystore/app.public", "ascii"),
+                        private: readFileSync("./.keystore/app.private", "ascii"),
+                    },
+                },
+            },
+        },
+    },
 };
 
 DevConfig.mail = MailConfigurationParameters;
