@@ -73,9 +73,6 @@ export default class UserController extends BaseController {
         return new Promise((resolve, reject) => {
             const transport = nodemailer.createTransport(
                 {
-                    from: DevConfig.mail.email,
-                },
-                {
                     host: DevConfig.mail.host,
                     port: DevConfig.mail.port,
                     secure: false,
@@ -88,12 +85,15 @@ export default class UserController extends BaseController {
                         pass: DevConfig.mail.password,
                     },
                 },
+                {
+                    from: DevConfig.mail.email,
+                },
             );
 
             const mailOptions: Mailer.Options = {
                 to: user.email,
                 subject: "Account registration",
-                html: `<!dcotype html>
+                html: `<!doctype html>
                         <html>
                             <head><meta charset="utf-8"></head>
                             <body>
