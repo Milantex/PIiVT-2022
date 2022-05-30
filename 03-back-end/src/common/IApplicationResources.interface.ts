@@ -5,6 +5,7 @@ import IngredientService from "../components/ingredient/IngredientService.servic
 import ItemService from "../components/item/ItemService.service";
 import PhotoService from "../components/photo/PhotoService.service";
 import SizeService from "../components/size/SizeService.service";
+import UserService from "../components/user/UserService.service";
 
 export interface IServices {
     category: CategoryService;
@@ -13,6 +14,7 @@ export interface IServices {
     size: SizeService;
     item: ItemService;
     photo: PhotoService;
+    user: UserService;
 }
 
 export default interface IApplicationResources {

@@ -13,6 +13,7 @@ import SizeService from "./components/size/SizeService.service";
 import ItemService from "./components/item/ItemService.service";
 import fileUpload = require("express-fileupload");
 import PhotoService from "./components/photo/PhotoService.service";
+import UserService from "./components/user/UserService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -42,6 +43,7 @@ async function main() {
             size: null,
             item: null,
             photo: null,
+            user: null,
         }
     };
 
@@ -51,6 +53,7 @@ async function main() {
     applicationResources.services.size          = new SizeService(applicationResources);
     applicationResources.services.item          = new ItemService(applicationResources);
     applicationResources.services.photo         = new PhotoService(applicationResources);
+    applicationResources.services.user          = new UserService(applicationResources);
 
     const application: express.Application = express();
 
