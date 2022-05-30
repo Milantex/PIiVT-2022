@@ -11,6 +11,16 @@
 				{
 					"name": "Get all",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo0LCJpZGVudGl0eSI6ImFkbWluaXN0cmF0b3ItZHZhIiwiaWF0IjoxNjUzOTI0NTc4LCJleHAiOjE2NTQwMTA5NzgsImlzcyI6IlBJaVZUIn0.Rv-Lo44V5wKrEUMso7B52XchYDUa2lD2TsaCek3GHoccWwYCCkQMtW2eXW8QWbijuZ6gRXppcSIciFR3xp9rK3JFsIQxVGUVItAlfQE82rR0p1KGJ4AvQDd6hIUO_1gSeR0f6Y2notzhgROyFj_s5VeQ8eMQljRQEiP3J8tTVmlVcxU-qGsTzrhbjkZZ3JtNjTOa0mfsXRmCNdSu3eSBWOKJGojXvIDoj_R83TevZ0VZ0DbR-s7WFVYpXiNANrYjra0IbPTc8hC_MvugAXUYC1N2HWCp2Z4VZY9P0uep6EcfW_jz7NwpPUMMEr1Vrae6EG4RNSlREr4-rMid9jIjhg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -993,6 +1003,193 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register an account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"Lozinka1234567\",\r\n    \"forename\": \"Test\",\r\n    \"surname\": \"User\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/register",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit a single user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"Lozinka1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/4",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active an account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/activate/5c732f34-4205-4a50-bd77-3bb5fe8fe21e",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"activate",
+								"5c732f34-4205-4a50-bd77-3bb5fe8fe21e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Administrator",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"administrator-dva\",\r\n    \"password\": \"Cista lozinka koja se Vidi 1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/auth/administrator/login",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"administrator",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh auth token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo0LCJpZGVudGl0eSI6ImFkbWluaXN0cmF0b3ItZHZhIiwiaWF0IjoxNjUzOTI0NTc4LCJleHAiOjE2NTkxMDg1NzgsImlzcyI6IlBJaVZUIn0.LTk86kwjiKYlMl7u2Tz_E8oDcij8YXmCoK4fAGoRD2C7o_dE25yg5COrjKD4QrYFhk0zb5uEIMPr7u9IHmMXnxSb3bPJkSCpgOBYomf4R0jzv4uIujF61n6q7acMKGFmNbzhPPwhhPVpvUaTeRg0aGjJSfAVYguUJGbsbpkjJ1DEqh-TAZLjj6NQXowEk2sritibZzAY8W7RZ9qYEqi3yJoN8UYp306FuwdPLVnUde8KipuElsgJY1PFoBM5Xn3sIw7E77H1Nrf8tW7slG5ESzPlP8xdQO0cLtvZxJZr5gEsgxMX3FTZGNe_RV61HLRMkVGI4zl2OGQ93KwNVr-g8w",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/auth/administrator/refresh",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"administrator",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
