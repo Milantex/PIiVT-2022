@@ -94,82 +94,102 @@ export default class ItemController extends BaseController {
         this.services.category.getById(categoryId, { loadIngredients: true })
         .then(resultCategory => {
             if (resultCategory === null) {
-                return res.status(404).send("Category not found!");
+                throw {
+                    status: 404,
+                    message: "Category not found!",
+                }
             }
 
+            return resultCategory;
+        })
+        .then(resultCategory => {
             const availableIngredientIds: number[] = resultCategory.ingredients?.map(ingredient => ingredient.ingredientId);
+
             for (let givenIngredientId of data.ingredientIds) {
                 if (!availableIngredientIds.includes(givenIngredientId)) {
-                    return res.status(404).send(`Ingredient ${givenIngredientId} not found in this category!`);
+                    throw {
+                        status: 404,
+                        message: `Ingredient ${givenIngredientId} not found in this category!`,
+                    }
                 }
             }
 
-            this.services.size.getAll({})
-            .then(resultSizes => {
-                const availableSizeIds: number[] = resultSizes.map(size => size.sizeId);
+            return this.services.size.getAll({});
+        })
+        .then(sizes => {
+            const availableSizeIds: number[] = sizes.map(size => size.sizeId);
 
-                for (let givenSizeInformation of data.sizes) {
-                    if (!availableSizeIds.includes(givenSizeInformation.sizeId)) {
-                        return res.status(404).send(`Size with ID ${givenSizeInformation.sizeId} not found!`);
+            for (let givenSizeInformation of data.sizes) {
+                if (!availableSizeIds.includes(givenSizeInformation.sizeId)) {
+                    throw {
+                        status: 404,
+                        message: `Size with ID ${givenSizeInformation.sizeId} not found!`,
                     }
                 }
-
-                this.services.item.add({
-                    name: data.name,
-                    category_id: categoryId,
-                    description: data.description,
-                })
-                .then(newItem => {
-                    for (let givenIngredientId of data.ingredientIds) {
-                        this.services.item.addItemIngredient({
-                            item_id: newItem.itemId,
-                            ingredient_id: givenIngredientId,
-                        })
-                        .catch(error => {
-                            // TODO: Ovde bi istao rollback!
-                            res.status(500).send(error?.message);
-                        });
-                    }
-
-                    for (let givenSizeInformation of data.sizes) {
-                        this.services.item.addItemSize({
-                            item_id: newItem.itemId,
-                            size_id: givenSizeInformation.sizeId,
-                            price: givenSizeInformation.price,
-                            kcal: givenSizeInformation.kcal,
-                            is_active: 1,
-                        })
-                        .catch(error => {
-                            // TODO: Ovde bi istao rollback!
-                            res.status(500).send(error?.message);
-                        });
-                    }
-
-                    this.services.item.getById(newItem.itemId, {
-                        loadCategory: true,
-                        loadIngredients: true,
-                        loadSizes: true,
-                        hideInactiveSizes: true,
-                        loadPhotos: false,
-                    })
-                    .then(result => {
-                        res.send(result);
-                    })
-                    .catch(error => {
-                        res.status(500).send(error?.message);
-                    });
-                })
-                .catch(error => {
-                    res.status(500).send(error?.message);
-                });
-            })
-            .catch(error => {
-                res.status(500).send(error?.message);
+            }
+        })
+        .then(() => {
+            return this.services.item.startTransaction();
+        })
+        .then(() => {
+            return this.services.item.add({
+                name: data.name,
+                category_id: categoryId,
+                description: data.description,
             });
         })
-        .catch(error => {
-            res.status(500).send(error?.message);
-        });
+        .then(newItem => {
+            for (let givenIngredientId of data.ingredientIds) {
+                this.services.item.addItemIngredient({
+                    item_id: newItem.itemId,
+                    ingredient_id: givenIngredientId,
+                })
+                .catch(error => {
+                    throw {
+                        status: 500,
+                        message: error?.message
+                    }
+                });
+            }
+
+            return newItem;
+        })
+        .then(newItem => {
+            for (let givenSizeInformation of data.sizes) {
+                this.services.item.addItemSize({
+                    item_id: newItem.itemId,
+                    size_id: givenSizeInformation.sizeId,
+                    price: givenSizeInformation.price,
+                    kcal: givenSizeInformation.kcal,
+                    is_active: 1,
+                })
+                .catch(error => {
+                    throw {
+                        status: 500,
+                        message: error?.message
+                    }
+                });
+            }
+
+            return newItem;
+        })
+        .then(newItem => {
+            return this.services.item.getById(newItem.itemId, {
+                loadCategory: true,
+                loadIngredients: true,
+                loadSizes: true,
+                hideInactiveSizes: true,
+                loadPhotos: false,
+            });
+        })
+        .then(async result => {
+            await this.services.item.commitChanges();
+            res.send(result);
+        })
+        .catch(async error => {
+            await this.services.item.rollbackChanges();
+            res.status(error?.status ?? 500).send(error?.message);
+        })
     }
 
     async uploadPhoto(req: Request, res: Response) {

@@ -62,10 +62,14 @@ class CategoryController extends BaseController {
         this.services.category.getById(id, { loadIngredients: false })
         .then(result => {
             if (result === null) {
-                return res.sendStatus(404);
+                throw {
+                    status: 404,
+                    message: 'Category not found!',
+                }
             }
-
-            this.services.category.editById(
+        })
+        .then(() => {
+            return this.services.category.editById(
                 id,
                 {
                     name: data.name
@@ -74,15 +78,12 @@ class CategoryController extends BaseController {
                     loadIngredients: true,
                 }
             )
-            .then(result => {
-                res.send(result);
-            })
-            .catch(error => {
-                res.status(400).send(error?.message);
-            })
+        })
+        .then(result => {
+            res.send(result);
         })
         .catch(error => {
-            res.status(500).send(error?.message);
+            res.status(error?.status ?? 500).send(error?.message);
         });
     }
 
@@ -97,19 +98,23 @@ class CategoryController extends BaseController {
         this.services.category.getById(categoryId, { loadIngredients: false })
         .then(result => {
             if (result === null) {
-                return res.sendStatus(404);
+                throw {
+                    status: 404,
+                    message: 'Ingredient not found!',
+                }
             }
-
-            this.services.ingredient.add({
+        })
+        .then(() => {
+            return this.services.ingredient.add({
                 name: data.name,
                 category_id: categoryId
             })
-            .then(result => {
-                res.send(result);
-            });
+        })
+        .then(result => {
+            res.send(result);
         })
         .catch(error => {
-            res.status(500).send(error?.message);
+            res.status(error?.status ?? 500).send(error?.message);
         });
     }
 
@@ -125,30 +130,38 @@ class CategoryController extends BaseController {
         this.services.category.getById(categoryId, { loadIngredients: false })
         .then(result => {
             if (result === null) {
-                return res.status(404).send('Category not found!');
+                throw {
+                    status: 404,
+                    message: 'Category not found!',
+                }
+            }
+        })
+        .then(() => {
+            return this.services.ingredient.getById(ingredientId, {});
+        })
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: 'Ingredient not found!',
+                }
             }
 
-            this.services.ingredient.getById(ingredientId, {})
-            .then(result => {
-                if (result === null) {
-                    return res.status(404).send('Ingredient not found!');
+            if (result.categoryId !== categoryId) {
+                throw {
+                    status: 400,
+                    message: 'This ingredient does not belong to this category!',
                 }
-
-                if (result.categoryId !== categoryId) {
-                    return res.status(400).send('This ingredient does not belong to this category!');
-                }
-
-                this.services.ingredient.editById(ingredientId, data)
-                .then(result => {
-                    res.send(result);
-                })
-                .catch(error => {
-                    res.status(500).send(error?.message);
-                });
-            });
+            }
+        })
+        .then(() => {
+            return this.services.ingredient.editById(ingredientId, data)
+        })
+        .then(result => {
+            res.send(result);
         })
         .catch(error => {
-            res.status(500).send(error?.message);
+            res.status(error?.status ?? 500).send(error?.message);
         });
     }
 
@@ -159,33 +172,41 @@ class CategoryController extends BaseController {
         this.services.category.getById(categoryId, { loadIngredients: false })
         .then(result => {
             if (result === null) {
-                return res.status(404).send('Category not found!');
+                throw {
+                    status: 404,
+                    message: 'Category not found!',
+                }
+            }
+        })
+        .then(() => {
+            return this.services.ingredient.getById(ingredientId, {})
+        })
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: 'Ingredient not found!',
+                }
             }
 
-            this.services.ingredient.getById(ingredientId, {})
-            .then(result => {
-                if (result === null) {
-                    return res.status(404).send('Ingredient not found!');
+            return result;
+        })
+        .then(result => {
+            if (result.categoryId !== categoryId) {
+                throw {
+                    status: 400,
+                    message: 'This ingredient does not belong to this category!',
                 }
-
-                if (result.categoryId !== categoryId) {
-                    return res.status(400).send('This ingredient does not belong to this category!');
-                }
-
-                this.services.ingredient.deleteById(ingredientId)
-                .then(result => {
-                    res.send('This ingredient has been deleted!');
-                })
-                .catch(error => {
-                    res.status(406).send('Could not delete this ingredient due to an integrity constraint check.');
-                })
-            })
-            .catch(error => {
-                res.status(500).send(error?.message);
-            });
+            }
+        })
+        .then(() => {
+            return this.services.ingredient.deleteById(ingredientId)
+        })
+        .then(() => {
+            res.send('This ingredient has been deleted!');
         })
         .catch(error => {
-            res.status(500).send(error?.message);
+            res.status(error?.status ?? 500).send(error?.message);
         });
     }
 }

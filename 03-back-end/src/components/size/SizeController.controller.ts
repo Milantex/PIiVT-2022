@@ -20,13 +20,19 @@ export default class SizeController extends BaseController {
         this.services.size.getById(sizeId, {})
         .then(result => {
             if (result === null) {
-                return res.status(404).send("Size not found!");
+                throw {
+                    status: 404,
+                    message: 'Size not found!',
+                }
             }
 
+            return result;
+        })
+        .then(result => {
             res.send(result);
         })
         .catch(error => {
-            res.status(500).send(error?.message ?? "Internal server error!");
+            res.status(error?.status ?? 500).send(error?.message ?? "Internal server error!");
         });
     }
 
@@ -40,13 +46,19 @@ export default class SizeController extends BaseController {
         this.services.size.add(data)
         .then(result => {
             if (result === null) {
-                return res.status(400).send("Bad size data given!");
+                throw {
+                    status: 400,
+                    message: 'Bad size data given!',
+                }
             }
 
+            return result;
+        })
+        .then(result => {
             res.send(result);
         })
         .catch(error => {
-            res.status(500).send(error?.message ?? "Internal server error!");
+            res.status(error?.status ?? 500).send(error?.message ?? "Internal server error!");
         });
     }
 
