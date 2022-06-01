@@ -137,4 +137,11 @@ export default class CartController extends BaseController {
             res.status(error?.status ?? 500).send(error?.message);
         });
     }
+
+    public async getMyOrders(req: Request, res: Response) {
+        this.services.order.getAllByUserId(req.authorisation?.id)
+        .then(orders => {
+            res.send(orders);
+        })
+    }
 }

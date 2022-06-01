@@ -40,9 +40,9 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
         });
     }
 
-    public async getByCartId(cartId: number): Promise<OrderModel|null> {
+    public async getByCartId(cartId: number, options: IOrderAdapterOptions = { loadCartData: false, }): Promise<OrderModel|null> {
         return new Promise((resolve, reject) => {
-            this.getAllByFieldNameAndValue("cart_id", cartId, { loadCartData: false, })
+            this.getAllByFieldNameAndValue("cart_id", cartId, options)
             .then(result => {
                 if (result.length === 0) {
                     return resolve(null);
@@ -68,5 +68,20 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
                 reject(error);
             });
         });
+    }
+
+    public async getAllByUserId(userId: number): Promise<OrderModel[]> {
+        return new Promise(resolve => {
+            this.services.cart.getAllByUserId(userId)
+            .then(async carts => {
+                const orders = [];
+
+                for (let cart of carts) {
+                    orders.push(await this.getByCartId(cart.cartId, { loadCartData: true, }));
+                }
+
+                resolve(orders);
+            })
+        })
     }
 }
