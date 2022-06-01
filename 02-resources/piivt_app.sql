@@ -53,10 +53,12 @@ CREATE TABLE IF NOT EXISTS `cart` (
   PRIMARY KEY (`cart_id`),
   KEY `fk_cart_user_id` (`user_id`),
   CONSTRAINT `fk_cart_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `created_at`) VALUES
-	(1, 1, '2022-05-27 14:26:40');
+	(1, 1, '2022-05-27 14:26:40'),
+	(2, 8, '2022-06-01 13:04:33'),
+	(3, 8, '2022-06-01 13:13:47');
 
 DROP TABLE IF EXISTS `cart_content`;
 CREATE TABLE IF NOT EXISTS `cart_content` (
@@ -65,12 +67,17 @@ CREATE TABLE IF NOT EXISTS `cart_content` (
   `item_size_id` int(10) unsigned NOT NULL,
   `quantity` int(10) unsigned NOT NULL,
   PRIMARY KEY (`cart_content_id`),
+  UNIQUE KEY `uq_cart_content_cart_id_item_size_it` (`cart_id`,`item_size_id`),
   KEY `fk_cart_content_cart_id` (`cart_id`),
   KEY `fk_cart_content_item_size_id` (`item_size_id`),
   CONSTRAINT `fk_cart_content_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_cart_content_item_size_id` FOREIGN KEY (`item_size_id`) REFERENCES `item_size` (`item_size_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `cart_content` (`cart_content_id`, `cart_id`, `item_size_id`, `quantity`) VALUES
+	(2, 3, 2, 2),
+	(3, 3, 1, 5),
+	(4, 3, 3, 10);
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
@@ -82,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 INSERT INTO `category` (`category_id`, `name`) VALUES
 	(9, 'Ca4rt34tertgerg gh gf'),
-	(12, 'Kategorija najnovija!'),
+	(12, 'Kategorija A'),
 	(2, 'Kuvana jela'),
 	(10, 'New category'),
 	(1, 'Peciva'),
@@ -183,8 +190,10 @@ CREATE TABLE IF NOT EXISTS `order` (
   KEY `fk_order_address_id` (`address_id`),
   CONSTRAINT `fk_order_address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_order_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `order` (`order_id`, `cart_id`, `address_id`, `created_at`, `deliver_at`, `note`, `status`, `mark_value`, `mark_note`) VALUES
+	(2, 2, 1, '2022-06-01 13:13:33', '2022-06-01 15:13:34', 'aa', 'pending', NULL, NULL);
 
 DROP TABLE IF EXISTS `photo`;
 CREATE TABLE IF NOT EXISTS `photo` (

@@ -8,6 +8,7 @@ export default class CartRouter implements IRouter {
     public setupRoutes(application: Application, resources: IApplicationResources) {
         const cartController: CartController = new CartController(resources.services);
 
-        application.get("/api/cart", AuthMiddleware.getVerifier("user"), cartController.getCart.bind(cartController));
+        application.get("/api/cart",  AuthMiddleware.getVerifier("user"), cartController.getCart.bind(cartController));
+        application.post("/api/cart", AuthMiddleware.getVerifier("user"), cartController.addToCart.bind(cartController));
     }
 }

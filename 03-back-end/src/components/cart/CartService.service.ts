@@ -199,4 +199,59 @@ export default class CartService extends BaseService<CartModel, ICartAdapterOpti
             { }
         );
     }
+
+    public async editCartContentItemQuantity(cartId: number, itemId: number, sizeId: number, quantity: number): Promise<CartModel> {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE
+                            cart_content
+                        SET
+                            cart_content.quantity = ?
+                        WHERE
+                            cart_content.cart_id = ?
+                            AND cart_content.item_size_id = (
+                                SELECT
+                                    item_size.item_size_id
+                                FROM
+                                    item_size
+                                WHERE
+                                    item_size.item_id = ?
+                                    AND item_size.size_id = ?
+                                LIMIT 1
+                            )`;
+            this.db.execute(sql, [ quantity, cartId, itemId, sizeId ])
+            .then(() => {
+                resolve(this.getById(cartId, { }));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
+
+    public async addCartContentItem(cartId: number, itemId: number, sizeId: number, quantity: number): Promise<CartModel> {
+        return new Promise((resolve, reject) => {
+            const sql = `INSERT cart_content
+                         SET
+                            cart_content.cart_id = ?,
+                            cart_content.item_size_id = (
+                                SELECT
+                                    item_size.item_size_id
+                                FROM
+                                    item_size
+                                WHERE
+                                    item_size.item_id = ?
+                                    AND item_size.size_id = ?
+                                LIMIT 1
+                            ),
+                            cart_content.quantity = ?;`;
+
+            this.db.execute(sql, [ cartId, itemId, sizeId, quantity ])
+            .then(() => {
+                resolve(this.getById(cartId, { }));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
 }
