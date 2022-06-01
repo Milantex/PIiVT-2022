@@ -254,4 +254,31 @@ export default class CartService extends BaseService<CartModel, ICartAdapterOpti
             });
         });
     }
+
+    public async deleteCartContentItem(cartId: number, itemId: number, sizeId: number): Promise<CartModel> {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM cart_content
+                         WHERE
+                            cart_content.cart_id = ?
+                            AND
+                            cart_content.item_size_id = (
+                                SELECT
+                                    item_size.item_size_id
+                                FROM
+                                    item_size
+                                WHERE
+                                    item_size.item_id = ?
+                                    AND item_size.size_id = ?
+                                LIMIT 1
+                            );`;
+
+            this.db.execute(sql, [ cartId, itemId, sizeId ])
+            .then(() => {
+                resolve(this.getById(cartId, { }));
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
 }
