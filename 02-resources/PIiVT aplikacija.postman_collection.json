@@ -11,16 +11,6 @@
 				{
 					"name": "Get all",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo0LCJpZGVudGl0eSI6ImFkbWluaXN0cmF0b3ItZHZhIiwiaWF0IjoxNjUzOTI0NTc4LCJleHAiOjE2NTQwMTA5NzgsImlzcyI6IlBJaVZUIn0.Rv-Lo44V5wKrEUMso7B52XchYDUa2lD2TsaCek3GHoccWwYCCkQMtW2eXW8QWbijuZ6gRXppcSIciFR3xp9rK3JFsIQxVGUVItAlfQE82rR0p1KGJ4AvQDd6hIUO_1gSeR0f6Y2notzhgROyFj_s5VeQ8eMQljRQEiP3J8tTVmlVcxU-qGsTzrhbjkZZ3JtNjTOa0mfsXRmCNdSu3eSBWOKJGojXvIDoj_R83TevZ0VZ0DbR-s7WFVYpXiNANrYjra0IbPTc8hC_MvugAXUYC1N2HWCp2Z4VZY9P0uep6EcfW_jz7NwpPUMMEr1Vrae6EG4RNSlREr4-rMid9jIjhg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -34,64 +24,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Get all",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/category",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"category"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "274"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"112-QjijsuqpceNZCMKO4mCtwLp/FyQ\""
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 20 May 2022 15:14:12 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"categoryId\": 9,\n        \"name\": \"Ca4rt34tertgerg gh gf\"\n    },\n    {\n        \"categoryId\": 2,\n        \"name\": \"Kuvana jela\"\n    },\n    {\n        \"categoryId\": 1,\n        \"name\": \"Peciva\"\n    },\n    {\n        \"categoryId\": 4,\n        \"name\": \"Roštilj\"\n    },\n    {\n        \"categoryId\": 3,\n        \"name\": \"Salate\"\n    },\n    {\n        \"categoryId\": 6,\n        \"name\": \"Veganska jela\"\n    },\n    {\n        \"categoryId\": 5,\n        \"name\": \"Vegetarijanska jela\"\n    }\n]"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Get a single category",
@@ -110,122 +43,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Get a single category",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/category/1",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"category",
-										"1"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "329"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"149-ptlBHPL7fz++XTiwdGc5QjIclMM\""
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 20 May 2022 15:14:43 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"categoryId\": 1,\n    \"name\": \"Peciva\",\n    \"ingredients\": [\n        {\n            \"ingredientId\": 1,\n            \"name\": \"Belo brašno\",\n            \"categoryId\": 1\n        },\n        {\n            \"ingredientId\": 2,\n            \"name\": \"Heljdino brašno\",\n            \"categoryId\": 1\n        },\n        {\n            \"ingredientId\": 3,\n            \"name\": \"Integralno brašno\",\n            \"categoryId\": 1\n        },\n        {\n            \"ingredientId\": 4,\n            \"name\": \"Čoko krem\",\n            \"categoryId\": 1\n        },\n        {\n            \"ingredientId\": 5,\n            \"name\": \"Džem\",\n            \"categoryId\": 1\n        }\n    ]\n}"
-						},
-						{
-							"name": "Get a single category - not found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/category/10",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"category",
-										"10"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "text/plain; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "9"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"9-0gXL1ngzMqISxa6S1zx3F4wtLyg\""
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 20 May 2022 15:14:53 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "Not Found"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Add a new category",
@@ -252,212 +70,26 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Add a new category",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"New category\"\r\n}\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{API_URL}}/api/category",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"category"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "39"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"27-/AFFyMd89ru/73HEFvFHlfdjrNU\""
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 20 May 2022 15:15:45 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"categoryId\": 10,\n    \"name\": \"New category\"\n}"
-						},
-						{
-							"name": "Add a new category - diplicate",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"New category\"\r\n}\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{API_URL}}/api/category",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"category"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "html",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "text/html; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "57"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"39-nWnury6QgimFwyWjCNAyN55bhfc\""
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 20 May 2022 15:15:54 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "Duplicate entry 'New category' for key 'uq_category_name'"
-						},
-						{
-							"name": "Add a new category - invalid - too short",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"New\"\r\n}\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{API_URL}}/api/category",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"category"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "162"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"a2-28dteGRo6zrS5U+JmJPIZNL7rS8\""
-								},
-								{
-									"key": "Date",
-									"value": "Fri, 20 May 2022 15:16:06 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"instancePath\": \"/name\",\n        \"schemaPath\": \"#/properties/name/minLength\",\n        \"keyword\": \"minLength\",\n        \"params\": {\n            \"limit\": 4\n        },\n        \"message\": \"must NOT have fewer than 4 characters\"\n    }\n]"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Edit a single category",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Kategorija najnovija!\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Kategorija A\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -477,6 +109,26 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -1033,14 +685,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/user/1",
+							"raw": "{{API_URL}}/api/user/8",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"user",
-								"1"
+								"8"
 							]
 						}
 					},
@@ -1190,10 +842,84 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"Lozinka1234567\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/auth/user/login",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh auth token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo4LCJpZGVudGl0eSI6IlRlc3QgVXNlciIsImlhdCI6MTY1NDA4Mjc5NiwiZXhwIjoxNjU5MjY2Nzk2LCJpc3MiOiJQSWlWVCJ9.MnU7_bQRlt5lVRtFSCbdmLz706ZcuDRegOCggUuokkACyV_0oeCxh_-SbxbxvGQ5MbS8EtDxQQh2npv3s6eThNmdEFHcXhCTWwYCISLbOeITmPnmPgbzJuNoe4wYGrnWaAIBEatwYP0Ut3ft1SNlMTrbkP3qsFb4IEHFSSMOuiktVuDwETmDfUbMQapmewy0uIeYbmQuAfa_f92PosCY8FRar2nQStZHPXR3JjBwAXY9gCNc-b8nDOC_e2GyJ_Zr8GccLtzk29pQHNw_lcJME0qKM9Xcx8UxMa_RlSpGgvGkpZINujElShMen-nI0lHCjWu58gOFKn6UFqOEkbgC6w",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/auth/user/refresh",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"user",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{USER_AUTH_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -1218,6 +944,16 @@
 		{
 			"key": "API_URL",
 			"value": "http://localhost:10000",
+			"type": "default"
+		},
+		{
+			"key": "USER_AUTH_TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo4LCJpZGVudGl0eSI6IlRlc3QgVXNlciIsImlhdCI6MTY1NDA4MzQ0MywiZXhwIjoxNjU0MTY5ODQzLCJpc3MiOiJQSWlWVCJ9.MtZT9LtzFpeee2vlzVbPRIdBP4F8uvgKqvAft1H5UJLaDuyNlexdNrUZIV7bZ5zdFA_IGMKvPVSrYvPn76KlCNzA5B3FDEHk9OlqRH6o_Hg8jVoCInY8-zCc2HjVLyAesKOm5JBXHUy-revXjNsQUj3F3XrIVTqYzJPPj_Y-Di_AgxSd6FuPJCD3WbJfczmja9yYhtdoePk8kU36FRxEiRUvzEWeV0atmLcRN8SgqQMjjyi5dEZJVMecY3rfcZoMYCX5DDZFne_bmfjOjd3B0faygaucTS9RGYFgFZZkfVoXcN2vHY--tKDapmtqaNfKCCuZlJWn_co5FmCrmQ9dBw",
+			"type": "default"
+		},
+		{
+			"key": "ADMIN_AUTH_TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo0LCJpZGVudGl0eSI6ImFkbWluaXN0cmF0b3ItZHZhIiwiaWF0IjoxNjU0MDgzNjg4LCJleHAiOjE2NTQxNzAwODgsImlzcyI6IlBJaVZUIn0.RBc0WBIiNjWZ-WhviFauSO51s5nSLUMZxx3Xx0lbZUWjN0j7vymAqpJFdZfu5qxvXrszKLp_xmmMa2OjNwtvQvS5yzm0RME3SZCSYrV6NmhvflS1f9gNJxetgj1c1bhCV-e64IoM9nq9D8_Ub3FHi5w-PLllO-fwYOXy2vfppdtp2fNRsOQYVHakVI-ZGyYzf-wMs1j21m1EW4POxIcxx-wmqhERlfpTNBnXumbV5cAGZgAuKgEZjI-KhhXb92D6l_HeDs3kEJGQOuQgLMKeohPMRh6jVXYohLbvGvmQVPxxeqCQKkiXxeaLplPsjQUqu5u7h2NPPRB2SF3AMuky-g",
 			"type": "default"
 		}
 	]
