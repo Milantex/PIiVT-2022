@@ -16,6 +16,7 @@ import PhotoService from "./components/photo/PhotoService.service";
 import UserService from "./components/user/UserService.service";
 import CartService from "./components/cart/CartService.service";
 import OrderService from "./components/cart/OrderService.service";
+import AddressService from "./components/user/AddressService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -48,6 +49,7 @@ async function main() {
             user: null,
             cart: null,
             order: null,
+            address: null,
         }
     };
 
@@ -60,6 +62,7 @@ async function main() {
     applicationResources.services.user          = new UserService(applicationResources);
     applicationResources.services.cart          = new CartService(applicationResources);
     applicationResources.services.order         = new OrderService(applicationResources);
+    applicationResources.services.address       = new AddressService(applicationResources);
 
     const application: express.Application = express();
 

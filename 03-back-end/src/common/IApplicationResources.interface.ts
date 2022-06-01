@@ -7,6 +7,7 @@ import IngredientService from "../components/ingredient/IngredientService.servic
 import ItemService from "../components/item/ItemService.service";
 import PhotoService from "../components/photo/PhotoService.service";
 import SizeService from "../components/size/SizeService.service";
+import AddressService from "../components/user/AddressService.service";
 import UserService from "../components/user/UserService.service";
 
 export interface IServices {
@@ -19,6 +20,7 @@ export interface IServices {
     user: UserService;
     cart: CartService;
     order: OrderService;
+    address: AddressService;
 }
 
 export default interface IApplicationResources {

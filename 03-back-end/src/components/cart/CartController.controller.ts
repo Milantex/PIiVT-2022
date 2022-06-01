@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
 import { AddToCartValidator, IAddToCartDto } from "./dto/IAddToCart.dto";
 import { EditInCartValidator, IEditInCartDto } from "./dto/IEditInCart.dto";
+import { IAddOrder, IMakeOrderDto, MakeOrderValidator } from "./dto/IMakeOrder.dto";
 
 export default class CartController extends BaseController {
     getCart(req: Request, res: Response) {
@@ -90,7 +91,43 @@ export default class CartController extends BaseController {
         });
     }
 
-    makeOrder(req: Request, res: Response) {
+    async makeOrder(req: Request, res: Response) {
+        const data = req.body as IMakeOrderDto;
 
+        if (!MakeOrderValidator(data)) {
+            return res.status(400).send(MakeOrderValidator.errors);
+        }
+
+        const addresses = await this.services.address.getAllByUserId(req.authorisation?.id, {})
+        
+        if (addresses.length === 0) {
+            return res.status(404).send("You do not have any addresses in your profile!");
+        }
+
+        const foundAddress = addresses.find(a => a.addressId === data.addressId);
+        if (!foundAddress) {
+            return res.status(403).send("You do not have access to this addresses!");
+        }
+
+        if (!foundAddress.isActive) {
+            return res.status(404).send("You do not have any active addresses in your profile!");
+        }
+
+        this.services.cart.getUserCart(req.authorisation?.id)
+        .then(cart => {
+            const dbData: IAddOrder = {
+                address_id: data.addressId,
+                deliver_at: new Date().toISOString().substring(0, 11) + data.deliverAt + ":00",
+                cart_id: cart.cartId,
+            };
+    
+            return this.services.order.makeOrder(dbData);
+        })
+        .then(order => {
+            res.send(order);
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message);
+        });
     }
 }
