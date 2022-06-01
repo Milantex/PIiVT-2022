@@ -1043,6 +1043,24 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get my orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/order",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"order"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
