@@ -6,6 +6,7 @@ import SizeRouter from "./components/size/SizeRouter.router";
 import UserRouter from "./components/user/UserRouter.router";
 import { MailConfigurationParameters } from "./config.mail";
 import { readFileSync } from "fs";
+import CartRouter from "./components/cart/CartRouter.router";
 
 const DevConfig: IConfig = {
     server: {
@@ -41,6 +42,7 @@ const DevConfig: IConfig = {
         new SizeRouter(),
         new UserRouter(),
         new AuthRouter(),
+        new CartRouter(),
     ],
     fileUploads: {
         maxFiles: 5,

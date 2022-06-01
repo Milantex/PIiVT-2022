@@ -14,6 +14,8 @@ import ItemService from "./components/item/ItemService.service";
 import fileUpload = require("express-fileupload");
 import PhotoService from "./components/photo/PhotoService.service";
 import UserService from "./components/user/UserService.service";
+import CartService from "./components/cart/CartService.service";
+import OrderService from "./components/cart/OrderService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -44,6 +46,8 @@ async function main() {
             item: null,
             photo: null,
             user: null,
+            cart: null,
+            order: null,
         }
     };
 
@@ -54,6 +58,8 @@ async function main() {
     applicationResources.services.item          = new ItemService(applicationResources);
     applicationResources.services.photo         = new PhotoService(applicationResources);
     applicationResources.services.user          = new UserService(applicationResources);
+    applicationResources.services.cart          = new CartService(applicationResources);
+    applicationResources.services.order         = new OrderService(applicationResources);
 
     const application: express.Application = express();
 
