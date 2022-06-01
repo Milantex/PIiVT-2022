@@ -1,5 +1,6 @@
 import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
+import { IAddOrder } from "./dto/IMakeOrder.dto";
 import OrderModel from "./OrderModel.model";
 
 export interface IOrderAdapterOptions extends IAdapterOptions {
@@ -48,6 +49,20 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
                 }
 
                 resolve(result[0]);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
+
+    public async makeOrder(data: IAddOrder): Promise<OrderModel> {
+        return new Promise((resolve, reject) => {
+            this.baseAdd(data, {
+                loadCartData: true,
+            })
+            .then(result => {
+                resolve(result);
             })
             .catch(error => {
                 reject(error);
