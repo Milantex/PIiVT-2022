@@ -956,6 +956,93 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit item quantity in cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemId\": 3,\r\n    \"sizeId\": 1,\r\n    \"quantity\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/cart",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an item from cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemId\": 3,\r\n    \"sizeId\": 1,\r\n    \"quantity\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/cart",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Make an order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"addressId\": 2,\r\n    \"deliverAt\": \"23:30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/cart/order",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"order"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

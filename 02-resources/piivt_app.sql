@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS `address` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `address` (`address_id`, `street_and_nmber`, `floor`, `apartment`, `city`, `phone_number`, `user_id`, `is_active`) VALUES
-	(1, 'Neka ulica 22', 1, 5, 'Belgrad', '+3816699999999', 1, 1);
+	(1, 'Neka ulica 22', 1, 5, 'Belgrad', '+3816699999999', 1, 1),
+	(2, 'Neka nova adresa', 2, 4, 'belgrade', '+3816666666666', 8, 1);
 
 DROP TABLE IF EXISTS `administrator`;
 CREATE TABLE IF NOT EXISTS `administrator` (
@@ -58,7 +59,9 @@ CREATE TABLE IF NOT EXISTS `cart` (
 INSERT INTO `cart` (`cart_id`, `user_id`, `created_at`) VALUES
 	(1, 1, '2022-05-27 14:26:40'),
 	(2, 8, '2022-06-01 13:04:33'),
-	(3, 8, '2022-06-01 13:13:47');
+	(3, 8, '2022-06-01 13:13:47'),
+	(5, 8, '2022-06-01 15:20:04'),
+	(6, 8, '2022-06-01 15:22:05');
 
 DROP TABLE IF EXISTS `cart_content`;
 CREATE TABLE IF NOT EXISTS `cart_content` (
@@ -77,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `cart_content` (
 INSERT INTO `cart_content` (`cart_content_id`, `cart_id`, `item_size_id`, `quantity`) VALUES
 	(2, 3, 2, 2),
 	(3, 3, 1, 5),
-	(4, 3, 3, 10);
+	(8, 6, 3, 1);
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
@@ -193,7 +196,10 @@ CREATE TABLE IF NOT EXISTS `order` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `order` (`order_id`, `cart_id`, `address_id`, `created_at`, `deliver_at`, `note`, `status`, `mark_value`, `mark_note`) VALUES
-	(2, 2, 1, '2022-06-01 13:13:33', '2022-06-01 15:13:34', 'aa', 'pending', NULL, NULL);
+	(2, 2, 1, '2022-06-01 13:13:33', '2022-06-01 15:13:34', 'aa', 'pending', NULL, NULL),
+	(5, 3, 2, '2022-06-01 15:19:52', '2022-06-01 23:30:00', NULL, 'pending', NULL, NULL),
+	(6, 5, 2, '2022-06-01 15:20:36', '2022-06-01 23:30:00', NULL, 'pending', NULL, NULL),
+	(7, 6, 2, '2022-06-01 15:22:16', '2022-06-01 23:30:00', NULL, 'pending', NULL, NULL);
 
 DROP TABLE IF EXISTS `photo`;
 CREATE TABLE IF NOT EXISTS `photo` (
