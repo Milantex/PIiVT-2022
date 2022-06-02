@@ -3,6 +3,7 @@ import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import { IAddOrder } from "./dto/IMakeOrder.dto";
 import OrderModel from "./OrderModel.model";
+import { IChangeStatus } from './dto/IChangeStatus.dto';
 
 export interface IOrderAdapterOptions extends IAdapterOptions {
     loadCartData: boolean;
@@ -87,6 +88,10 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
     }
 
     public async rateOrderById(orderId: number, data: IRateOrder, options: IOrderAdapterOptions): Promise<OrderModel> {
+        return this.baseEditById(orderId, data, options);
+    }
+
+    public async changeStatusById(orderId: number, data: IChangeStatus, options: IOrderAdapterOptions): Promise<OrderModel> {
         return this.baseEditById(orderId, data, options);
     }
 }
