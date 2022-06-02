@@ -1,3 +1,4 @@
+import { IAddAddressDto } from './dto/IAddAddress.dto';
 import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
 import { IRegisterUserDto, RegisterUserValidator } from "./dto/IRegisterUser.dto";
@@ -259,9 +260,10 @@ export default class UserController extends BaseController {
             serviceData.password_hash = passwordHash;
         }
 
-        // TODO: allow only for administrator role:
-        if (data.isActive !== undefined) {
-            serviceData.is_active = data.isActive ? 1 : 0;
+        if (req.authorisation.role === "administrator") {
+            if (data.isActive !== undefined) {
+                serviceData.is_active = data.isActive ? 1 : 0;
+            }
         }
 
         if (data.forename !== undefined) {
