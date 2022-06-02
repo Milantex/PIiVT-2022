@@ -27,7 +27,7 @@ const AddAddressValidator = ajv.compile({
     properties: {
         streetAndNmber: {
             type: "string",
-            minlength: 2,
+            minLength: 2,
             maxLength: 255,
         },
         floor: {
@@ -40,12 +40,12 @@ const AddAddressValidator = ajv.compile({
         },
         city: {
             type: "string",
-            minlength: 2,
+            minLength: 2,
             maxLength: 64,
         },
         phoneNumber: {
             type: "string",
-            pattern: "\+[0-9]{8,23}",
+            pattern: "\\+[0-9]{8,23}",
         },
     },
     required: [

@@ -1,4 +1,4 @@
-import { IAddAddressDto } from './dto/IAddAddress.dto';
+import { AddAddressValidator, IAddAddressDto } from './dto/IAddAddress.dto';
 import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
 import { IRegisterUserDto, RegisterUserValidator } from "./dto/IRegisterUser.dto";
@@ -286,6 +286,10 @@ export default class UserController extends BaseController {
     addAddress(req: Request, res: Response) {
         const data = req.body as IAddAddressDto;
         const userId = req.authorisation?.id;
+
+        if (!AddAddressValidator(data)) {
+            return res.status(400).send(AddAddressValidator.errors);
+        }
 
         this.services.address.add(
             {
