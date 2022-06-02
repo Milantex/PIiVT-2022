@@ -1,3 +1,4 @@
+import { IEditAddressDto } from './dto/IEditAddress.dto';
 import { AddAddressValidator, IAddAddressDto } from './dto/IAddAddress.dto';
 import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
@@ -307,5 +308,50 @@ export default class UserController extends BaseController {
         .catch(error => {
             res.status(error?.status ?? 500).send(error?.message);
         });
+    }
+
+    editAddress(req: Request, res: Response) {
+        const addressId = +req.params?.aid;
+        const data = req.body as IEditAddressDto;
+        const userId = req.authorisation?.id;
+
+        this.services.address.getById(addressId, {})
+        .then(result => {
+            if (!result) {
+                throw {
+                    status: 404,
+                    message: 'Address not found!',
+                }
+            }
+
+            return result;
+        })
+        .then(address => {
+            if (address.userId !== userId) {
+                throw {
+                    status: 403,
+                    message: 'You do not have access to this resource!',
+                }
+            }
+
+            return address;
+        })
+        .then(address => {
+            return this.services.address.editById(addressId, {
+                street_and_nmber: data.streetAndNmber,
+                floor: data?.floor ?? null,
+                apartment: data?.apartment ?? null,
+                city: data.city,
+                phone_number: data.phoneNumber,
+                user_id: userId,
+                is_active: (data?.isActive ?? address.isActive) ? 1 : 0,
+            }, {});
+        })
+        .then(address => {
+            res.send(address);
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message);
+        })
     }
 }

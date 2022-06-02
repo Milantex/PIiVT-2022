@@ -1,3 +1,4 @@
+import { IEditAddress } from './dto/IEditAddress.dto';
 import { IAddAddress } from './dto/IAddAddress.dto';
 import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
@@ -37,5 +38,9 @@ export default class AddressService extends BaseService<AddressModel, IAddressAd
 
     public async add(data: IAddAddress, options: IAddressAdapterOptions): Promise<AddressModel> {
         return this.baseAdd(data, options);
+    }
+
+    public async editById(addressId: number, data: IEditAddress, options: IAddressAdapterOptions): Promise<AddressModel> {
+        return this.baseEditById(addressId, data, options);
     }
 }

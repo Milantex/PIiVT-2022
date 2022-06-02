@@ -14,6 +14,7 @@ class UserRouter implements IRouter {
         application.put("/api/user/:aid",           AuthMiddleware.getVerifier("administrator", "user"), userController.editById.bind(userController));
         application.get("/api/user/activate/:code",                                                      userController.activate.bind(userController));
         application.post('/api/user/address',       AuthMiddleware.getVerifier("user"),                  userController.addAddress.bind(userController));
+        application.put('/api/user/address/:aid',   AuthMiddleware.getVerifier("user"),                  userController.editAddress.bind(userController));
     }
 }
 

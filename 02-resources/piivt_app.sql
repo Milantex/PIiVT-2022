@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100417
 File Encoding         : 65001
 
-Date: 2022-06-02 09:08:29
+Date: 2022-06-02 09:23:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,14 +31,15 @@ CREATE TABLE `address` (
   PRIMARY KEY (`address_id`),
   KEY `fk_address_user_id` (`user_id`),
   CONSTRAINT `fk_address_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of address
 -- ----------------------------
 INSERT INTO `address` VALUES ('1', 'Neka ulica 22', '1', '5', 'Belgrad', '+3816699999999', '1', '1');
 INSERT INTO `address` VALUES ('2', 'Neka nova adresa', '2', '4', 'belgrade', '+3816666666666', '8', '1');
-INSERT INTO `address` VALUES ('3', 'Danijelova 32', '1', null, 'Beograd', '+381113094094', '8', '1');
+INSERT INTO `address` VALUES ('3', 'Kumodraska 2', '2', null, 'Beograd', '+381113094095', '8', '1');
+INSERT INTO `address` VALUES ('4', 'Danijelova 32', '2', null, 'Beograd', '+381113094095', '8', '0');
 
 -- ----------------------------
 -- Table structure for administrator

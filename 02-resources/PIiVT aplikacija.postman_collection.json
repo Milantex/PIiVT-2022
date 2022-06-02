@@ -802,6 +802,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit user address",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"streetAndNmber\": \"Danijelova 32\",\r\n    \"floor\": 2,\r\n    \"city\": \"Beograd\",\r\n    \"phoneNumber\": \"+381113094095\",\r\n    \"isActive\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/address/4",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"address",
+								"4"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
