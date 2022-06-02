@@ -282,4 +282,26 @@ export default class UserController extends BaseController {
             res.status(500).send(error?.message);
         });
     }
+
+    addAddress(req: Request, res: Response) {
+        const data = req.body as IAddAddressDto;
+        const userId = req.authorisation?.id;
+
+        this.services.address.add(
+            {
+                street_and_nmber: data.streetAndNmber,
+                floor: data?.floor ?? null,
+                apartment: data?.apartment ?? null,
+                city: data.city,
+                phone_number: data.phoneNumber,
+                user_id: userId,
+            },
+            {}
+        ).then(address => {
+            res.send(address);
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message);
+        });
+    }
 }

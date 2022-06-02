@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "646dea1b-cb7e-4ed0-aff9-034d1fe67b51",
+		"_postman_id": "a9a7b69f-f6d9-4b7e-8ca9-bd35f2b68fea",
 		"name": "PIiVT aplikacija",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10891291"
 	},
 	"item": [
 		{
@@ -769,6 +770,34 @@
 								"user",
 								"activate",
 								"5c732f34-4205-4a50-bd77-3bb5fe8fe21e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"streetAndNmber\": \"Danijelova 32\",\r\n    \"floor\": 1,\r\n    \"city\": \"Beograd\",\r\n    \"phoneNumber\": \"+381113094094\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/address",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"address"
 							]
 						}
 					},
