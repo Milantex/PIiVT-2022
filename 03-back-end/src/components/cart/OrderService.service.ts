@@ -1,3 +1,4 @@
+import { IRateOrder } from './dto/IRateOrder.dto';
 import BaseService from "../../common/BaseService";
 import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import { IAddOrder } from "./dto/IMakeOrder.dto";
@@ -83,5 +84,9 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
                 resolve(orders);
             })
         })
+    }
+
+    public async rateOrderById(orderId: number, data: IRateOrder, options: IOrderAdapterOptions): Promise<OrderModel> {
+        return this.baseEditById(orderId, data, options);
     }
 }

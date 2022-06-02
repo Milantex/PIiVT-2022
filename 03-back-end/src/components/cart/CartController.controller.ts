@@ -1,3 +1,4 @@
+import { IRateOrderDto, RateOrderValidator } from './dto/IRateOrder.dto';
 import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
 import { AddToCartValidator, IAddToCartDto } from "./dto/IAddToCart.dto";
@@ -143,5 +144,85 @@ export default class CartController extends BaseController {
         .then(orders => {
             res.send(orders);
         })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message);
+        });
+    }
+
+    public async rateOrder(req: Request, res: Response) {
+        const orderId = +req.params?.oid;
+        const data = req.body as IRateOrderDto;
+
+        if (!RateOrderValidator(data)) {
+            return res.status(400).send(RateOrderValidator.errors);
+        }
+
+        this.services.order.getById(orderId, { loadCartData: true, })
+        .then(order => {
+            if (!order) {
+                throw {
+                    status: 404,
+                    message: 'Order not found!',
+                };
+            }
+
+            return order;
+        })
+        .then(order => {
+            if (order.cart.userId !== req.authorisation?.id) {
+                throw {
+                    status: 403,
+                    message: 'You do not have access to this resource!',
+                };
+            }
+
+            return order;
+        })
+        .then(order => {
+            if (order.cart.content.length === 0) {
+                throw {
+                    status: 400,
+                    message: 'This order is not complete.',
+                };
+            }
+
+            return order;
+        })
+        .then(order => {
+            if (order.status !== "sent") {
+                throw {
+                    status: 400,
+                    message: 'This order is not complete.',
+                };
+            }
+
+            return order;
+        })
+        .then(order => {
+            if (order.markValue) {
+                throw {
+                    status: 400,
+                    message: 'This order is already rated.',
+                };
+            }
+        })
+        .then(() => {
+            return this.services.order.rateOrderById(
+                orderId,
+                {
+                    mark_value: ("" + data.value),
+                    mark_note: data.note
+                },
+                {
+                    loadCartData: true,
+                }
+            );
+        })
+        .then(order => {
+            res.send(order);
+        })
+        .catch(error => {
+            res.status(error?.status ?? 500).send(error?.message);
+        });
     }
 }
