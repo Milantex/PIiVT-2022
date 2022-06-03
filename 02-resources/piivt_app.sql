@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100417
 File Encoding         : 65001
 
-Date: 2022-06-03 10:28:23
+Date: 2022-06-03 10:51:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -320,5 +320,5 @@ CREATE TABLE `user` (
 INSERT INTO `user` VALUES ('1', 'mail@domain.com', '####', 'Pera', 'Peric', '0', '123-456', null);
 INSERT INTO `user` VALUES ('4', 'milantex88@yahoo.com', '$2b$10$SeJisPaRkl6IOC1bt9Fxiu2Z5bdeYTGLSW56pTswRchHe6h4baIYa', 'Milan', 'Tair', '1', null, null);
 INSERT INTO `user` VALUES ('5', 'milan.tair@gmail.com', '$2b$10$zt7D60nP9msf.XSxaSqNquUsqOFHU4DMLBl3XsjF.sBdXjmtsU/0S', 'Milan', 'Tair', '1', null, null);
-INSERT INTO `user` VALUES ('8', 'mtair@singidunum.ac.rs', '$2b$10$b4S8Om6TomcCCamsB92BheOFm44FkaL0e8Q9lX77J8BAAwfiZUbl2', 'Test', 'User', '0', '1f7c78b1-9c4a-4114-8d6c-0aca5459144e', '6d3d561a-c323-4074-baf2-7766cc399479-67a61d69-846d-4d83-a47b-ab0e0cf9a4c2');
+INSERT INTO `user` VALUES ('8', 'mtair@singidunum.ac.rs', '$2b$10$A1if8QnHKYOm5OeKW8IcieMoEjopX8Uic1wDNlJyCN8ABwBe5EMCy', 'Test', 'User', '0', '1f7c78b1-9c4a-4114-8d6c-0aca5459144e', null);
 SET FOREIGN_KEY_CHECKS=1;

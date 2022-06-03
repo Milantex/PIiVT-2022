@@ -911,7 +911,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"Lozinka1234567\"\r\n}",
+									"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"X+p\\\"Ic18\\\"7Z,\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -986,6 +986,26 @@
 										"api",
 										"user",
 										"resetPassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Use the password reset code",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/user/reset/eb191200-088b-41fe-a5fc-2330a4693a5f-18564a69-8085-48d1-9f64-4b477cadb9ef",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"reset",
+										"eb191200-088b-41fe-a5fc-2330a4693a5f-18564a69-8085-48d1-9f64-4b477cadb9ef"
 									]
 								}
 							},
