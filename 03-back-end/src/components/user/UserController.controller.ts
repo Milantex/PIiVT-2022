@@ -129,7 +129,7 @@ export default class UserController extends BaseController {
         });
     }
 
-    passwordReset(req: Request, res: Response) {
+    passwordResetEmailSend(req: Request, res: Response) {
         const data = req.body as IPasswordResetDto;
 
         if (!PasswordResetValidator(data)) {
