@@ -11,6 +11,7 @@ export default interface IEditUser extends IServiceData {
     forename?: string;
     surname?: string;
     activation_code?: string;
+    password_reset_code?: string;
 }
 
 export interface IEditUserDto {
