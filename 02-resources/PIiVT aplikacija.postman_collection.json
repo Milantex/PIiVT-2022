@@ -962,6 +962,34 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Request password reset code",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/user/resetPassword",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"resetPassword"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -1115,6 +1143,64 @@
 							"path": [
 								"api",
 								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rate an order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 4,\r\n    \"note\": \"Sve je bilo okej.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/order/5/rate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"5",
+								"rate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change order status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"canceled\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/order/7/status",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"order",
+								"7",
+								"status"
 							]
 						}
 					},

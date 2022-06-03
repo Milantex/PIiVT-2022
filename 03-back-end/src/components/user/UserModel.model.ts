@@ -8,4 +8,5 @@ export default class UserModel implements IModel {
     surname: string;
     isActive: boolean;
     activationCode: string | null;
+    passwordResetCode: string | null;
 }

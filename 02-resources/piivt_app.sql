@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100417
 File Encoding         : 65001
 
-Date: 2022-06-02 09:23:03
+Date: 2022-06-03 10:28:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -253,9 +253,9 @@ CREATE TABLE `order` (
 -- Records of order
 -- ----------------------------
 INSERT INTO `order` VALUES ('2', '2', '1', '2022-06-01 15:13:33', '2022-06-01 15:13:34', 'aa', 'pending', null, null);
-INSERT INTO `order` VALUES ('5', '3', '2', '2022-06-01 17:19:52', '2022-06-01 23:30:00', null, 'pending', null, null);
+INSERT INTO `order` VALUES ('5', '3', '2', '2022-06-02 09:50:18', '2022-06-01 23:30:00', null, 'sent', '4', 'Sve je bilo okej.');
 INSERT INTO `order` VALUES ('6', '5', '2', '2022-06-01 17:20:36', '2022-06-01 23:30:00', null, 'pending', null, null);
-INSERT INTO `order` VALUES ('7', '6', '2', '2022-06-01 17:22:16', '2022-06-01 23:30:00', null, 'pending', null, null);
+INSERT INTO `order` VALUES ('7', '6', '2', '2022-06-02 10:05:48', '2022-06-01 23:30:00', null, 'canceled', null, null);
 
 -- ----------------------------
 -- Table structure for photo
@@ -307,16 +307,18 @@ CREATE TABLE `user` (
   `surname` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `is_active` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `activation_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password_reset_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `uq_user_email` (`email`),
-  UNIQUE KEY `ua_user_activation_code` (`activation_code`)
+  UNIQUE KEY `uq_user_activation_code` (`activation_code`) USING BTREE,
+  UNIQUE KEY `uq_user_password_reset_code` (`password_reset_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'mail@domain.com', '####', 'Pera', 'Peric', '0', '123-456');
-INSERT INTO `user` VALUES ('4', 'milantex88@yahoo.com', '$2b$10$SeJisPaRkl6IOC1bt9Fxiu2Z5bdeYTGLSW56pTswRchHe6h4baIYa', 'Milan', 'Tair', '1', null);
-INSERT INTO `user` VALUES ('5', 'milan.tair@gmail.com', '$2b$10$zt7D60nP9msf.XSxaSqNquUsqOFHU4DMLBl3XsjF.sBdXjmtsU/0S', 'Milan', 'Tair', '1', null);
-INSERT INTO `user` VALUES ('8', 'mtair@singidunum.ac.rs', '$2b$10$b4S8Om6TomcCCamsB92BheOFm44FkaL0e8Q9lX77J8BAAwfiZUbl2', 'Test', 'User', '0', '1f7c78b1-9c4a-4114-8d6c-0aca5459144e');
+INSERT INTO `user` VALUES ('1', 'mail@domain.com', '####', 'Pera', 'Peric', '0', '123-456', null);
+INSERT INTO `user` VALUES ('4', 'milantex88@yahoo.com', '$2b$10$SeJisPaRkl6IOC1bt9Fxiu2Z5bdeYTGLSW56pTswRchHe6h4baIYa', 'Milan', 'Tair', '1', null, null);
+INSERT INTO `user` VALUES ('5', 'milan.tair@gmail.com', '$2b$10$zt7D60nP9msf.XSxaSqNquUsqOFHU4DMLBl3XsjF.sBdXjmtsU/0S', 'Milan', 'Tair', '1', null, null);
+INSERT INTO `user` VALUES ('8', 'mtair@singidunum.ac.rs', '$2b$10$b4S8Om6TomcCCamsB92BheOFm44FkaL0e8Q9lX77J8BAAwfiZUbl2', 'Test', 'User', '0', '1f7c78b1-9c4a-4114-8d6c-0aca5459144e', '6d3d561a-c323-4074-baf2-7766cc399479-67a61d69-846d-4d83-a47b-ab0e0cf9a4c2');
 SET FOREIGN_KEY_CHECKS=1;
