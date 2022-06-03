@@ -11,6 +11,7 @@ import * as nodemailer from "nodemailer";
 import * as Mailer from "nodemailer/lib/mailer";
 import { DevConfig } from "../../configs";
 import { IPasswordResetDto, PasswordResetValidator } from './dto/IPasswordReset.dto';
+import * as generatePassword from "generate-password";
 
 export default class UserController extends BaseController {
     getAll(req: Request, res: Response) {
@@ -227,6 +228,82 @@ export default class UserController extends BaseController {
         });
     }
 
+    resetPassword(req: Request, res: Response) {
+        const code: string = req.params?.code;
+
+        this.services.user.getUserByPasswordResetCode(code, {
+            removeActivationCode: false,
+            removePassword: true,
+        })
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: "User not found!",
+                }
+            }
+
+            return result;
+        })
+        .then(user => {
+            if (!user.isActive && !user.activationCode) {
+                throw {
+                    status: 403,
+                    message: "Your account has been deactivated by the administrator",
+                };
+            }
+
+            return user;
+        })
+        .then(user => {
+            const newPassword = generatePassword.generate({
+                numbers: true,
+                uppercase: true,
+                lowercase: true,
+                symbols: false,
+                length: 18,
+            });
+
+            const passwordHash = bcrypt.hashSync(newPassword, 10);
+
+            return new Promise<{user: UserModel, newPassword: string}>(resolve => {
+                this.services.user.edit(
+                    user.userId,
+                    {
+                        password_hash: passwordHash,
+                        password_reset_code: null,
+                    },
+                    {
+                        removeActivationCode: true,
+                        removePassword: true,
+                    }
+                )
+                .then(user => {
+                    return this.sendNewPassword(user, newPassword);
+                })
+                .then(user => {
+                    resolve({
+                        user: user,
+                        newPassword: newPassword,
+                    });
+                })
+                .catch(error => {
+                    throw error;
+                });
+            });
+        })
+        .then(() => {
+            res.send({
+                message: 'Sent!',
+            });
+        })
+        .catch(error => {
+            setTimeout(() => {
+                res.status(error?.status ?? 500).send(error?.message);
+            }, 500);
+        });
+    }
+
     private getMailTransport() {
         return nodemailer.createTransport(
             {
@@ -262,6 +339,51 @@ export default class UserController extends BaseController {
                                 <p>
                                     Dear ${ user.forename } ${ user.surname },<br>
                                     Your account was successfully activated.
+                                </p>
+                                <p>
+                                    You can now log into your account using the login form.
+                                </p>
+                            </body>
+                        </html>`
+            };
+
+            transport.sendMail(mailOptions)
+            .then(() => {
+                transport.close();
+
+                user.activationCode = null;
+                user.passwordResetCode = null;
+
+                resolve(user);
+            })
+            .catch(error => {
+                transport.close();
+
+                reject({
+                    message: error?.message,
+                });
+            });
+        });
+    }
+
+    private async sendNewPassword(user: UserModel, newPassword: string): Promise<UserModel> {
+        return new Promise((resolve, reject) => {
+            const transport = this.getMailTransport();
+
+            const mailOptions: Mailer.Options = {
+                to: user.email,
+                subject: "New password",
+                html: `<!doctype html>
+                        <html>
+                            <head><meta charset="utf-8"></head>
+                            <body>
+                                <p>
+                                    Dear ${ user.forename } ${ user.surname },<br>
+                                    Your account password was successfully reset.
+                                </p>
+                                <p>
+                                    Your new password is:<br>
+                                    <pre style="padding: 20px; font-size: 24pt; color: #000; background-color: #eee; border: 1px solid #666;">${ newPassword }</pre>
                                 </p>
                                 <p>
                                     You can now log into your account using the login form.
