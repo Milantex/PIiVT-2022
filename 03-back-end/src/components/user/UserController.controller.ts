@@ -476,7 +476,7 @@ export default class UserController extends BaseController {
             serviceData.password_hash = passwordHash;
         }
 
-        if (req.authorisation.role === "administrator") {
+        if (DevConfig.auth.allowAllRoutesWithoutAuthTokens || req.authorisation?.role === "administrator") {
             if (data.isActive !== undefined) {
                 serviceData.is_active = data.isActive ? 1 : 0;
             }

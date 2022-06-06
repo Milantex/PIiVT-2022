@@ -24,10 +24,6 @@ export interface IEditUserDto {
 const EditUserValidator = ajv.compile({
     type: "object",
     properties: {
-        email: {
-            type: "string",
-            format: "email",
-        },
         password: {
             type: "string",
             pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$",
@@ -41,6 +37,9 @@ const EditUserValidator = ajv.compile({
             type: "string",
             minLength: 2,
             maxLength: 64,
+        },
+        isActive: {
+            type: "boolean",
         },
     },
     required: [
