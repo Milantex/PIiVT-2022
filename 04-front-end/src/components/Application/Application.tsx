@@ -11,6 +11,7 @@ import AdminDashboard from '../Administrator/Dashboard/AdminDashboard';
 import AdminCategoryList from '../Administrator/Dashboard/AdminCategoryList';
 import AdminCategoryIngredientsList from '../Administrator/Dashboard/AdminCategoryIngredientsList';
 import AdminSizeList from '../Administrator/Dashboard/AdminSizeList';
+import AdminAdministratorList from '../Administrator/Dashboard/AdminAdministratorList';
 
 function Application() {
   return (
@@ -28,7 +29,9 @@ function Application() {
         <Route path="/admin/dashboard/category/list" element={ <AdminCategoryList /> } />
         <Route path="/admin/dashboard/category/:cid/ingredients" element={ <AdminCategoryIngredientsList /> } />
 
-        <Route path="/admin/dashboard/size/list" element={ <AdminSizeList /> } /> 
+        <Route path="/admin/dashboard/size/list" element={ <AdminSizeList /> } />
+
+        <Route path="/admin/dashboard/administrator/list" element={ <AdminAdministratorList /> } />
       </Routes>
     </Container>
   );
