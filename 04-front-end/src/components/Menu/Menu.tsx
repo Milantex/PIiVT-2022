@@ -14,6 +14,8 @@ export default function Menu() {
                     <Link className="nav-item nav-link" to="/contact">Contact</Link>
                     <Link className="nav-item nav-link" to="/categories">Categories</Link>
                     <Link className="nav-item nav-link" to="/auth/user/login">User login</Link>
+
+                    <Link className="nav-item nav-link" to="/admin/dashboard">Admin dashboard</Link>
                 </div>
             </div>
         </nav>
