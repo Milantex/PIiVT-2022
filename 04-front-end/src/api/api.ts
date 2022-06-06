@@ -29,7 +29,7 @@ export function api(
             method: method,
             baseURL: "http://localhost:10000",
             url: path,
-            data: data ? JSON.stringify(data) : "",
+            data: data ? JSON.stringify(data) : undefined,
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + "TOKEN WILL GO HERE LATER", // TODO
