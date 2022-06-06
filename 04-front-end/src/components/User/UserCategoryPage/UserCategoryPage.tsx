@@ -3,6 +3,7 @@ import ICategory from "../../../models/ICategory.model";
 import IItem from "../../../models/IItem.model";
 import ItemPreview from "../Item/ItemPreview";
 import { useParams } from "react-router-dom";
+import { api } from "../../../api/api";
 
 export interface IUserCategoryPageUrlParams extends Record<string, string | undefined> {
     id: string
@@ -19,17 +20,27 @@ export default function UserCategoryPage() {
     useEffect(() => {
         setLoading(true);
 
-        fetch("http://localhost:10000/api/category/" + params.id)
-        .then(res => res.json())
-        .then(data => {
-            setCategory(data);
+        api("get", "/api/category/" + params.id, "user")
+        .then(res => {
+            if (res.status === 'error') {
+                throw {
+                    message: 'Could not get catgory data!'
+                }
+            }
+
+            setCategory(res.data);
         })
         .then(() => {
-            return fetch("http://localhost:10000/api/category/" + params.id + "/item");
+            return api("get", "/api/category/" + params.id + "/item", "user")
         })
-        .then(res => res.json())
-        .then(data => {
-            setItems(data);
+        .then(res => {
+            if (res.status === 'error') {
+                throw {
+                    message: 'Could not get catgory items!'
+                }
+            }
+
+            setItems(res.data);
         })
         .catch(error => {
             setErrorMessage(error?.message ?? 'Unknown error while loading this category!');
