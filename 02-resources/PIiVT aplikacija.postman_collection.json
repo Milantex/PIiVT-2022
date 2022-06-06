@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "a9a7b69f-f6d9-4b7e-8ca9-bd35f2b68fea",
+		"_postman_id": "76a36571-46ab-47f0-aa60-ce0a2ddf81d7",
 		"name": "PIiVT aplikacija",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10891291"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -265,7 +264,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"administrator-dva\",\r\n    \"password\": \"Cista lozinka koja se Vidi 1234\"\r\n}",
+							"raw": "{\r\n    \"username\": \"administrator-tri\",\r\n    \"password\": \"Cista lozinka koja se Vidi 1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -422,7 +421,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Item 3 - API added\",\r\n    \"description\": \"Najnovija stavka koja ima duzi naziv od 32 karaktera!\",\r\n    \"ingredientIds\": [ 3, 5 ],\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 1,\r\n            \"price\": 100.05,\r\n            \"kcal\": 89.45\r\n        },\r\n        {\r\n            \"sizeId\": 3,\r\n            \"price\": 200.10,\r\n            \"kcal\": 190.90\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Zdrava salata\",\r\n    \"description\": \"Ovo je zdrava salata koju mozemo da Vam napravimo i posaljemo.\",\r\n    \"ingredientIds\": [ 11, 12, 13 ],\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 1,\r\n            \"price\": 100.05,\r\n            \"kcal\": 89.45\r\n        },\r\n        {\r\n            \"sizeId\": 3,\r\n            \"price\": 200.10,\r\n            \"kcal\": 190.90\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -430,14 +429,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/category/1/item",
+							"raw": "{{API_URL}}/api/category/3/item",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"category",
-								"1",
+								"3",
 								"item"
 							]
 						}
