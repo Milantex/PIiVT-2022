@@ -1,4 +1,5 @@
 import IModel from "../../common/IModel.interface";
+import UserModel from "./UserModel.model";
 
 export default class AddressModel implements IModel {
     addressId: number;
@@ -10,4 +11,6 @@ export default class AddressModel implements IModel {
     city: string;
     phoneNumber: string;
     isActive: boolean;
+
+    user?: UserModel;
 }

@@ -5,7 +5,7 @@ import IAdapterOptions from "../../common/IAdapterOptions.interface";
 import AddressModel from "./AddressModel.model";
 
 export interface IAddressAdapterOptions extends IAdapterOptions {
-
+    loadUserData: boolean;
 }
 
 export default class AddressService extends BaseService<AddressModel, IAddressAdapterOptions> {
@@ -13,8 +13,8 @@ export default class AddressService extends BaseService<AddressModel, IAddressAd
         return "address";
     }
 
-    protected adaptToModel(data: any, options: IAddressAdapterOptions): Promise<AddressModel> {
-        return new Promise(resolve => {
+    protected adaptToModel(data: any, options: IAddressAdapterOptions = { loadUserData: false }): Promise<AddressModel> {
+        return new Promise(async resolve => {
             const address = new AddressModel();
 
             address.addressId = +data?.address_id;
@@ -27,6 +27,13 @@ export default class AddressService extends BaseService<AddressModel, IAddressAd
             address.phoneNumber    = data?.phone_number;
 
             address.isActive       = +data?.is_active === 1;
+
+            if (options.loadUserData) {
+                address.user = await this.services.user.getById(address.userId, {
+                    removeActivationCode: true,
+                    removePassword: true,
+                });
+            }
 
             resolve(address);
         });

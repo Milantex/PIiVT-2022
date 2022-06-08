@@ -38,6 +38,8 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
                 order.cart = await this.services.cart.getById(order.cartId, {});
             }
 
+            order.address = await this.services.address.getById(order.addressId, { loadUserData: true, });
+
             resolve(order);
         });
     }

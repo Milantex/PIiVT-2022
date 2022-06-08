@@ -1,4 +1,5 @@
 import IModel from "../../common/IModel.interface";
+import AddressModel from "../user/AddressModel.model";
 import CartModel from "./CartModel.model";
 
 export default class OrderModel implements IModel {
@@ -17,4 +18,6 @@ export default class OrderModel implements IModel {
     markNote?: string;
 
     cart: CartModel;
+
+    address: AddressModel;
 }
