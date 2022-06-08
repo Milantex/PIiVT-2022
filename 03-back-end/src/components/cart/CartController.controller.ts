@@ -5,6 +5,7 @@ import { AddToCartValidator, IAddToCartDto } from "./dto/IAddToCart.dto";
 import { EditInCartValidator, IEditInCartDto } from "./dto/IEditInCart.dto";
 import { IAddOrder, IMakeOrderDto, MakeOrderValidator } from "./dto/IMakeOrder.dto";
 import { ChangeStatusValidator, IChangeStatusDto } from './dto/IChangeStatus.dto';
+import { DevConfig } from '../../configs';
 
 export default class CartController extends BaseController {
     getCart(req: Request, res: Response) {
@@ -140,14 +141,26 @@ export default class CartController extends BaseController {
         });
     }
 
-    public async getMyOrders(req: Request, res: Response) {
-        this.services.order.getAllByUserId(req.authorisation?.id)
-        .then(orders => {
-            res.send(orders);
-        })
-        .catch(error => {
-            res.status(error?.status ?? 500).send(error?.message);
-        });
+    public async getOrders(req: Request, res: Response) {
+        if (DevConfig.auth.allowAllRoutesWithoutAuthTokens || req.authorisation?.role === "administrator") {
+            this.services.order.getAll({
+                loadCartData: true,
+            })
+            .then(orders => {
+                res.send(orders);
+            })
+            .catch(error => {
+                res.status(error?.status ?? 500).send(error?.message);
+            });
+        } else {
+            this.services.order.getAllByUserId(req.authorisation?.id)
+            .then(orders => {
+                res.send(orders);
+            })
+            .catch(error => {
+                res.status(error?.status ?? 500).send(error?.message);
+            });
+        }
     }
 
     public async rateOrder(req: Request, res: Response) {
