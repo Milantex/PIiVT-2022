@@ -1,4 +1,4 @@
-import { faCheckSquare, faEdit, faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faCheckSquare, faEdit, faPlusSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -46,6 +46,14 @@ export default function AdminItemList() {
 
                     <table className="table table-sm">
                         <thead>
+                            <tr>
+                                <th colSpan={5}></th>
+                                <th colSpan={2}>
+                                    <Link className="btn btn-sm btn-primary" to={ "/admin/dashboard/category/" + categoryId + "/items/add" }>
+                                        <FontAwesomeIcon icon={ faPlusSquare } /> Add new item
+                                    </Link>
+                                </th>
+                            </tr>
                             <tr>
                                 <th>Photo</th>
                                 <th>ID</th>
