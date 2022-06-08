@@ -37,10 +37,12 @@ export default function CartPreview(props: ICartPreviewProperties) {
                                     )) }
                                 </tbody>
                                 <tfoot>
-                                    <th colSpan={6}></th>
-                                    <th style={{ textAlign: "right" }}>
-                                        { props.cart.content.map( item => +item.size.price * +item.quantity ).reduce((sum, item) => sum + item, 0).toFixed(2) + " RSD" }
-                                    </th>
+                                    <tr>
+                                        <th colSpan={6}></th>
+                                        <th style={{ textAlign: "right" }}>
+                                            { props.cart.content.map( item => +item.size.price * +item.quantity ).reduce((sum, item) => sum + item, 0).toFixed(2) + " RSD" }
+                                        </th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>

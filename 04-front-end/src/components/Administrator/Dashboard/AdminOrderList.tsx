@@ -13,14 +13,16 @@ export interface IAdminOrderListProperties {
 export default function AdminOrderList(props: IAdminOrderListProperties) {
     const [ orders, setOrders ] = useState<IOrder[]>([]);
 
-    useEffect(() => {
+    const reloadOrders = () => {
         api("get", "/api/order", "administrator")
         .then(res => {
             if (res.status === "ok") {
                 setOrders(res.data);
             }
         });
-    }, [ ]);
+    };
+
+    useEffect(reloadOrders, [ ]);
 
     const orderFilter = (order: IOrder): boolean => {
         if (props.filter === "new") {
@@ -32,6 +34,15 @@ export default function AdminOrderList(props: IAdminOrderListProperties) {
 
     function AdminOrderListRow(props: { order: IOrder }) {
         const [ showCart, setShowCart ] = useState<boolean>(false);
+
+        const markAs = (status: "accepted" | "rejected" | "sent") => {
+            api("put", "/api/order/" + props.order.orderId + "/status", "administrator", { status })
+            .then(res => {
+                if (res.status === "ok") {
+                    reloadOrders();
+                }
+            });
+        }
 
         return (
             <>
@@ -46,6 +57,22 @@ export default function AdminOrderList(props: IAdminOrderListProperties) {
                     <td>
                         { !showCart && <button className="btn btn-primary btn-sm" onClick={ () => { setShowCart(true) } }>Show content</button> }
                         {  showCart && <button className="btn btn-primary btn-sm" onClick={ () => { setShowCart(false) } }>Hide content</button> }
+
+                        &nbsp;&nbsp;
+
+                        { props.order.status === "pending" && (
+                            <>
+                                <button className="btn btn-sm btn-primary" onClick={ () => markAs("accepted") }>Accept</button>
+                                &nbsp;&nbsp;
+                                <button className="btn btn-sm btn-danger" onClick={ () => markAs("rejected") }>Reject</button>
+                            </>
+                        ) }
+
+                        { props.order.status === "accepted" && (
+                            <>
+                                <button className="btn btn-sm btn-success"  onClick={ () => markAs("sent") }>Mark as sent</button>
+                            </>
+                        ) }
                     </td>
                 </tr>
                 { showCart && (

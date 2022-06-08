@@ -101,7 +101,9 @@ export default class CartController extends BaseController {
             return res.status(400).send(MakeOrderValidator.errors);
         }
 
-        const addresses = await this.services.address.getAllByUserId(req.authorisation?.id, {})
+        const addresses = await this.services.address.getAllByUserId(req.authorisation?.id, {
+            loadUserData: true,
+        })
         
         if (addresses.length === 0) {
             return res.status(404).send("You do not have any addresses in your profile!");
@@ -243,7 +245,7 @@ export default class CartController extends BaseController {
     public async changeOrderStatus(req: Request, res: Response) {
         const orderId = +req.params?.oid;
         const data = req.body as IChangeStatusDto;
-        const role = req.authorisation?.role;
+        const role = DevConfig.auth.allowAllRoutesWithoutAuthTokens ? "administrator" : req.authorisation?.role;
 
         if (!ChangeStatusValidator(data)) {
             return res.status(400).send(ChangeStatusValidator.errors);
@@ -261,6 +263,10 @@ export default class CartController extends BaseController {
             return order;
         })
         .then(order => {
+            if (DevConfig.auth.allowAllRoutesWithoutAuthTokens) {
+                return order;
+            }
+
             if (order.cart.userId !== req.authorisation?.id) {
                 throw {
                     status: 403,
