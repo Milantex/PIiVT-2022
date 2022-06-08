@@ -25,7 +25,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="card-text d-grid gap-3">
                             <Link className="btn btn-primary" to="/admin/dashboard/order/list/new">List new orders</Link>
-                            <Link className="btn btn-primary" to="/admin/dashboard/order/list/arhive">List old orders</Link>
+                            <Link className="btn btn-primary" to="/admin/dashboard/order/list/archive">List old orders</Link>
                         </div>
                     </div>
                 </div>

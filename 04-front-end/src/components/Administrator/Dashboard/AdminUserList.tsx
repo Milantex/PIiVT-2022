@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare, faSquareCheck } from "@fortawesome/free-regular-svg-icons";
 import './AdminUserList.sass';
 import IUser from "../../../models/IUser.model";
+import { formatAddress } from "../../../models/IAddress.model";
 
 interface IAdminUserRowProperties {
     user: IUser;
@@ -148,14 +149,7 @@ export default function AdminUserList() {
                     .map(address => (
                         <tr key={ "address-" + address.addressId }>
                             <td></td>
-                            <td colSpan={3}>
-                                {
-                                    address.streetAndNmber +
-                                    (address.apartment ? ", stan " + address.apartment : " ") +
-                                    (address.floor ? ", sprat " + address.floor : " ") +
-                                    ", " + address.city + " (" + address.phoneNumber + ")"
-                                }
-                            </td>
+                            <td colSpan={3}>{ formatAddress(address) }</td>
                             <td></td>
                         </tr>
                     ))

@@ -14,6 +14,7 @@ import AdminSizeList from '../Administrator/Dashboard/AdminSizeList';
 import AdminAdministratorList from '../Administrator/Dashboard/AdminAdministratorList';
 import AdminAdministratorAdd from '../Administrator/Dashboard/AdminAdministratorAdd';
 import AdminUserList from '../Administrator/Dashboard/AdminUserList';
+import AdminOrderList from '../Administrator/Dashboard/AdminOrderList';
 
 function Application() {
   return (
@@ -37,6 +38,9 @@ function Application() {
         <Route path="/admin/dashboard/administrator/add" element={ <AdminAdministratorAdd /> } />
 
         <Route path="/admin/dashboard/user/list" element={ <AdminUserList /> } />
+
+        <Route path="/admin/dashboard/order/list/new" element={ <AdminOrderList filter='new' /> } />
+        <Route path="/admin/dashboard/order/list/archive" element={ <AdminOrderList filter='archived' /> } />
       </Routes>
     </Container>
   );
