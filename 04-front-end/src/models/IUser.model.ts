@@ -1,3 +1,5 @@
+import IAddress from "./IAddress.model";
+
 export default interface IUser {
     userId: number;
     email: string;
@@ -7,4 +9,5 @@ export default interface IUser {
     isActive: boolean;
     activationCode: string|null;
     passwordResetCode: string|null;
+    addresses: IAddress[];
 }

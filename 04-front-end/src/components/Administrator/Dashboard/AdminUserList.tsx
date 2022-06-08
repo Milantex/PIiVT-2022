@@ -32,6 +32,7 @@ export default function AdminUserList() {
         const [ newPassword, setNewPassword ] = useState<string>("");
         const [ newForename, setNewForename ] = useState<string>(props.user.forename);
         const [ newSurname, setNewSurname ] = useState<string>(props.user.surname);
+        const [ showAddresses, setShowAddresses ] = useState<boolean>(false);
 
         const activeSideClass   = props.user.isActive  ? " btn-primary" : " btn-light";
         const inactiveSideClass = !props.user.isActive ? " btn-primary" : " btn-light";
@@ -77,60 +78,89 @@ export default function AdminUserList() {
         }
 
         return (
-            <tr>
-                <td>{ props.user.userId }</td>
-                <td>{ props.user.email }</td>
-                <td>
-                    { !editNamePartsVisible &&
-                        <div>
-                            <span>{ props.user.forename + " " + props.user.surname }</span> &nbsp;&nbsp;
-                            <button className="btn btn-primary btn-sm" onClick={ () => setEditNamePartsVisible(true) }>
+            <>
+                <tr>
+                    <td>{ props.user.userId }</td>
+                    <td>{ props.user.email }</td>
+                    <td>
+                        { !editNamePartsVisible &&
+                            <div className="row">
+                                <span className="col col-9">{ props.user.forename + " " + props.user.surname }</span>
+                                <div className="col col-3">
+                                    <button className="btn btn-primary btn-sm" onClick={ () => setEditNamePartsVisible(true) }>
+                                        Edit
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                        { editNamePartsVisible && <div>
+                            <div className="form-group mb-3">
+                                <input type="text" className="form-control form-control-sm" value={ newForename } onChange={ e => setNewForename(e.target.value) } />
+                            </div>
+
+                            <div className="form-group mb-3">
+                                <input type="text" className="form-control form-control-sm" value={ newSurname } onChange={ e => setNewSurname(e.target.value) } />
+                            </div>
+
+                            { (newForename !== props.user.forename || newSurname !== props.user.surname) &&
+                            ( <button className="btn btn-sm btn-primary" onClick={ () => doEditNameParts() }>
                                 Edit
+                            </button> ) }
+
+                            <button className="btn btn-sm btn-danger" onClick={ () => {
+                                setNewForename(props.user.forename);
+                                setNewSurname(props.user.surname);
+                                setEditNamePartsVisible(false);
+                            } }>
+                                Cancel
                             </button>
+                        </div> }
+                    </td>
+                    <td>
+                        <div className="btn-group" onClick={() => { doToggleUserActiveState() }}>
+                            <div className={"btn btn-sm" + activeSideClass}>
+                                <FontAwesomeIcon icon={ faSquareCheck } />
+                            </div>
+                            <div className={"btn btn-sm" + inactiveSideClass}>
+                                <FontAwesomeIcon icon={ faSquare } />
+                            </div>
                         </div>
-                    }
-                    { editNamePartsVisible && <div>
-                        <div className="form-group mb-3">
-                            <input type="text" className="form-control form-control-sm" value={ newForename } onChange={ e => setNewForename(e.target.value) } />
-                        </div>
-
-                        <div className="form-group mb-3">
-                            <input type="text" className="form-control form-control-sm" value={ newSurname } onChange={ e => setNewSurname(e.target.value) } />
-                        </div>
-
-                        { (newForename !== props.user.forename || newSurname !== props.user.surname) &&
-                        ( <button className="btn btn-sm btn-primary" onClick={ () => doEditNameParts() }>
-                            Edit
-                        </button> ) }
-
-                        <button className="btn btn-sm btn-danger" onClick={ () => {
-                            setNewForename(props.user.forename);
-                            setNewSurname(props.user.surname);
-                            setEditNamePartsVisible(false);
-                        } }>
-                            Cancel
-                        </button>
-                    </div> }
-                </td>
-                <td>
-                    <div className="btn-group" onClick={() => { doToggleUserActiveState() }}>
-                        <div className={"btn btn-sm" + activeSideClass}>
-                            <FontAwesomeIcon icon={ faSquareCheck } />
-                        </div>
-                        <div className={"btn btn-sm" + inactiveSideClass}>
-                            <FontAwesomeIcon icon={ faSquare } />
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    { !editPasswordVisible && <button className="btn btn-primary btn-sm" onClick={() => { setEditPasswordVisible(true); }}>Change password</button> }
-                    { editPasswordVisible && <div className="input-group">
-                        <input type="password" className="form-control form-control-sm" value={ newPassword } onChange={ e => setNewPassword(e.target.value) } />
-                        <button className="btn btn-success btn-sm" onClick={() => doChangePassword()}>Save</button>
-                        <button className="btn btn-danger btn-sm" onClick={() => { setEditPasswordVisible(false); setNewPassword(""); }}>Cancel</button>
-                    </div> }
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        { !editPasswordVisible && <button className="btn btn-primary btn-sm" onClick={() => { setEditPasswordVisible(true); }}>Change password</button> }
+                        { editPasswordVisible && <div className="input-group">
+                            <input type="password" className="form-control form-control-sm" value={ newPassword } onChange={ e => setNewPassword(e.target.value) } />
+                            <button className="btn btn-success btn-sm" onClick={() => doChangePassword()}>Save</button>
+                            <button className="btn btn-danger btn-sm" onClick={() => { setEditPasswordVisible(false); setNewPassword(""); }}>Cancel</button>
+                        </div> }
+                        { props.user.addresses?.filter(address => address.isActive).length > 0 && (
+                            <>
+                                &nbsp;&nbsp;
+                                { (!editPasswordVisible && !showAddresses) && <button className="btn btn-primary btn-sm" onClick={() => { setShowAddresses(true); }}>Show addresses</button> }
+                                { (!editPasswordVisible &&  showAddresses) && <button className="btn btn-primary btn-sm" onClick={() => { setShowAddresses(false); }}>Hide addresses</button> }
+                            </>
+                        ) }
+                    </td>
+                </tr>
+                { showAddresses &&
+                    props.user.addresses
+                    ?.filter(address => address.isActive)
+                    .map(address => (
+                        <tr key={ "address-" + address.addressId }>
+                            <td></td>
+                            <td colSpan={3}>
+                                {
+                                    address.streetAndNmber +
+                                    (address.apartment ? ", stan " + address.apartment : " ") +
+                                    (address.floor ? ", sprat " + address.floor : " ") +
+                                    ", " + address.city + " (" + address.phoneNumber + ")"
+                                }
+                            </td>
+                            <td></td>
+                        </tr>
+                    ))
+                }
+            </>
         );
     }
 
