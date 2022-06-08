@@ -24,10 +24,10 @@ export default function AdminOrderList(props: IAdminOrderListProperties) {
 
     const orderFilter = (order: IOrder): boolean => {
         if (props.filter === "new") {
-            return order.status === "pending";
+            return order.status === "pending" || order.status === "accepted";
         }
 
-        return order.status !== "pending";
+        return !(order.status === "pending" || order.status === "accepted");
     }
 
     function AdminOrderListRow(props: { order: IOrder }) {
