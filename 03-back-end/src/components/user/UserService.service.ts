@@ -39,7 +39,9 @@ export default class UserService extends BaseService<UserModel, IUserAdapterOpti
             user.activationCode = null;
         }
 
-        user.addresses = await this.services.address.getAllByUserId(user.userId, { });
+        user.addresses = await this.services.address.getAllByUserId(user.userId, { 
+            loadUserData: true,
+        });
 
         return user;
     }

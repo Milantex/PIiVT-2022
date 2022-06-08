@@ -516,7 +516,9 @@ export default class UserController extends BaseController {
                 phone_number: data.phoneNumber,
                 user_id: userId,
             },
-            {}
+            {
+                loadUserData: true,
+            }
         ).then(address => {
             res.send(address);
         })
@@ -530,7 +532,9 @@ export default class UserController extends BaseController {
         const data = req.body as IEditAddressDto;
         const userId = req.authorisation?.id;
 
-        this.services.address.getById(addressId, {})
+        this.services.address.getById(addressId, {
+            loadUserData: true,
+        })
         .then(result => {
             if (!result) {
                 throw {
@@ -560,7 +564,9 @@ export default class UserController extends BaseController {
                 phone_number: data.phoneNumber,
                 user_id: userId,
                 is_active: (data?.isActive ?? address.isActive) ? 1 : 0,
-            }, {});
+            }, {
+                loadUserData: true,
+            });
         })
         .then(address => {
             res.send(address);
