@@ -101,6 +101,11 @@ function handleApiError(err: any, resolve: (value: IApiResponse | PromiseLike<IA
             data: 'Wrong role!',
         });
     }
+
+    resolve({
+        status: 'error',
+        data: err?.response?.data,
+    });
 }
 
 function handleApiResponse(res: AxiosResponse<any, any>, resolve: (value: IApiResponse | PromiseLike<IApiResponse>) => void) {
