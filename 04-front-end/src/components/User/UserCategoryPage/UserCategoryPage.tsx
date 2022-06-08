@@ -23,9 +23,7 @@ export default function UserCategoryPage() {
         api("get", "/api/category/" + params.id, "user")
         .then(res => {
             if (res.status === 'error') {
-                throw {
-                    message: 'Could not get catgory data!'
-                }
+                throw new Error('Could not get catgory data!');
             }
 
             setCategory(res.data);
@@ -35,9 +33,7 @@ export default function UserCategoryPage() {
         })
         .then(res => {
             if (res.status === 'error') {
-                throw {
-                    message: 'Could not get catgory items!'
-                }
+                throw new Error('Could not get catgory items!');
             }
 
             setItems(res.data);
@@ -48,7 +44,7 @@ export default function UserCategoryPage() {
         .finally(() => {
             setLoading(false);
         });
-    }, []);
+    }, [ params.id ]);
 
     return (
         <div>
