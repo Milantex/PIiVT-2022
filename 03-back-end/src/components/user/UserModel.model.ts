@@ -1,4 +1,5 @@
 import IModel from "../../common/IModel.interface";
+import AddressModel from "./AddressModel.model";
 
 export default class UserModel implements IModel {
     userId: number;
@@ -9,4 +10,5 @@ export default class UserModel implements IModel {
     isActive: boolean;
     activationCode: string | null;
     passwordResetCode: string | null;
+    addresses?: AddressModel[];
 }
