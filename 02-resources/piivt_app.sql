@@ -62,7 +62,6 @@ CREATE TABLE IF NOT EXISTS `cart` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `created_at`) VALUES
-	(1, 1, '2022-05-27 14:26:40'),
 	(2, 8, '2022-06-01 13:04:33'),
 	(3, 8, '2022-06-01 13:13:47'),
 	(5, 8, '2022-06-01 15:20:04'),
@@ -80,12 +79,16 @@ CREATE TABLE IF NOT EXISTS `cart_content` (
   KEY `fk_cart_content_item_size_id` (`item_size_id`),
   CONSTRAINT `fk_cart_content_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_cart_content_item_size_id` FOREIGN KEY (`item_size_id`) REFERENCES `item_size` (`item_size_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `cart_content` (`cart_content_id`, `cart_id`, `item_size_id`, `quantity`) VALUES
 	(2, 3, 2, 2),
 	(3, 3, 1, 5),
-	(8, 6, 3, 1);
+	(8, 6, 3, 1),
+	(9, 2, 2, 2),
+	(10, 2, 3, 1),
+	(11, 5, 1, 2),
+	(12, 5, 3, 1);
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
@@ -139,11 +142,14 @@ CREATE TABLE IF NOT EXISTS `item` (
   UNIQUE KEY `uq_item_name_category_id` (`name`,`category_id`),
   KEY `fk_item_category_id` (`category_id`),
   CONSTRAINT `fk_item_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item` (`item_id`, `name`, `description`, `category_id`, `is_active`) VALUES
 	(2, 'Item 1', 'Opis stavke 1', 1, 1),
-	(3, 'Item 2', 'Drugi opis neke stavke.', 1, 1);
+	(3, 'Item 2', 'Drugi opis neke stavke.', 1, 1),
+	(8, 'Bavarska kifla', 'Neki opis moze da ide ovde i duzina tog opisa mora da bude veca ili jednaka 32.', 1, 1),
+	(9, 'Nova stavka 11', 'Neki opis koji ima vise od 32 karantera za novu stavku...', 1, 1),
+	(10, 'Neki naziv salate ide ovde', 'Ovo je opis neke salate koja je dodata kroz CMS deo za administratora.', 3, 1);
 
 DROP TABLE IF EXISTS `item_ingredient`;
 CREATE TABLE IF NOT EXISTS `item_ingredient` (
@@ -155,13 +161,20 @@ CREATE TABLE IF NOT EXISTS `item_ingredient` (
   KEY `fk_ingredient_ingredient_id` (`ingredient_id`),
   CONSTRAINT `fk_ingredient_ingredient_id` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`ingredient_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_ingredient_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item_ingredient` (`item_ingredient_id`, `item_id`, `ingredient_id`) VALUES
 	(1, 2, 1),
 	(2, 3, 1),
 	(3, 3, 4),
-	(4, 3, 6);
+	(4, 3, 6),
+	(17, 8, 1),
+	(18, 8, 3),
+	(16, 8, 4),
+	(19, 9, 3),
+	(20, 9, 4),
+	(21, 10, 11),
+	(22, 10, 12);
 
 DROP TABLE IF EXISTS `item_size`;
 CREATE TABLE IF NOT EXISTS `item_size` (
@@ -176,12 +189,17 @@ CREATE TABLE IF NOT EXISTS `item_size` (
   KEY `fk_item_size_size_id` (`size_id`),
   CONSTRAINT `fk_item_size_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_item_size_size_id` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item_size` (`item_size_id`, `item_id`, `size_id`, `price`, `kcal`, `is_active`) VALUES
 	(1, 2, 1, 250.00, 240.00, 1),
 	(2, 2, 3, 500.00, 480.00, 1),
-	(3, 3, 1, 75.00, 53.00, 1);
+	(3, 3, 1, 75.00, 53.00, 1),
+	(11, 8, 1, 70.00, 205.00, 1),
+	(12, 8, 3, 130.00, 410.00, 1),
+	(13, 9, 1, 100.00, 120.00, 1),
+	(14, 10, 1, 250.00, 60.00, 1),
+	(15, 10, 4, 750.00, 180.00, 1);
 
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE IF NOT EXISTS `order` (
@@ -202,9 +220,9 @@ CREATE TABLE IF NOT EXISTS `order` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `order` (`order_id`, `cart_id`, `address_id`, `created_at`, `deliver_at`, `note`, `status`, `mark_value`, `mark_note`) VALUES
-	(2, 2, 1, '2022-06-01 13:13:33', '2022-06-01 15:13:34', 'aa', 'pending', NULL, NULL),
-	(5, 3, 2, '2022-06-02 07:50:18', '2022-06-01 23:30:00', NULL, 'sent', '4', 'Sve je bilo okej.'),
-	(6, 5, 2, '2022-06-01 15:20:36', '2022-06-01 23:30:00', NULL, 'pending', NULL, NULL),
+	(2, 2, 1, '2022-06-08 12:43:40', '2022-06-01 15:13:34', 'aa', 'sent', NULL, NULL),
+	(5, 3, 2, '2022-06-08 12:43:43', '2022-06-01 23:30:00', NULL, 'rejected', '4', 'Sve je bilo okej.'),
+	(6, 5, 2, '2022-06-08 13:00:53', '2022-06-01 23:30:00', NULL, 'sent', NULL, NULL),
 	(7, 6, 2, '2022-06-02 08:05:48', '2022-06-01 23:30:00', NULL, 'canceled', NULL, NULL);
 
 DROP TABLE IF EXISTS `photo`;
@@ -217,8 +235,11 @@ CREATE TABLE IF NOT EXISTS `photo` (
   UNIQUE KEY `uq_photo_file_path` (`file_path`) USING HASH,
   KEY `fk_photo_item_id` (`item_id`),
   CONSTRAINT `fk_photo_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `photo` (`photo_id`, `name`, `file_path`, `item_id`) VALUES
+	(5, '1aef4172-177c-47ad-b5b4-7cb8c53249b4-sendvic.jpg', 'uploads/2022/06/1aef4172-177c-47ad-b5b4-7cb8c53249b4-sendvic.jpg', 9),
+	(6, 'ce3eeaeb-23f0-4cc1-b436-0dbb2ed55b21-salata.jpg', 'uploads/2022/06/ce3eeaeb-23f0-4cc1-b436-0dbb2ed55b21-salata.jpg', 10);
 
 DROP TABLE IF EXISTS `size`;
 CREATE TABLE IF NOT EXISTS `size` (
