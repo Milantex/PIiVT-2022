@@ -217,7 +217,7 @@ export default function AdminItemAdd() {
         api("post", "/api/category/" + categoryId + "/item", "administrator", formState)
         .then(res => {
             if (res.status !== "ok") {
-                throw new Error("Could not add this item!");
+                throw new Error("Could not add this item! Reason: " + res?.data?.map((error: any) => error?.instancePath + " " + error?.message).join(", "));
             }
 
             return res.data;
@@ -300,7 +300,7 @@ export default function AdminItemAdd() {
                             <label>Ingredients</label>
 
                             { category?.ingredients?.map(ingredient => (
-                                <div>
+                                <div key={ "ingredient-" + ingredient.ingredientId }>
                                     {
                                         formState.ingredientIds.includes(ingredient.ingredientId)
                                         ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "addItemForm/removeIngredient", value: ingredient.ingredientId }) } icon={ faCheckSquare } />
@@ -317,7 +317,7 @@ export default function AdminItemAdd() {
                                 const sizeData = formState.sizes.find(s => s.sizeId === size.sizeId);
 
                                 return (
-                                    <div className="row">
+                                    <div className="row" key={ "size-" + size.sizeId }>
                                         <div className="col col-3">
                                             {
                                                 sizeData
