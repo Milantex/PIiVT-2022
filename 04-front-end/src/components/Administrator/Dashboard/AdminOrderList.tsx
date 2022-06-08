@@ -107,7 +107,14 @@ export default function AdminOrderList(props: IAdminOrderListProperties) {
                     </tr>
                 </thead>
                 <tbody>
-                    { orders.filter(order => orderFilter(order)).map(order => <AdminOrderListRow key={ "order-" + order.orderId } order={ order } />) } 
+                    { orders.filter(order => orderFilter(order)).length === 0
+                        ? <tr>
+                            <td colSpan={6}>
+                                No { props.filter } orders.
+                            </td>
+                        </tr>
+                        : orders.filter(order => orderFilter(order)).map(order => <AdminOrderListRow key={ "order-" + order.orderId } order={ order } />)
+                    }
                 </tbody>
             </table>
         </div>
