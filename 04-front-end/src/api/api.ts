@@ -42,6 +42,31 @@ export function api(
     });
 }
 
+export function apiForm(
+    method: TApiMethod,
+    path: string,
+    role: TApiRole,
+    data: FormData,
+    attemptToRefreshToken: boolean = true,
+): Promise<IApiResponse> {
+    return new Promise(resolve => {
+        axios({
+            method: method,
+            baseURL: "http://localhost:10000",
+            url: path,
+            data: data,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + "TOKEN WILL GO HERE LATER", // TODO
+            },
+        })
+        .then(res => handleApiResponse(res, resolve))
+        .catch(err => handleApiError(err, resolve, {
+            method, path, role, data, attemptToRefreshToken,
+        }));
+    });
+}
+
 function handleApiError(err: any, resolve: (value: IApiResponse | PromiseLike<IApiResponse>) => void, args: IApiArguments) {
     if (err?.response?.status === 401 && args.attemptToRefreshToken) {
         const refreshedToken = "REFRESH TOKEN CALL LOGIN WILL GO HERE LATER"; // TODO

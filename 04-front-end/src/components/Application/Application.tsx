@@ -15,6 +15,7 @@ import AdminAdministratorList from '../Administrator/Dashboard/AdminAdministrato
 import AdminAdministratorAdd from '../Administrator/Dashboard/AdminAdministratorAdd';
 import AdminUserList from '../Administrator/Dashboard/AdminUserList';
 import AdminOrderList from '../Administrator/Dashboard/AdminOrderList';
+import AdminItemAdd from '../Administrator/Dashboard/AdminItemAdd';
 
 function Application() {
   return (
@@ -31,6 +32,8 @@ function Application() {
         <Route path="/admin/dashboard" element={ <AdminDashboard /> } />
         <Route path="/admin/dashboard/category/list" element={ <AdminCategoryList /> } />
         <Route path="/admin/dashboard/category/:cid/ingredients" element={ <AdminCategoryIngredientsList /> } />
+        <Route path="/admin/dashboard/category/:cid/items/list" element={ <p>Nije rutirano...</p> } />
+        <Route path="/admin/dashboard/category/:cid/items/add" element={ <AdminItemAdd /> } />
 
         <Route path="/admin/dashboard/size/list" element={ <AdminSizeList /> } />
 

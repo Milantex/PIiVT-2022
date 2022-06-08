@@ -52,6 +52,18 @@ export default function AdminCategoryList() {
                     <Link className="btn btn-primary btn-sm" to={ "/admin/dashboard/category/" + props.category.categoryId + "/ingredients" }>
                         List ingredients
                     </Link>
+
+                    &nbsp;&nbsp;
+
+                    <Link className="btn btn-primary btn-sm" to={ "/admin/dashboard/category/" + props.category.categoryId + "/items" }>
+                        List items
+                    </Link>
+
+                    &nbsp;&nbsp;
+
+                    <Link className="btn btn-primary btn-sm" to={ "/admin/dashboard/category/" + props.category.categoryId + "/items/add" }>
+                        Add item
+                    </Link>
                 </td>
             </tr>
         );
@@ -114,7 +126,7 @@ export default function AdminCategoryList() {
                 return setCategories(apiResponse.data);
             }
 
-            throw { message: 'Unknown error while loading categories...', }
+            throw new Error("Unknown error while loading categories...");
         })
         .catch(error => {
             setErrorMessage(error?.message ?? 'Unknown error while loading categories...');
