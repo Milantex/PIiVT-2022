@@ -17,6 +17,7 @@ import AdminUserList from '../Administrator/Dashboard/AdminUserList';
 import AdminOrderList from '../Administrator/Dashboard/AdminOrderList';
 import AdminItemAdd from '../Administrator/Dashboard/AdminItemAdd';
 import AdminItemList from '../Administrator/Dashboard/AdminItemList';
+import AdminItemEdit from '../Administrator/Dashboard/AdminItemEdit';
 
 function Application() {
   return (
@@ -35,6 +36,7 @@ function Application() {
         <Route path="/admin/dashboard/category/:cid/ingredients" element={ <AdminCategoryIngredientsList /> } />
         <Route path="/admin/dashboard/category/:cid/items/list" element={ <AdminItemList /> } />
         <Route path="/admin/dashboard/category/:cid/items/add" element={ <AdminItemAdd /> } />
+        <Route path="/admin/dashboard/category/:cid/items/edit/:iid" element={ <AdminItemEdit /> } />
 
         <Route path="/admin/dashboard/size/list" element={ <AdminSizeList /> } />
 
