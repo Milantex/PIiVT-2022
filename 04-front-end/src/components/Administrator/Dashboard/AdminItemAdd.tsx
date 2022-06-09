@@ -264,7 +264,7 @@ export default function AdminItemAdd() {
     useEffect(() => {
         loadCategory();
         loadSizes();
-    }, [ ]);
+    }, [ params.cid ]);
 
     return (
         <div>

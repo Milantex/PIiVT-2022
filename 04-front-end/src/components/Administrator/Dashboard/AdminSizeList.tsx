@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { api } from "../../../api/api";
 import { ISizeModel } from "../../../models/ISize.model";
 
@@ -111,7 +110,7 @@ export default function AdminSizeList() {
                 return setCategories(apiResponse.data);
             }
 
-            throw { message: 'Unknown error while loading sizes...', }
+            throw new Error('Unknown error while loading sizes...');
         })
         .catch(error => {
             setErrorMessage(error?.message ?? 'Unknown error while loading sizes...');

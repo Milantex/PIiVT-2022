@@ -14,7 +14,7 @@ export default function UserCategoryList() {
                 return setCategories(apiResponse.data);
             }
 
-            throw { message: 'Unknown error while loading categories...', }
+            throw new Error('Unknown error while loading categories...');
         })
         .catch(error => {
             setErrorMessage(error?.message ?? 'Unknown error while loading categories...');

@@ -11,13 +11,12 @@ export interface IAdminItemListUrlParams extends Record<string, string | undefin
 
 export default function AdminItemList() {
     const params = useParams<IAdminItemListUrlParams>();
-    const categoryId = params.cid;
 
     const [ items, setItems ] = useState<IItem[]>([]);
     const [ errorMessage, setErrorMessage ] = useState<string>("");
 
     const loadItems = () => {
-        api("get", "/api/category/" + categoryId + "/item", "administrator")
+        api("get", "/api/category/" + params.cid + "/item", "administrator")
         .then(res => {
             if (res.status !== "ok") {
                 throw new Error("Could not load items for this category!");
@@ -33,7 +32,7 @@ export default function AdminItemList() {
         });
     };
 
-    useEffect(loadItems, [ ]);
+    useEffect(loadItems, [ params.cid ]);
 
     return (
         <div className="card">
@@ -49,7 +48,7 @@ export default function AdminItemList() {
                             <tr>
                                 <th colSpan={5}></th>
                                 <th colSpan={2}>
-                                    <Link className="btn btn-sm btn-primary" to={ "/admin/dashboard/category/" + categoryId + "/items/add" }>
+                                    <Link className="btn btn-sm btn-primary" to={ "/admin/dashboard/category/" + params.cid + "/items/add" }>
                                         <FontAwesomeIcon icon={ faPlusSquare } /> Add new item
                                     </Link>
                                 </th>
@@ -109,7 +108,7 @@ export default function AdminItemList() {
                                         }
                                     </td>
                                     <td>
-                                        <Link to={ "/admin/dashboard/category/" + categoryId + "/items/edit/" + item.itemId }
+                                        <Link to={ "/admin/dashboard/category/" + params.cid + "/items/edit/" + item.itemId }
                                             className="btn btn-sm btn-primary">
                                             <FontAwesomeIcon icon={ faEdit } /> Edit
                                         </Link>
