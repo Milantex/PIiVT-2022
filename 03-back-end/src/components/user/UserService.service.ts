@@ -40,7 +40,7 @@ export default class UserService extends BaseService<UserModel, IUserAdapterOpti
         }
 
         user.addresses = await this.services.address.getAllByUserId(user.userId, { 
-            loadUserData: true,
+            loadUserData: false,
         });
 
         return user;
