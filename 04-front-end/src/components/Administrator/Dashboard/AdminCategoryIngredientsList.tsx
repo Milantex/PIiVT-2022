@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../../../api/api";
+import ConfirmAction from "../../../helpers/ConfirmAction";
 import ICategory from "../../../models/ICategory.model";
 import IIngredient from "../../../models/IIngredient.model";
 
@@ -21,7 +22,7 @@ export default function AdminCategoryIngredientsList() {
 
     useEffect(() => {
         loadCategoryData(+(params.cid ?? 0));
-    }, [ ]);
+    }, [ params.cid ]);
 
     function loadCategoryData(categoryId: number) {
         if (!categoryId) {
@@ -42,6 +43,7 @@ export default function AdminCategoryIngredientsList() {
 
     function AdminIngredientListRow(props: IAdminIngredientListRowProperties) {
         const [ name, setName ] = useState<string>(props.ingredient.name);
+        const [ deleteRequested, setDeleteRequested ] = useState<boolean>(false);
 
         const nameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
             setName( e.target.value );
@@ -58,7 +60,7 @@ export default function AdminCategoryIngredientsList() {
             })
         }
 
-        const doDeleteIngredient = (e: any) => {
+        const doDeleteIngredient = () => {
             api("delete", "/api/category/" + category?.categoryId + "/ingredient/" + props.ingredient.ingredientId, "administrator")
             .then(res => {
                 if (res.status === 'error') {
@@ -87,9 +89,16 @@ export default function AdminCategoryIngredientsList() {
                     </div>
                 </td>
                 <td>
-                    <button className="btn btn-danger btn-sm" onClick={ e => doDeleteIngredient(e) }>
+                    <button className="btn btn-danger btn-sm" onClick={ () => setDeleteRequested(true) }>
                         Delete
                     </button>
+
+                    { deleteRequested && <ConfirmAction
+                        title="Confirm that you want to delete this ingredient"
+                        message={ "Are you sure that you want to delete this item: \"" + props.ingredient.name + "\"?" }
+                        onNo={ () => setDeleteRequested(false) }
+                        onYes={ () => doDeleteIngredient() }
+                    /> }
                 </td>
             </tr>
         );
