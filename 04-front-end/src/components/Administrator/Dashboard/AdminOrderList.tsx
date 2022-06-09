@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../../../api/api";
+import ConfirmAction from "../../../helpers/ConfirmAction";
 import { localDateFormat } from "../../../helpers/helpers";
 import { formatAddress } from "../../../models/IAddress.model";
 import IOrder from "../../../models/IOrder.model";
@@ -35,6 +36,10 @@ export default function AdminOrderList(props: IAdminOrderListProperties) {
     function AdminOrderListRow(props: { order: IOrder }) {
         const [ showCart, setShowCart ] = useState<boolean>(false);
 
+        const [ showAcceptDialog, setAcceptShowDialog ] = useState<boolean>(false);
+        const [ showRejectDialog, setRejectShowDialog ] = useState<boolean>(false);
+        const [ showMarkSentDialog, setMarkSentShowDialog ] = useState<boolean>(false);
+
         const markAs = (status: "accepted" | "rejected" | "sent") => {
             api("put", "/api/order/" + props.order.orderId + "/status", "administrator", { status })
             .then(res => {
@@ -62,15 +67,36 @@ export default function AdminOrderList(props: IAdminOrderListProperties) {
 
                         { props.order.status === "pending" && (
                             <>
-                                <button className="btn btn-sm btn-primary" onClick={ () => markAs("accepted") }>Accept</button>
+                                <button className="btn btn-sm btn-primary" onClick={ () => setAcceptShowDialog(true) }>Accept</button>
                                 &nbsp;&nbsp;
-                                <button className="btn btn-sm btn-danger" onClick={ () => markAs("rejected") }>Reject</button>
+                                <button className="btn btn-sm btn-danger" onClick={ () => setRejectShowDialog(true) }>Reject</button>
+
+                                { showAcceptDialog && <ConfirmAction
+                                    title="Confirm acceptance"
+                                    message="Are you sure you want to ACCEPT this order?"
+                                    onNo={ () => setAcceptShowDialog(false) }
+                                    onYes={ () => markAs("accepted") }
+                                    /> }
+
+                                { showRejectDialog && <ConfirmAction
+                                    title="Confirm rejection"
+                                    message="Are you sure you want to REJECT this order?"
+                                    onNo={ () => setRejectShowDialog(false) }
+                                    onYes={ () => markAs("rejected") }
+                                    /> }
                             </>
                         ) }
 
                         { props.order.status === "accepted" && (
                             <>
-                                <button className="btn btn-sm btn-success"  onClick={ () => markAs("sent") }>Mark as sent</button>
+                                <button className="btn btn-sm btn-success"  onClick={ () => setMarkSentShowDialog(true) }>Mark as sent</button>
+
+                                { showMarkSentDialog && <ConfirmAction
+                                    title="Confirm marking order as sent"
+                                    message="Are you sure you want to MARK this order AS SENT?"
+                                    onNo={ () => setMarkSentShowDialog(false) }
+                                    onYes={ () => markAs("sent") }
+                                    /> }
                             </>
                         ) }
                     </td>
