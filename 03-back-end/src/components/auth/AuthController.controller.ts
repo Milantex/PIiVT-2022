@@ -110,6 +110,16 @@ export default class AuthController extends BaseController {
             return user;
         })
         .then(user => {
+            if (!user.isActive) {
+                throw {
+                    status: 404,
+                    message: "User account is not active!"
+                };
+            }
+
+            return user;
+        })
+        .then(user => {
             const tokenData: ITokenData = {
                 role: "user",
                 id: user.userId,
