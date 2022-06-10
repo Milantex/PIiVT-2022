@@ -91,7 +91,7 @@ const DevConfig: IConfig = {
             issuer: "PIiVT",
             tokens: {
                 auth: {
-                    duration: 60 * 60 * 24, // Za dev: 24h - inace treba par minuta
+                    duration: 60 * 5,
                     keys: {
                         public: readFileSync("./.keystore/app.public", "ascii"),
                         private: readFileSync("./.keystore/app.private", "ascii"),
@@ -111,7 +111,7 @@ const DevConfig: IConfig = {
             issuer: "PIiVT",
             tokens: {
                 auth: {
-                    duration: 60 * 60 * 24, // Za dev: 24h - inace treba par minuta
+                    duration: 60 * 5,
                     keys: {
                         public: readFileSync("./.keystore/app.public", "ascii"),
                         private: readFileSync("./.keystore/app.private", "ascii"),
@@ -126,7 +126,7 @@ const DevConfig: IConfig = {
                 },
             },
         },
-        allowAllRoutesWithoutAuthTokens: true, // Samo dok traje razvoj front-end dela bez mogucnosti prijave
+        allowAllRoutesWithoutAuthTokens: false, // Samo dok traje razvoj front-end dela bez mogucnosti prijave
     },
 };
 

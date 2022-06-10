@@ -122,6 +122,8 @@ export default function AdminCategoryList() {
     const loadCategories = () => {
         api("get", "/api/category", "administrator")
         .then(apiResponse => {
+            console.log("GET categories response: ", apiResponse);
+
             if (apiResponse.status === 'ok') {
                 return setCategories(apiResponse.data);
             }
