@@ -91,7 +91,7 @@ const DevConfig: IConfig = {
             issuer: "PIiVT",
             tokens: {
                 auth: {
-                    duration: 60 * 5,
+                    duration: 60 * 60 * 24,
                     keys: {
                         public: readFileSync("./.keystore/app.public", "ascii"),
                         private: readFileSync("./.keystore/app.private", "ascii"),
@@ -111,7 +111,7 @@ const DevConfig: IConfig = {
             issuer: "PIiVT",
             tokens: {
                 auth: {
-                    duration: 60 * 5,
+                    duration: 60 * 60 * 24,
                     keys: {
                         public: readFileSync("./.keystore/app.public", "ascii"),
                         private: readFileSync("./.keystore/app.private", "ascii"),
