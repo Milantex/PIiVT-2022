@@ -11,8 +11,9 @@ export default function MenuVisitor() {
 
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav">
-                    <Link className="nav-item nav-link" to="/auth/user/login">Login</Link>
-                    <Link className="nav-item nav-link" to="/auth/user/register">Register</Link>
+                    <Link className="nav-item nav-link" to="/auth/user/login">User login</Link>
+                    <Link className="nav-item nav-link" to="/auth/user/register">Register an account</Link>
+                    <Link className="nav-item nav-link" to="/auth/administrator/login">Admin login</Link>
                     <Link className="nav-item nav-link" to="/contact">Contact</Link>
                 </div>
             </div>

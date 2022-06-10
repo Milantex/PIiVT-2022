@@ -20,6 +20,7 @@ import AdminItemList from '../Administrator/Dashboard/AdminItemList';
 import AdminItemEdit from '../Administrator/Dashboard/AdminItemEdit';
 import { Provider } from 'react-redux';
 import AuthStore from '../../stores/AuthStore';
+import AdministratorLoginPage from '../Administrator/AdministratorLoginPage/AdministratorLoginPage';
 
 function Application() {
   return (
@@ -31,6 +32,7 @@ function Application() {
           <Route path="/" element={ <div></div> } />
           <Route path='/contact' element={ <ContactPage /> } />
           <Route path='/auth/user/login' element={ <UserLoginPage /> } />
+          <Route path='/auth/administrator/login' element={ <AdministratorLoginPage /> } />
           <Route path="/categories" element={ <UserCategoryList /> } />
           <Route path="/category/:id" element={ <UserCategoryPage /> } />
 

@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthStore from "../../stores/AuthStore";
 
 export default function MenuUser() {
+    const navigate = useNavigate();
+
+    function doUserLogout() {
+        AuthStore.dispatch( { type: "reset" } );
+        navigate("/auth/user/login");
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <Link className="navbar-brand" to="/">Hi, { AuthStore.getState().identity }</Link>
@@ -14,7 +21,7 @@ export default function MenuUser() {
                 <div className="navbar-nav">
                     <Link className="nav-item nav-link" to="/categories">Categories</Link>
                     <Link className="nav-item nav-link" to="/contact">Contact</Link>
-                    <Link className="nav-item nav-link" to="/auth/user/logout">Logout</Link>
+                    <div className="nav-item nav-link" style={{ cursor: "pointer" }} onClick={ () => doUserLogout() }>Logout</div>
                 </div>
             </div>
         </nav>

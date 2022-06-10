@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthStore from "../../stores/AuthStore";
 
 export default function MenuAdministrator() {
+    const navigate = useNavigate();
+
+    function doAdministratorLogout() {
+        AuthStore.dispatch( { type: "reset" } );
+        navigate("/auth/administrator/login");
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <Link className="navbar-brand" to="/">Good day, { AuthStore.getState().identity }</Link>
@@ -13,7 +20,7 @@ export default function MenuAdministrator() {
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav">
                     <Link className="nav-item nav-link" to="/admin/dashboard">Dashboard</Link>
-                    <Link className="nav-item nav-link" to="/auth/administrator/logout">Logout</Link>
+                    <div className="nav-item nav-link" style={{ cursor: "pointer" }} onClick={ () => doAdministratorLogout() }>Logout</div>
                 </div>
             </div>
         </nav>
