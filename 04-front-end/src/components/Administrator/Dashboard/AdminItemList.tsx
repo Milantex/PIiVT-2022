@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../../../api/api";
+import { Config } from "../../../config";
 import IItem from "../../../models/IItem.model";
 
 export interface IAdminItemListUrlParams extends Record<string, string | undefined> {
@@ -72,7 +73,7 @@ export default function AdminItemList() {
                                         {
                                             item.photos.length > 0
                                             ? <img alt={ item.name }
-                                                   src={ "http://localhost:10000/assets/" + item.photos[0].filePath }
+                                                   src={ Config.API_PATH + "/assets/" + item.photos[0].filePath }
                                                    style={ { width: "150px" } } />
                                             : <p>No image</p>
                                         }

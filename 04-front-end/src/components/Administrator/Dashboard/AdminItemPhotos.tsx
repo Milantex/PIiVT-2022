@@ -2,6 +2,7 @@ import { faFileImage, faSquareMinus } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { api, apiForm } from "../../../api/api";
+import { Config } from "../../../config";
 import IPhoto from "../../../models/IPhoto.model";
 
 interface IAdminItemPhotosProperties {
@@ -86,7 +87,7 @@ export default function AdminItemPhotos(props: IAdminItemPhotosProperties) {
                 { photos.map(photo => (
                     <div key={ photo.photoId } className="col col-12 col-md-6 col-lg-4">
                         <div className="card">
-                            <img className="card-img-top" src={ "http://localhost:10000/assets/" + photo.filePath } alt={ photo.name } />
+                            <img className="card-img-top" src={ Config.API_PATH + "/assets/" + photo.filePath } alt={ photo.name } />
 
                             <div className="card-body">
                                 <div className="card-text">

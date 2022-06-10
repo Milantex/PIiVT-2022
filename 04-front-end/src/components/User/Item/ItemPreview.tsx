@@ -6,6 +6,7 @@ import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 import ISize from "../../../models/ISize.model";
 import { useState } from "react";
 import { api } from "../../../api/api";
+import { Config } from "../../../config";
 
 export interface IItemPreviewProperties {
     item: IItem;
@@ -23,7 +24,7 @@ export default function ItemPreview(props: IItemPreviewProperties) {
         const filename  = path.basename(fullFilePath);
         const prefix    = 'small-';
 
-        return "http://localhost:10000/assets/" + directory + '/' + prefix + filename;
+        return Config.API_PATH + "/assets/" + directory + '/' + prefix + filename;
     }
 
     interface ISizeCartAdderProperties {

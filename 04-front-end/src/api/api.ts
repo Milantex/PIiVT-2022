@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { Config } from "../config";
 import AuthStore from "../stores/AuthStore";
 
 export type TApiMethod = "get" | "post" | "put" | "delete";
@@ -28,7 +29,7 @@ export function api(
     return new Promise(resolve => {
         axios({
             method: method,
-            baseURL: "http://localhost:10000",
+            baseURL: Config.API_PATH,
             url: path,
             data: data ? JSON.stringify(data) : undefined,
             headers: {
@@ -53,7 +54,7 @@ export function apiForm(
     return new Promise(resolve => {
         axios({
             method: method,
-            baseURL: "http://localhost:10000",
+            baseURL: Config.API_PATH,
             url: path,
             data: data,
             headers: {
@@ -131,7 +132,7 @@ function refreshToken(): Promise<string|null> {
 
         axios({
             method: "post",
-            baseURL: "http://localhost:10000",
+            baseURL: Config.API_PATH,
             url: "/api/auth/" + role + "/refresh",
             headers: {
                 "Authorization": "Bearer " + AuthStore.getState().refreshToken,
