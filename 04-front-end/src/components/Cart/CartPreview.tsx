@@ -25,7 +25,7 @@ export default function CartPreview(props: ICartPreviewProperties) {
                                 </thead>
                                 <tbody>
                                     { props.cart.content.map((item, index) => (
-                                        <tr key={ "cart-item-" + item.item.categoryId + "-" + item.item.itemId }>
+                                        <tr key={ "cart-item-" + item.item.categoryId + "-" + item.item.itemId + "-" + item.size.size.sizeId }>
                                             <td style={{ textAlign: "right" }}>{ index + 1 }.</td>
                                             <td>{ item.item.name }</td>
                                             <td>{ item.item.category?.name }</td>

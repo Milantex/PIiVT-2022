@@ -22,6 +22,8 @@ import { Provider } from 'react-redux';
 import AuthStore from '../../stores/AuthStore';
 import AdministratorLoginPage from '../Administrator/AdministratorLoginPage/AdministratorLoginPage';
 import UserRegisterPage from '../User/UserRegisterPage/UserRegisterPage';
+import UserCart from '../User/Cart/UserCart';
+import UserOrderList from '../User/Order/UserOrderList';
 
 function Application() {
   return (
@@ -32,6 +34,8 @@ function Application() {
         <Routes>
           <Route path="/" element={ <div></div> } />
           <Route path='/contact' element={ <ContactPage /> } />
+          <Route path='/cart' element={ <UserCart /> } />
+          <Route path='/orders' element={ <UserOrderList /> } />
           <Route path='/auth/user/login' element={ <UserLoginPage /> } />
           <Route path='/auth/user/register' element={ <UserRegisterPage /> } />
           <Route path='/auth/administrator/login' element={ <AdministratorLoginPage /> } />

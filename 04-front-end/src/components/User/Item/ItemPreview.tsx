@@ -1,6 +1,11 @@
 import IItem from "../../../models/IItem.model";
 import * as path from "path-browserify";
 import './ItemPreview.sass';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
+import ISize from "../../../models/ISize.model";
+import { useState } from "react";
+import { api } from "../../../api/api";
 
 export interface IItemPreviewProperties {
     item: IItem;
@@ -21,6 +26,66 @@ export default function ItemPreview(props: IItemPreviewProperties) {
         return "http://localhost:10000/assets/" + directory + '/' + prefix + filename;
     }
 
+    interface ISizeCartAdderProperties {
+        itemId: number;
+        size: ISize;
+    };
+
+    function SizeCartAdder(props: ISizeCartAdderProperties) {
+        const [ quantity, setQuantity ] = useState<number>(1);
+        const [ error, setError ] = useState<string>("");
+        const [ message, setMessage ] = useState<string>("");
+
+        function addToCart() {
+            api("post", "/api/cart", "user", {
+                itemId: props.itemId,
+                sizeId: props.size.size.sizeId,
+                quantity,
+            })
+            .then(res => {
+                if (res.status !== "ok") {
+                    throw new Error("Could not add this item!");
+                }
+
+                return res.data;
+            })
+            .then(cart => {
+                setMessage("Added to cart!");
+
+                setTimeout(() => {
+                    setMessage("");
+                }, 5000);
+            })
+            .catch(e => {
+                setError(e?.message);
+
+                setTimeout(() => {
+                    setError("");
+                }, 5000);
+            });
+        }
+
+        return (
+            <div className="form-group">
+                <div className="input-group input-group-sm">
+                    <span className="input-group-text" title={ "Energy: " + props.size.kcal + " kcal" }>
+                        { props.size.size.name }
+                        ({ Number(props.size.price).toFixed(2) + " RSD" })
+                    </span>
+                    <input className="form-control form-control-sm" type="number"
+                        min={ 1 } step={ 1 } value={ quantity }
+                        onChange={ e => setQuantity(+e.target.value) } />
+                    <button className="btn btn-sm btn-primary input-group-btn"
+                        onClick={ () => addToCart() }>
+                        <FontAwesomeIcon icon={ faPlusSquare } /> Add
+                    </button>
+                </div>
+                { error   && <p className="alert alert-danger mt-3">{ error }</p> }
+                { message && <p className="alert alert-success mt-3">{ message }</p> }
+            </div>
+        );
+    }
+
     return (
         <div className="col col-12 col-md-6 col-lg-4">
             <div className="card">
@@ -34,12 +99,10 @@ export default function ItemPreview(props: IItemPreviewProperties) {
                         <p>
                             { props.item.ingredients.map(ingredient => <span className="ingredient" key={ "ingredient-" + props.item.itemId + "-" + ingredient.ingredientId }>{ ingredient.name }</span>) }
                         </p>
-                        <div>
+                        <div className="d-grid gap-3">
                             { props.item.sizes.map( size =>
-                                <button key={ "size-" + props.item.itemId + "-" + size.size.sizeId } className="btn btn-sm btn-secondary mx-2"
-                                        title={ "Energy: " + size.kcal + " kcal" }>
-                                    { size.size.name }: { Number(size.price).toFixed(2) + " RSD" }
-                                </button>
+                                <SizeCartAdder key={ "size-" + props.item.itemId + "-" + size.size.sizeId }
+                                    size={ size } itemId={ props.item.itemId } />
                             ) }
                         </div>
                     </div>

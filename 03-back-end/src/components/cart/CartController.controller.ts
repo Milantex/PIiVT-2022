@@ -267,7 +267,7 @@ export default class CartController extends BaseController {
                 return order;
             }
 
-            if (order.cart.userId !== req.authorisation?.id) {
+            if (role === "user" && order.cart.userId !== req.authorisation?.id) {
                 throw {
                     status: 403,
                     message: 'You do not have access to this resource!',

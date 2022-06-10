@@ -21,6 +21,8 @@ export default function MenuUser() {
                 <div className="navbar-nav">
                     <Link className="nav-item nav-link" to="/categories">Categories</Link>
                     <Link className="nav-item nav-link" to="/contact">Contact</Link>
+                    <Link className="nav-item nav-link" to="/orders">My orders</Link>
+                    <Link className="nav-item nav-link" to="/cart">Cart</Link>
                     <div className="nav-item nav-link" style={{ cursor: "pointer" }} onClick={ () => doUserLogout() }>Logout</div>
                 </div>
             </div>
