@@ -9,7 +9,11 @@ export interface IUserCategoryPageUrlParams extends Record<string, string | unde
     id: string
 }
 
-export default function UserCategoryPage() {
+export interface IUserCategoryProperties {
+    categoryId?: number;
+}
+
+export default function UserCategoryPage(props: IUserCategoryProperties) {
     const [ category, setCategory ]         = useState<ICategory|null>(null);
     const [ items, setItems ]               = useState<IItem[]>([]);
     const [ errorMessage, setErrorMessage ] = useState<string>("");
@@ -17,10 +21,12 @@ export default function UserCategoryPage() {
 
     const params = useParams<IUserCategoryPageUrlParams>();
 
+    const categoryId = props?.categoryId ?? params.id;
+
     useEffect(() => {
         setLoading(true);
 
-        api("get", "/api/category/" + params.id, "user")
+        api("get", "/api/category/" + categoryId, "user")
         .then(res => {
             if (res.status === 'error') {
                 throw new Error('Could not get catgory data!');
@@ -29,7 +35,7 @@ export default function UserCategoryPage() {
             setCategory(res.data);
         })
         .then(() => {
-            return api("get", "/api/category/" + params.id + "/item", "user")
+            return api("get", "/api/category/" + categoryId + "/item", "user")
         })
         .then(res => {
             if (res.status === 'error') {
@@ -44,24 +50,24 @@ export default function UserCategoryPage() {
         .finally(() => {
             setLoading(false);
         });
-    }, [ params.id ]);
+    }, [ categoryId ]);
 
     return (
-        <div>
-            { loading && <p>Loading...</p> }
-            { errorMessage && <p>Error: { errorMessage }</p> }
+        <div className="card mb-4">
+            <div className="card-body">
+                <div className="card-title">{ loading ? <p>Loading...</p> : <h2 className="h4">{ category?.name }</h2> }</div>
+                <div className="card-text">
+                    { errorMessage && <p className="alert alert-danger">Error: { errorMessage }</p> }
 
-            { category && (
-                <div>
-                    <h1>{ category?.name }</h1>
-
-                    { items && (
-                        <div>
+                    { items.length > 0
+                        ? <div className="row">
                             { items.map(item => <ItemPreview key={ "item-" + item.itemId } item={ item } /> ) }
-                        </div>
-                    ) }
+                          </div>
+                        : <p>No items in this category!</p>
+                    }
                 </div>
-            ) }
+            </div>
+        
         </div>
     );
 }
