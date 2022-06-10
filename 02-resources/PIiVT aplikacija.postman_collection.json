@@ -705,7 +705,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"Lozinka1234567\",\r\n    \"forename\": \"Test\",\r\n    \"surname\": \"User\"\r\n}",
+							"raw": "{\r\n    \"email\": \"mtair@singidunum.com\",\r\n    \"password\": \"Lozinka1234567!\",\r\n    \"forename\": \"Test\",\r\n    \"surname\": \"User\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -910,7 +910,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"X+p\\\"Ic18\\\"7Z,\"\r\n}",
+									"raw": "{\r\n    \"email\": \"mtair@singidunum.ac.rs\",\r\n    \"password\": \"Lozinka1234567!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1266,7 +1266,7 @@
 		},
 		{
 			"key": "USER_AUTH_TOKEN",
-			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo4LCJpZGVudGl0eSI6IlRlc3QgVXNlciIsImlhdCI6MTY1NDA4MzQ0MywiZXhwIjoxNjU0MTY5ODQzLCJpc3MiOiJQSWlWVCJ9.MtZT9LtzFpeee2vlzVbPRIdBP4F8uvgKqvAft1H5UJLaDuyNlexdNrUZIV7bZ5zdFA_IGMKvPVSrYvPn76KlCNzA5B3FDEHk9OlqRH6o_Hg8jVoCInY8-zCc2HjVLyAesKOm5JBXHUy-revXjNsQUj3F3XrIVTqYzJPPj_Y-Di_AgxSd6FuPJCD3WbJfczmja9yYhtdoePk8kU36FRxEiRUvzEWeV0atmLcRN8SgqQMjjyi5dEZJVMecY3rfcZoMYCX5DDZFne_bmfjOjd3B0faygaucTS9RGYFgFZZkfVoXcN2vHY--tKDapmtqaNfKCCuZlJWn_co5FmCrmQ9dBw",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo4LCJpZGVudGl0eSI6IlRlc3QgVXNlciIsImlhdCI6MTY1NDg2ODQ1MywiZXhwIjoxNjU0OTU0ODUzLCJpc3MiOiJQSWlWVCJ9.LPYKMp6HbRtTe8PkvROzvObfrXJdAXu0MfE1flCWxHPXeqWxn83LKj7W_LtyZ0Bm0oXkA3gPIts05_UCuUFq2fLjvL4HD69Y7y7xTqt9QwxOv3upSfpJJa9x3b65ibQxTQOnCVHXqBhxOyVtGw03cEYBY-21km__oIEAScJfnY8wwLtk8xzZMgL1g7ceUQs5pppq-zNbb-OPzTI2xum_hDHRJitsekIUivOYBCpRBTMonJEaXmMvU3gI0Th-7ZhW2lXONZCy1RtB33Yy1M_moZOPnkAtmXRyDVPZUmIqr4ChWAWczLILbW5z7aJ3U3JvJTbEKqaojoDEdwETmnrCWw",
 			"type": "default"
 		},
 		{

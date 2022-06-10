@@ -59,13 +59,17 @@ CREATE TABLE IF NOT EXISTS `cart` (
   PRIMARY KEY (`cart_id`),
   KEY `fk_cart_user_id` (`user_id`),
   CONSTRAINT `fk_cart_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `created_at`) VALUES
 	(2, 8, '2022-06-01 13:04:33'),
 	(3, 8, '2022-06-01 13:13:47'),
 	(5, 8, '2022-06-01 15:20:04'),
-	(6, 8, '2022-06-01 15:22:05');
+	(6, 8, '2022-06-01 15:22:05'),
+	(7, 8, '2022-06-10 13:41:04'),
+	(8, 8, '2022-06-10 14:58:21'),
+	(9, 8, '2022-06-10 15:05:53'),
+	(10, 8, '2022-06-10 15:31:46');
 
 DROP TABLE IF EXISTS `cart_content`;
 CREATE TABLE IF NOT EXISTS `cart_content` (
@@ -79,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `cart_content` (
   KEY `fk_cart_content_item_size_id` (`item_size_id`),
   CONSTRAINT `fk_cart_content_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_cart_content_item_size_id` FOREIGN KEY (`item_size_id`) REFERENCES `item_size` (`item_size_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `cart_content` (`cart_content_id`, `cart_id`, `item_size_id`, `quantity`) VALUES
 	(2, 3, 2, 2),
@@ -88,7 +92,15 @@ INSERT INTO `cart_content` (`cart_content_id`, `cart_id`, `item_size_id`, `quant
 	(9, 2, 2, 2),
 	(10, 2, 3, 1),
 	(11, 5, 1, 2),
-	(12, 5, 3, 1);
+	(12, 5, 3, 1),
+	(13, 7, 1, 3),
+	(14, 7, 2, 6),
+	(15, 7, 11, 2),
+	(16, 8, 1, 5),
+	(17, 8, 2, 2),
+	(18, 8, 3, 2),
+	(19, 9, 1, 1),
+	(20, 10, 1, 1);
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
@@ -145,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `item` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item` (`item_id`, `name`, `description`, `category_id`, `is_active`) VALUES
-	(2, 'Item 1', 'Opis stavke 1', 1, 1),
+	(2, 'Kroasan sa cokoladom', 'Opis stavke koja ze zove "Kroasan sa cokoladom" ide ovde.', 1, 1),
 	(3, 'Item 2', 'Drugi opis neke stavke.', 1, 1),
 	(8, 'Bavarska kifla', 'Neki opis moze da ide ovde i duzina tog opisa mora da bude veca ili jednaka 32.', 1, 1),
 	(9, 'Nova stavka 11', 'Neki opis koji ima vise od 32 karantera za novu stavku...', 1, 1),
@@ -161,10 +173,11 @@ CREATE TABLE IF NOT EXISTS `item_ingredient` (
   KEY `fk_ingredient_ingredient_id` (`ingredient_id`),
   CONSTRAINT `fk_ingredient_ingredient_id` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`ingredient_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_ingredient_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `item_ingredient` (`item_ingredient_id`, `item_id`, `ingredient_id`) VALUES
 	(1, 2, 1),
+	(23, 2, 4),
 	(2, 3, 1),
 	(3, 3, 4),
 	(4, 3, 6),
@@ -217,13 +230,16 @@ CREATE TABLE IF NOT EXISTS `order` (
   KEY `fk_order_address_id` (`address_id`),
   CONSTRAINT `fk_order_address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_order_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `order` (`order_id`, `cart_id`, `address_id`, `created_at`, `deliver_at`, `note`, `status`, `mark_value`, `mark_note`) VALUES
-	(2, 2, 1, '2022-06-08 12:43:40', '2022-06-01 15:13:34', 'aa', 'sent', NULL, NULL),
+	(2, 2, 1, '2022-06-10 15:31:42', '2022-06-01 15:13:34', 'aa', 'sent', '3', ''),
 	(5, 3, 2, '2022-06-08 12:43:43', '2022-06-01 23:30:00', NULL, 'rejected', '4', 'Sve je bilo okej.'),
-	(6, 5, 2, '2022-06-08 13:00:53', '2022-06-01 23:30:00', NULL, 'sent', NULL, NULL),
-	(7, 6, 2, '2022-06-02 08:05:48', '2022-06-01 23:30:00', NULL, 'canceled', NULL, NULL);
+	(6, 5, 2, '2022-06-10 15:30:42', '2022-06-01 23:30:00', NULL, 'sent', '4', 'Ovo je tekst.'),
+	(7, 6, 2, '2022-06-02 08:05:48', '2022-06-01 23:30:00', NULL, 'canceled', NULL, NULL),
+	(8, 7, 3, '2022-06-10 15:18:51', '2022-06-10 20:30:00', NULL, 'canceled', NULL, NULL),
+	(9, 8, 3, '2022-06-10 15:21:25', '2022-06-10 20:35:00', NULL, 'accepted', NULL, NULL),
+	(10, 9, 3, '2022-06-10 15:31:32', '2022-06-10 21:15:00', NULL, 'sent', '5', 'Ocena 5!');
 
 DROP TABLE IF EXISTS `photo`;
 CREATE TABLE IF NOT EXISTS `photo` (
@@ -235,11 +251,14 @@ CREATE TABLE IF NOT EXISTS `photo` (
   UNIQUE KEY `uq_photo_file_path` (`file_path`) USING HASH,
   KEY `fk_photo_item_id` (`item_id`),
   CONSTRAINT `fk_photo_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `photo` (`photo_id`, `name`, `file_path`, `item_id`) VALUES
 	(5, '1aef4172-177c-47ad-b5b4-7cb8c53249b4-sendvic.jpg', 'uploads/2022/06/1aef4172-177c-47ad-b5b4-7cb8c53249b4-sendvic.jpg', 9),
-	(6, 'ce3eeaeb-23f0-4cc1-b436-0dbb2ed55b21-salata.jpg', 'uploads/2022/06/ce3eeaeb-23f0-4cc1-b436-0dbb2ed55b21-salata.jpg', 10);
+	(7, 'bf097183-0760-4df1-bfe4-fb6c0d4d92c7-kifla-b-v2.jpg', 'uploads/2022/06/bf097183-0760-4df1-bfe4-fb6c0d4d92c7-kifla-b-v2.jpg', 2),
+	(8, '9e8b8d6f-0e18-43e8-b29c-e159a9cbdd27-salata.jpg', 'uploads/2022/06/9e8b8d6f-0e18-43e8-b29c-e159a9cbdd27-salata.jpg', 10),
+	(9, '8b8f2cb6-7555-4dc6-a33b-6063c5166b77-11377-bavarske-kifle_zoom.jpg', 'uploads/2022/06/8b8f2cb6-7555-4dc6-a33b-6063c5166b77-11377-bavarske-kifle_zoom.jpg', 8),
+	(10, '482596bb-b711-49a4-813a-24e2fe00a9fc-posni-peciva.jpg', 'uploads/2022/06/482596bb-b711-49a4-813a-24e2fe00a9fc-posni-peciva.jpg', 3);
 
 DROP TABLE IF EXISTS `size`;
 CREATE TABLE IF NOT EXISTS `size` (
@@ -270,13 +289,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `uq_user_email` (`email`),
   UNIQUE KEY `uq_user_activation_code` (`activation_code`) USING BTREE,
   UNIQUE KEY `uq_user_password_reset_code` (`password_reset_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `user` (`user_id`, `email`, `password_hash`, `forename`, `surname`, `is_active`, `activation_code`, `password_reset_code`) VALUES
-	(1, 'mail@domain.com', '$2b$10$8YhbKQV0U2LSQJZU.ZIAo.3St6JWI05Cm2g.elDP0xWAsRow.bH9y', 'Petar', 'Perić', 0, '123-456', NULL),
-	(4, 'milantex88@yahoo.com', '$2b$10$uhq4hLmWmAaMmx99JFo2W.g0bSdGN3v15bI/Yed/IcLjbrAGjxa.u', 'Milan', 'Tair', 0, NULL, NULL),
-	(5, 'milan.tair@gmail.com', '$2b$10$zt7D60nP9msf.XSxaSqNquUsqOFHU4DMLBl3XsjF.sBdXjmtsU/0S', 'Milan', 'Tair', 1, NULL, NULL),
-	(8, 'mtair@singidunum.ac.rs', '$2b$10$A1if8QnHKYOm5OeKW8IcieMoEjopX8Uic1wDNlJyCN8ABwBe5EMCy', 'Test', 'User', 0, '1f7c78b1-9c4a-4114-8d6c-0aca5459144e', NULL);
+	(1, 'mail@domain.com', '$2a$10$uarLIcra101ql26kL2mLy.oPlDdZcusVt0.zYB58S18xcd52I7//C', 'Petar', 'Perić', 0, '123-456', NULL),
+	(4, 'milantex88@yahoo.com', '$2a$10$uarLIcra101ql26kL2mLy.oPlDdZcusVt0.zYB58S18xcd52I7//C', 'Milan', 'Tair', 0, NULL, NULL),
+	(5, 'milan.tair@gmail.com', '$2a$10$uarLIcra101ql26kL2mLy.oPlDdZcusVt0.zYB58S18xcd52I7//C', 'Milan', 'Tair', 1, NULL, NULL),
+	(8, 'mtair@singidunum.ac.rs', '$2a$10$uarLIcra101ql26kL2mLy.oPlDdZcusVt0.zYB58S18xcd52I7//C', 'Test', 'User', 1, NULL, NULL),
+	(10, 'mtair@singidunum.ac.sr', '$2b$10$sWErAhcZfFK8BD4BxZYN1Oa4yvBa3b8QcE.fTxbokfQbuwwe4IHF2', 'Test', 'User', 0, '00cd0174-bad5-4da9-8979-a4ad275b84f4', NULL),
+	(11, 'mtair@singidunum.com', '$2b$10$LIn8ZujtYOutFG2AC0mhXekLMov4EfAdcK1NsQkHWpZwCfCYPGu3G', 'Test', 'User', 0, 'ba912d24-a4a8-4e43-9eca-1691b6a5a42f', NULL),
+	(12, 'mtair@test.com', '$2b$10$1iqd9EC1d.teCeDZd7W8/.32VQeW5u6gxARxuVLhma3LFvdZwiqDG', 'Milan', 'Tair', 0, '5766f6a6-0d9e-458a-a820-90c3f828cee6', NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
