@@ -130,6 +130,7 @@ export default class AuthController extends BaseController {
             res.send({
                 authToken: authToken,
                 refreshToken: refreshToken,
+                id: user.userId,
             });
         })
         .catch(error => {

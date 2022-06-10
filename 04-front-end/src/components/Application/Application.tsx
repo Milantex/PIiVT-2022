@@ -18,37 +18,41 @@ import AdminOrderList from '../Administrator/Dashboard/AdminOrderList';
 import AdminItemAdd from '../Administrator/Dashboard/AdminItemAdd';
 import AdminItemList from '../Administrator/Dashboard/AdminItemList';
 import AdminItemEdit from '../Administrator/Dashboard/AdminItemEdit';
+import { Provider } from 'react-redux';
+import AuthStore from '../../stores/AuthStore';
 
 function Application() {
   return (
-    <Container className="mt-4">
-      <Menu />
+    <Provider store={ AuthStore }>
+      <Container className="mt-4">
+        <Menu />
 
-      <Routes>
-        <Route path="/" element={ <div></div> } />
-        <Route path='/contact' element={ <ContactPage /> } />
-        <Route path='/auth/user/login' element={ <UserLoginPage /> } />
-        <Route path="/categories" element={ <UserCategoryList /> } />
-        <Route path="/category/:id" element={ <UserCategoryPage /> } />
+        <Routes>
+          <Route path="/" element={ <div></div> } />
+          <Route path='/contact' element={ <ContactPage /> } />
+          <Route path='/auth/user/login' element={ <UserLoginPage /> } />
+          <Route path="/categories" element={ <UserCategoryList /> } />
+          <Route path="/category/:id" element={ <UserCategoryPage /> } />
 
-        <Route path="/admin/dashboard" element={ <AdminDashboard /> } />
-        <Route path="/admin/dashboard/category/list" element={ <AdminCategoryList /> } />
-        <Route path="/admin/dashboard/category/:cid/ingredients" element={ <AdminCategoryIngredientsList /> } />
-        <Route path="/admin/dashboard/category/:cid/items/list" element={ <AdminItemList /> } />
-        <Route path="/admin/dashboard/category/:cid/items/add" element={ <AdminItemAdd /> } />
-        <Route path="/admin/dashboard/category/:cid/items/edit/:iid" element={ <AdminItemEdit /> } />
+          <Route path="/admin/dashboard" element={ <AdminDashboard /> } />
+          <Route path="/admin/dashboard/category/list" element={ <AdminCategoryList /> } />
+          <Route path="/admin/dashboard/category/:cid/ingredients" element={ <AdminCategoryIngredientsList /> } />
+          <Route path="/admin/dashboard/category/:cid/items/list" element={ <AdminItemList /> } />
+          <Route path="/admin/dashboard/category/:cid/items/add" element={ <AdminItemAdd /> } />
+          <Route path="/admin/dashboard/category/:cid/items/edit/:iid" element={ <AdminItemEdit /> } />
 
-        <Route path="/admin/dashboard/size/list" element={ <AdminSizeList /> } />
+          <Route path="/admin/dashboard/size/list" element={ <AdminSizeList /> } />
 
-        <Route path="/admin/dashboard/administrator/list" element={ <AdminAdministratorList /> } />
-        <Route path="/admin/dashboard/administrator/add" element={ <AdminAdministratorAdd /> } />
+          <Route path="/admin/dashboard/administrator/list" element={ <AdminAdministratorList /> } />
+          <Route path="/admin/dashboard/administrator/add" element={ <AdminAdministratorAdd /> } />
 
-        <Route path="/admin/dashboard/user/list" element={ <AdminUserList /> } />
+          <Route path="/admin/dashboard/user/list" element={ <AdminUserList /> } />
 
-        <Route path="/admin/dashboard/order/list/new" element={ <AdminOrderList filter='new' /> } />
-        <Route path="/admin/dashboard/order/list/archive" element={ <AdminOrderList filter='archived' /> } />
-      </Routes>
-    </Container>
+          <Route path="/admin/dashboard/order/list/new" element={ <AdminOrderList filter='new' /> } />
+          <Route path="/admin/dashboard/order/list/archive" element={ <AdminOrderList filter='archived' /> } />
+        </Routes>
+      </Container>
+    </Provider>
   );
 }
 
