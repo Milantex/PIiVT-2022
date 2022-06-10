@@ -52,6 +52,10 @@ export default function UserCategoryPage(props: IUserCategoryProperties) {
         });
     }, [ categoryId ]);
 
+    if (items.length === 0) {
+        return null;
+    }
+
     return (
         <div className="card mb-4">
             <div className="card-body">
@@ -59,15 +63,11 @@ export default function UserCategoryPage(props: IUserCategoryProperties) {
                 <div className="card-text">
                     { errorMessage && <p className="alert alert-danger">Error: { errorMessage }</p> }
 
-                    { items.length > 0
-                        ? <div className="row">
-                            { items.map(item => <ItemPreview key={ "item-" + item.itemId } item={ item } /> ) }
-                          </div>
-                        : <p>No items in this category!</p>
-                    }
+                    <div className="row">
+                        { items.map(item => <ItemPreview key={ "item-" + item.itemId } item={ item } /> ) }
+                    </div>
                 </div>
             </div>
-        
         </div>
     );
 }
