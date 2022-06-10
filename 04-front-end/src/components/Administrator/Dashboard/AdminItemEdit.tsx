@@ -415,7 +415,9 @@ export default function AdminItemEdit() {
                         <div className="form-froup mb-3">
                             <label>Status</label>
                             <div className="input-group">
-                                
+                                <div onClick={ () => dispatchFormStateAction({ type: "editItemForm/toggleIsActive" }) }>
+                                    <FontAwesomeIcon icon={ formState.isActive ? faCheckSquare : faSquare } /> { formState.isActive ? "Active" : "Inactive" }
+                                </div>
                             </div>
                         </div>
 
