@@ -2,10 +2,11 @@ import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useReducer, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api, apiForm } from "../../../api/api";
+import { api } from "../../../api/api";
 import ICategory from "../../../models/ICategory.model";
 import IItem from "../../../models/IItem.model";
 import { ISizeModel } from "../../../models/ISize.model";
+import AdminItemPhotos from "./AdminItemPhotos";
 
 export interface IAdminItemEditUrlParams extends Record<string, string | undefined> {
     cid: string
@@ -197,8 +198,8 @@ function EditItemFormReducer(oldState: IEditItemFormState, action: EditItemFormA
 
 export default function AdminItemEdit() {
     const params = useParams<IAdminItemEditUrlParams>();
-    const categoryId = params.cid;
-    const itemId = params.iid;
+    const categoryId = +(params.cid ?? '');
+    const itemId = +(params.iid ?? '');
 
     const [ errorMessage, setErrorMessage ] = useState<string>("");
     const [ category, setCategory ] = useState<ICategory>();
@@ -331,100 +332,112 @@ export default function AdminItemEdit() {
                     <div className="card-text">
                         { errorMessage && <div className="alert alert-danger mb-3">{ errorMessage }</div> }
 
-                        <div className="form-group mb-3">
-                            <label>Name</label>
-                            <div className="input-group">
-                                <input type="text" className="form-control form-control-sm"
-                                    value={ formState.name }
-                                    onChange={ e => dispatchFormStateAction({ type: "editItemForm/setName", value: e.target.value }) }
-                                    />
-                            </div>
-                        </div>
+                        <div className="row">
+                            <div className="col col-12 col-lg-7 mb-3 mb-lg-0">
+                                <h2 className="h6">Manage item data</h2>
 
-                        <div className="form-group mb-3">
-                            <label>Description</label>
-                            <div className="input-group">
-                                <textarea className="form-control form-control-sm" rows={ 5 }
-                                    value={ formState.description }
-                                    onChange={ e => dispatchFormStateAction({ type: "editItemForm/setDescription", value: e.target.value }) }
-                                    />
-                            </div>
-                        </div>
-
-                        <div className="form-froup mb-3">
-                            <label>Ingredients</label>
-
-                            { category?.ingredients?.map(ingredient => (
-                                <div key={ "ingredient-" + ingredient.ingredientId }>
-                                    {
-                                        formState.ingredientIds.includes(ingredient.ingredientId)
-                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/removeIngredient", value: ingredient.ingredientId }) } icon={ faCheckSquare } />
-                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/addIngredient", value: ingredient.ingredientId }) } icon={ faSquare } />
-                                    } { ingredient.name }
-                                </div>
-                            )) }
-                        </div>
-
-                        <div className="form-froup mb-3">
-                            <label>Sizes</label>
-
-                            { sizes?.map(size => {
-                                const sizeData = formState.sizes.find(s => s.sizeId === size.sizeId);
-
-                                return (
-                                    <div className="row" key={ "size-" + size.sizeId }>
-                                        <div className="col col-3">
-                                            {
-                                                sizeData
-                                                ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/removeSize", value: size.sizeId }) } icon={ faCheckSquare } />
-                                                : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/addSize", value: size.sizeId }) } icon={ faSquare } />
-                                            } { size.name }
-                                        </div>
-
-                                        {
-                                            sizeData && (
-                                                <>
-                                                    <div className="col col-2">
-                                                        <div className="input-group input-group-sm">
-                                                            <input type="number" min={ 0.01 } step={ 0.01 }
-                                                                value={ sizeData.kcal }
-                                                                className="form-control form-control-sm"
-                                                                onChange={ e => dispatchFormStateAction({ type: "editItemForm/setSizeKCal", value: { sizeId: size.sizeId, kcal: +e.target.value } }) }
-                                                                />
-                                                            <span className="input-group-text">kcal</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col col-2">
-                                                        <div className="input-group input-group-sm">
-                                                        <input type="number" min={ 0.01 } step={ 0.01 }
-                                                            value={ sizeData.price }
-                                                            className="form-control form-control-sm"
-                                                            onChange={ e => dispatchFormStateAction({ type: "editItemForm/setSizePrice", value: { sizeId: size.sizeId, price: +e.target.value } }) }
-                                                            />
-                                                            <span className="input-group-text">RSD</span>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )
-                                        }
+                                <div className="form-group mb-3">
+                                    <label>Name</label>
+                                    <div className="input-group">
+                                        <input type="text" className="form-control form-control-sm"
+                                            value={ formState.name }
+                                            onChange={ e => dispatchFormStateAction({ type: "editItemForm/setName", value: e.target.value }) }
+                                            />
                                     </div>
-                                );
-                            }) }
-                        </div>
+                                </div>
 
-                        <div className="form-froup mb-3">
-                            <label>Status</label>
-                            <div className="input-group">
-                                <div onClick={ () => dispatchFormStateAction({ type: "editItemForm/toggleIsActive" }) }>
-                                    <FontAwesomeIcon icon={ formState.isActive ? faCheckSquare : faSquare } /> { formState.isActive ? "Active" : "Inactive" }
+                                <div className="form-group mb-3">
+                                    <label>Description</label>
+                                    <div className="input-group">
+                                        <textarea className="form-control form-control-sm" rows={ 5 }
+                                            value={ formState.description }
+                                            onChange={ e => dispatchFormStateAction({ type: "editItemForm/setDescription", value: e.target.value }) }
+                                            />
+                                    </div>
+                                </div>
+
+                                <div className="form-froup mb-3">
+                                    <label>Ingredients</label>
+
+                                    { category?.ingredients?.map(ingredient => (
+                                        <div key={ "ingredient-" + ingredient.ingredientId }>
+                                            {
+                                                formState.ingredientIds.includes(ingredient.ingredientId)
+                                                ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/removeIngredient", value: ingredient.ingredientId }) } icon={ faCheckSquare } />
+                                                : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/addIngredient", value: ingredient.ingredientId }) } icon={ faSquare } />
+                                            } { ingredient.name }
+                                        </div>
+                                    )) }
+                                </div>
+
+                                <div className="form-froup mb-3">
+                                    <label>Sizes</label>
+
+                                    { sizes?.map(size => {
+                                        const sizeData = formState.sizes.find(s => s.sizeId === size.sizeId);
+
+                                        return (
+                                            <div className="row" key={ "size-" + size.sizeId }>
+                                                <div className="col col-3">
+                                                    {
+                                                        sizeData
+                                                        ? <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/removeSize", value: size.sizeId }) } icon={ faCheckSquare } />
+                                                        : <FontAwesomeIcon onClick={ () => dispatchFormStateAction({ type: "editItemForm/addSize", value: size.sizeId }) } icon={ faSquare } />
+                                                    } { size.name }
+                                                </div>
+
+                                                {
+                                                    sizeData && (
+                                                        <>
+                                                            <div className="col col-2">
+                                                                <div className="input-group input-group-sm">
+                                                                    <input type="number" min={ 0.01 } step={ 0.01 }
+                                                                        value={ sizeData.kcal }
+                                                                        className="form-control form-control-sm"
+                                                                        onChange={ e => dispatchFormStateAction({ type: "editItemForm/setSizeKCal", value: { sizeId: size.sizeId, kcal: +e.target.value } }) }
+                                                                        />
+                                                                    <span className="input-group-text">kcal</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col col-2">
+                                                                <div className="input-group input-group-sm">
+                                                                <input type="number" min={ 0.01 } step={ 0.01 }
+                                                                    value={ sizeData.price }
+                                                                    className="form-control form-control-sm"
+                                                                    onChange={ e => dispatchFormStateAction({ type: "editItemForm/setSizePrice", value: { sizeId: size.sizeId, price: +e.target.value } }) }
+                                                                    />
+                                                                    <span className="input-group-text">RSD</span>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                }
+                                            </div>
+                                        );
+                                    }) }
+                                </div>
+
+                                <div className="form-froup mb-3">
+                                    <label>Status</label>
+                                    <div className="input-group">
+                                        <div onClick={ () => dispatchFormStateAction({ type: "editItemForm/toggleIsActive" }) }>
+                                            <FontAwesomeIcon icon={ formState.isActive ? faCheckSquare : faSquare } /> { formState.isActive ? "Active" : "Inactive" }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="form-froup mb-3">
+                                    <button className="btn btn-primary" onClick={ () => doEditItem() }>
+                                        Edit item
+                                    </button>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="form-froup mb-3">
-                            <button className="btn btn-primary" onClick={ () => doEditItem() }>
-                                Edit item
-                            </button>
+                            <div className="col col-12 col-lg-5">
+                                <h2 className="h6">Manage photos</h2>
+
+                                <AdminItemPhotos categoryId={ categoryId } itemId={ itemId } />
+                            </div>
                         </div>
                     </div>
                 </div>
