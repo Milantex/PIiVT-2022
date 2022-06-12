@@ -88,15 +88,18 @@ export default function ItemPreview(props: IItemPreviewProperties) {
     }
 
     return (
-        <div className="col col-12 col-md-6 col-lg-4">
+        <div className="col col-12 col-md-6 col-lg-4 item">
             <div className="card">
-                <img src={ getItemPhotoUrl() } className="card-img-top" alt={ props.item.name } />
+                <img className="card-img-top item-image"
+                    src={ getItemPhotoUrl() }
+                    alt={ props.item.name }
+                    onError={ e => (e.target as HTMLImageElement).src = Config.API_PATH + '/assets/placeholder.png' } />
                 <div className="card-body">
                     <div className="card-title">
                         <h3 className="h6">{ props.item.name }</h3>
                     </div>
                     <div className="card-text">
-                        <p>{ props.item.description }</p>
+                        <p className="item-description">{ props.item.description }</p>
                         <p>
                             { props.item.ingredients.map(ingredient => <span className="ingredient" key={ "ingredient-" + props.item.itemId + "-" + ingredient.ingredientId }>{ ingredient.name }</span>) }
                         </p>
