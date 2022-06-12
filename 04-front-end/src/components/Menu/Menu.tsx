@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import AuthStore from '../../stores/AuthStore';
 import MenuAdministrator from './MenuAdministrator';
 import MenuUser from './MenuUser';
 import MenuVisitor from './MenuVisitor';
+import AppStore from '../../stores/AppStore';
 
 export default function Menu() {
-    const [ role, setRole ] = useState<"visitor" | "user" | "administrator">(AuthStore.getState().role);
+    const [ role, setRole ] = useState<"visitor" | "user" | "administrator">(AppStore.getState().auth.role);
 
-    AuthStore.subscribe(() => {
-        setRole(AuthStore.getState().role)
+    AppStore.subscribe(() => {
+        setRole(AppStore.getState().auth.role)
     });
 
     return (

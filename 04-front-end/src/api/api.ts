@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Config } from "../config";
-import AuthStore from "../stores/AuthStore";
+import AppStore from "../stores/AppStore";
 
 export type TApiMethod = "get" | "post" | "put" | "delete";
 export type TApiRole = "user" | "administrator";
@@ -34,7 +34,7 @@ export function api(
             data: data ? JSON.stringify(data) : undefined,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + AuthStore.getState().authToken,
+                "Authorization": "Bearer " + AppStore.getState().auth.authToken,
             },
         })
         .then(res => handleApiResponse(res, resolve))
@@ -59,7 +59,7 @@ export function apiForm(
             data: data,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + AuthStore.getState().authToken,
+                "Authorization": "Bearer " + AppStore.getState().auth.authToken,
             },
         })
         .then(res => handleApiResponse(res, resolve))
@@ -84,7 +84,7 @@ function handleApiError(err: any, resolve: (value: IApiResponse | PromiseLike<IA
                 return token;
             })
             .then(token => {
-                AuthStore.dispatch({ type: "update", key: "authToken", value: token });
+                AppStore.dispatch({ type: "auth.update", key: "authToken", value: token });
     
                 return api(args.method, args.path, args.role, args.data, false);
             })
@@ -124,7 +124,7 @@ function handleApiResponse(res: AxiosResponse<any, any>, resolve: (value: IApiRe
 
 function refreshToken(): Promise<string|null> {
     return new Promise(resolve => {
-        const role = AuthStore.getState().role;
+        const role = AppStore.getState().auth.role;
 
         if ( role === "visitor" ) {
             return resolve(null);
@@ -135,7 +135,7 @@ function refreshToken(): Promise<string|null> {
             baseURL: Config.API_PATH,
             url: "/api/auth/" + role + "/refresh",
             headers: {
-                "Authorization": "Bearer " + AuthStore.getState().refreshToken,
+                "Authorization": "Bearer " + AppStore.getState().auth.refreshToken,
             },
         })
         .then(res => refreshTokenResponseHandler(res, resolve))

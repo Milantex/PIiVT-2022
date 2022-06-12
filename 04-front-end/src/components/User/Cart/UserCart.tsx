@@ -6,7 +6,7 @@ import { api } from "../../../api/api";
 import { formatAddress } from "../../../models/IAddress.model";
 import ICart from "../../../models/ICart.model";
 import IUser from "../../../models/IUser.model";
-import AuthStore from "../../../stores/AuthStore";
+import AppStore from "../../../stores/AppStore";
 import CartPreview from "../../Cart/CartPreview";
 
 export default function UserCart() {
@@ -18,7 +18,7 @@ export default function UserCart() {
     const navigator = useNavigate();
 
     function loadUserData() {
-        api("get", "/api/user/" + AuthStore.getState().id, "user")
+        api("get", "/api/user/" + AppStore.getState().auth.id, "user")
         .then(res => {
             if (res.status !== "ok") {
                 throw new Error("Could not load user data!");

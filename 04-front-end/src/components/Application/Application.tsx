@@ -19,7 +19,7 @@ import AdminItemAdd from '../Administrator/Dashboard/AdminItemAdd';
 import AdminItemList from '../Administrator/Dashboard/AdminItemList';
 import AdminItemEdit from '../Administrator/Dashboard/AdminItemEdit';
 import { Provider } from 'react-redux';
-import AuthStore from '../../stores/AuthStore';
+import AppStore from '../../stores/AppStore';
 import AdministratorLoginPage from '../Administrator/AdministratorLoginPage/AdministratorLoginPage';
 import UserRegisterPage from '../User/UserRegisterPage/UserRegisterPage';
 import UserCart from '../User/Cart/UserCart';
@@ -27,7 +27,7 @@ import UserOrderList from '../User/Order/UserOrderList';
 
 function Application() {
   return (
-    <Provider store={ AuthStore }>
+    <Provider store={ AppStore }>
       <Container className="mt-4">
         <Menu />
 

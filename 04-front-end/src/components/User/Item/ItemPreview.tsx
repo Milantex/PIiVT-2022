@@ -7,6 +7,7 @@ import ISize from "../../../models/ISize.model";
 import { useState } from "react";
 import { api } from "../../../api/api";
 import { Config } from "../../../config";
+import AppStore from "../../../stores/AppStore";
 
 export interface IItemPreviewProperties {
     item: IItem;
@@ -53,6 +54,8 @@ export default function ItemPreview(props: IItemPreviewProperties) {
             .then(cart => {
                 setMessage("Added to cart!");
 
+                AppStore.dispatch( { type: "cart.update", value: cart } );
+
                 setTimeout(() => {
                     setMessage("");
                 }, 5000);
@@ -69,16 +72,15 @@ export default function ItemPreview(props: IItemPreviewProperties) {
         return (
             <div className="form-group">
                 <div className="input-group input-group-sm">
-                    <span className="input-group-text" title={ "Energy: " + props.size.kcal + " kcal" }>
-                        { props.size.size.name }
-                        ({ Number(props.size.price).toFixed(2) + " RSD" })
+                    <span className="input-group-text w-50" title={ "Energy: " + props.size.kcal + " kcal" }>
+                        { props.size.size.name } ({ Number(props.size.price).toFixed(2) + " RSD" })
                     </span>
                     <input className="form-control form-control-sm" type="number"
                         min={ 1 } step={ 1 } value={ quantity }
                         onChange={ e => setQuantity(+e.target.value) } />
                     <button className="btn btn-sm btn-primary input-group-btn"
                         onClick={ () => addToCart() }>
-                        <FontAwesomeIcon icon={ faPlusSquare } /> Add
+                        <FontAwesomeIcon icon={ faPlusSquare } /> <span className="d-none d-lg-inline-block">Add</span>
                     </button>
                 </div>
                 { error   && <p className="alert alert-danger mt-3">{ error }</p> }

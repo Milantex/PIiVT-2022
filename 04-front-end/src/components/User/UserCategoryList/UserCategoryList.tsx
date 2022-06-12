@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ICategory from "../../../models/ICategory.model";
-import { Link } from 'react-router-dom';
 import { api } from "../../../api/api";
 import UserCategoryPage from "../UserCategoryPage/UserCategoryPage";
 
