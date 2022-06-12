@@ -81,7 +81,10 @@ export default class OrderService extends BaseService<OrderModel, IOrderAdapterO
                 const orders = [];
 
                 for (let cart of carts) {
-                    orders.push(await this.getByCartId(cart.cartId, { loadCartData: true, }));
+                    const order = await this.getByCartId(cart.cartId, { loadCartData: true, });
+                    if (order) {
+                        orders.push(order);
+                    }
                 }
 
                 resolve(orders);
