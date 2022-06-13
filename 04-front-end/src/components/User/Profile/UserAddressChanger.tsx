@@ -153,13 +153,13 @@ export default function UserAddressChanger(props: IUserAddressChangerProperties)
             { editing && <UserAddressEditor address={ props.address } onAddressChange={ props.onAddressChange } /> }
 
             { !editing && <div className="row mb-1">
-                <div className="col col-9">
+                <div className="col col-10">
                     { formatAddress(props.address) }
                 </div>
                 <div className="col col-1">
                     <FontAwesomeIcon icon={ props.address.isActive ? faCheckSquare : faSquare } /> { props.address.isActive ? "Active" : "Inactive" }
                 </div>
-                <div className="col col-2">
+                <div className="col col-1">
                     <button className="btn btn-sm btn-primary" onClick={ () => setEditing(true) }>
                         <FontAwesomeIcon icon={ faEdit } /> Edit
                     </button>
