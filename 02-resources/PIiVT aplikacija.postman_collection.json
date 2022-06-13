@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "76a36571-46ab-47f0-aa60-ce0a2ddf81d7",
+		"_postman_id": "a9a7b69f-f6d9-4b7e-8ca9-bd35f2b68fea",
 		"name": "PIiVT aplikacija",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10891291"
 	},
 	"item": [
 		{
@@ -264,7 +265,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"administrator-tri\",\r\n    \"password\": \"Cista lozinka koja se Vidi 1234\"\r\n}",
+							"raw": "{\r\n    \"username\": \"administrator-dva\",\r\n    \"password\": \"Cista lozinka koja se Vidi 1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -399,7 +400,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/category/1/item/7",
+							"raw": "{{API_URL}}/api/category/1/item/3",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -408,7 +409,7 @@
 								"category",
 								"1",
 								"item",
-								"7"
+								"3"
 							]
 						}
 					},
@@ -421,7 +422,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Zdrava salata\",\r\n    \"description\": \"Ovo je zdrava salata koju mozemo da Vam napravimo i posaljemo.\",\r\n    \"ingredientIds\": [ 11, 12, 13 ],\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 1,\r\n            \"price\": 100.05,\r\n            \"kcal\": 89.45\r\n        },\r\n        {\r\n            \"sizeId\": 3,\r\n            \"price\": 200.10,\r\n            \"kcal\": 190.90\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Item 3 - API added\",\r\n    \"description\": \"Najnovija stavka koja ima duzi naziv od 32 karaktera!\",\r\n    \"ingredientIds\": [ 3, 5 ],\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 1,\r\n            \"price\": 100.05,\r\n            \"kcal\": 89.45\r\n        },\r\n        {\r\n            \"sizeId\": 3,\r\n            \"price\": 200.10,\r\n            \"kcal\": 190.90\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -429,14 +430,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/category/3/item",
+							"raw": "{{API_URL}}/api/category/1/item",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"category",
-								"3",
+								"1",
 								"item"
 							]
 						}
@@ -542,16 +543,16 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/category/1/item/7/photo/6",
+							"raw": "{{API_URL}}/api/category/3/item/10/photo/6",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"category",
-								"1",
+								"3",
 								"item",
-								"7",
+								"10",
 								"photo",
 								"6"
 							]
@@ -705,7 +706,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"mtair@singidunum.com\",\r\n    \"password\": \"Lozinka1234567!\",\r\n    \"forename\": \"Test\",\r\n    \"surname\": \"User\"\r\n}",
+							"raw": "{\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"Lozinka1234567\",\r\n    \"forename\": \"Test\",\r\n    \"surname\": \"User\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -781,7 +782,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"streetAndNmber\": \"Danijelova 32\",\r\n    \"floor\": 1,\r\n    \"city\": \"Beograd\",\r\n    \"phoneNumber\": \"+381113094094\"\r\n}",
+							"raw": "{\r\n    \"streetAndNmber\": \"Danijelova 32\",\r\n    \"floor\": 1,\r\n    \"apartment\": 4,\r\n    \"city\": \"Beograd\",\r\n    \"phoneNumber\": \"+381113094094\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -817,7 +818,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/user/address/4",
+							"raw": "{{API_URL}}/api/user/address/1",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -825,7 +826,7 @@
 								"api",
 								"user",
 								"address",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -1266,7 +1267,7 @@
 		},
 		{
 			"key": "USER_AUTH_TOKEN",
-			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo4LCJpZGVudGl0eSI6IlRlc3QgVXNlciIsImlhdCI6MTY1NDg2ODQ1MywiZXhwIjoxNjU0OTU0ODUzLCJpc3MiOiJQSWlWVCJ9.LPYKMp6HbRtTe8PkvROzvObfrXJdAXu0MfE1flCWxHPXeqWxn83LKj7W_LtyZ0Bm0oXkA3gPIts05_UCuUFq2fLjvL4HD69Y7y7xTqt9QwxOv3upSfpJJa9x3b65ibQxTQOnCVHXqBhxOyVtGw03cEYBY-21km__oIEAScJfnY8wwLtk8xzZMgL1g7ceUQs5pppq-zNbb-OPzTI2xum_hDHRJitsekIUivOYBCpRBTMonJEaXmMvU3gI0Th-7ZhW2lXONZCy1RtB33Yy1M_moZOPnkAtmXRyDVPZUmIqr4ChWAWczLILbW5z7aJ3U3JvJTbEKqaojoDEdwETmnrCWw",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo4LCJpZGVudGl0eSI6IlRlc3QgVXNlciIsImlhdCI6MTY1NTExMTExNSwiZXhwIjoxNjU1MTk3NTE1LCJpc3MiOiJQSWlWVCJ9.JETpKmx6zowxdhSvE-mL0ASQyG6zJz716GZe4twMqTOOGo3b0LQvoAhharQkfcomi7nBN_HmY8161eMQPYcoPgxA3qsZ0z6nmIz3AavPd0Bdu-U-myDMB0eQOSiqT4yMkwLuE3gqtXyZsk8clIzEodvLFGU3wz27TkDOIGgGZBry3gvI9BZ_IbOsaFZZkwMrU39NPcxPpIiygoBXRxlS6hokXRodu48dnnSsMdRo3Fp4rqTnbmckQekXuyCqhzGUZg1CIbID6WpPAGRNbpPSVZUztchNEzmKTRWAHjMJjRmPm2fgrNJpHTlqZ1iCTv3Uv1sm8DW6oQnau3VsWeBcCQ",
 			"type": "default"
 		},
 		{
