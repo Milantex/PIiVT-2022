@@ -1,3 +1,5 @@
+import { faBell, faContactCard, faListAlt, faRectangleList, faUser, faWindowClose } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
@@ -64,11 +66,30 @@ export default function MenuUser() {
 
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div className="navbar-nav">
-                    <Link className="nav-item nav-link" to="/categories">Categories</Link>
-                    <Link className="nav-item nav-link" to="/contact">Contact</Link>
-                    <Link className="nav-item nav-link" to="/orders">My orders</Link>
-                    <Link className="nav-item nav-link" to="/cart" style={{ fontWeight: highlightCart ? "bold" : "normal" }}>Cart ({ cartItemCount }) { highlightCart ? "Cart updated!" : "" }</Link>
-                    <div className="nav-item nav-link" style={{ cursor: "pointer" }} onClick={ () => doUserLogout() }>Logout</div>
+                    <Link className="nav-item nav-link" to="/categories">
+                        <FontAwesomeIcon icon={ faListAlt } /> Categories
+                    </Link>
+
+                    <Link className="nav-item nav-link" to="/contact">
+                        <FontAwesomeIcon icon={ faContactCard } /> Contact
+                    </Link>
+
+                    <Link className="nav-item nav-link" to="/profile">
+                        <FontAwesomeIcon icon={ faUser } /> My profile
+                    </Link>
+
+                    <Link className="nav-item nav-link" to="/orders">
+                        <FontAwesomeIcon icon={ faRectangleList } /> My orders
+                    </Link>
+
+                    <Link className="nav-item nav-link" to="/cart"
+                        style={{ fontWeight: highlightCart ? "bold" : "normal" }}>
+                        <FontAwesomeIcon icon={ faBell } /> Cart ({ cartItemCount }) { highlightCart ? "Cart updated!" : "" }
+                    </Link>
+
+                    <div className="nav-item nav-link" style={{ cursor: "pointer" }} onClick={ () => doUserLogout() }>
+                        <FontAwesomeIcon icon={ faWindowClose } /> Logout
+                    </div>
                 </div>
             </div>
         </nav>

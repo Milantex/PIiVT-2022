@@ -24,6 +24,7 @@ import AdministratorLoginPage from '../Administrator/AdministratorLoginPage/Admi
 import UserRegisterPage from '../User/UserRegisterPage/UserRegisterPage';
 import UserCart from '../User/Cart/UserCart';
 import UserOrderList from '../User/Order/UserOrderList';
+import UserProfile from '../User/Profile/UserProfile';
 
 function Application() {
   return (
@@ -41,6 +42,8 @@ function Application() {
           <Route path='/auth/administrator/login' element={ <AdministratorLoginPage /> } />
           <Route path="/categories" element={ <UserCategoryList /> } />
           <Route path="/category/:id" element={ <UserCategoryPage /> } />
+
+          <Route path="/profile" element={ <UserProfile /> } />
 
           <Route path="/admin/dashboard" element={ <AdminDashboard /> } />
           <Route path="/admin/dashboard/category/list" element={ <AdminCategoryList /> } />
