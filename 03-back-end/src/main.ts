@@ -26,7 +26,7 @@ async function main() {
         recursive: true,
     });
 
-    const db = await mysql2.createConnection({
+    let db = await mysql2.createConnection({
         host: config.database.host,
         port: config.database.port,
         user: config.database.user,
@@ -36,6 +36,28 @@ async function main() {
         timezone: config.database.timezone,
         supportBigNumbers: config.database.supportBigNumbers,
     });
+
+    function attactConnectionMonitoring(db: mysql2.Connection) {
+        db.on('error', async error => {
+            if (!error.fatal) {
+                return;
+            }
+    
+            if (error?.code !== 'PROTOCOL_CONNECTION_LOST') {
+                throw error;
+            }
+    
+            console.log('Reconnecting to the database server...');
+    
+            db = await mysql2.createConnection(db.config);
+
+            attactConnectionMonitoring(db);
+
+            db.connect();
+        });
+    }
+
+    attactConnectionMonitoring(db);
 
     const applicationResources: IApplicationResources = {
         databaseConnection: db,
