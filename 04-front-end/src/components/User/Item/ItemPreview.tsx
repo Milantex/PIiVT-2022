@@ -8,6 +8,7 @@ import { useState } from "react";
 import { api } from "../../../api/api";
 import { Config } from "../../../config";
 import AppStore from "../../../stores/AppStore";
+import { motion } from "framer-motion";
 
 export interface IItemPreviewProperties {
     item: IItem;
@@ -70,7 +71,21 @@ export default function ItemPreview(props: IItemPreviewProperties) {
         }
 
         return (
-            <div className="form-group">
+            <motion.div className="form-group"
+                initial={{
+                    position: "relative",
+                    top: 20,
+                    scale: 0.75,
+                    opacity: 0,
+                }}
+                animate={{
+                    top: 0,
+                    scale: 1,
+                    opacity: 1,
+                }}
+                transition={{
+                    delay: 0.125,
+                }}>
                 <div className="input-group input-group-sm">
                     <span className="input-group-text w-50" title={ "Energy: " + props.size.kcal + " kcal" }>
                         { props.size.size.name } ({ Number(props.size.price).toFixed(2) + " RSD" })
@@ -85,7 +100,7 @@ export default function ItemPreview(props: IItemPreviewProperties) {
                 </div>
                 { error   && <p className="alert alert-danger mt-3">{ error }</p> }
                 { message && <p className="alert alert-success mt-3">{ message }</p> }
-            </div>
+            </motion.div>
         );
     }
 

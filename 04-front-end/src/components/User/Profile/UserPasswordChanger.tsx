@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { api } from "../../../api/api";
 import IUser from "../../../models/IUser.model";
+import { motion } from "framer-motion";
 
 export interface IUserPasswordChangerProperties {
     user: IUser;
@@ -99,7 +100,21 @@ export default function UserPasswordChanger(props: IUserPasswordChangerPropertie
     }
 
     return (
-        <div className="card">
+        <motion.div className="card"
+            initial={{
+                position: "relative",
+                top: 20,
+                scale: 0.75,
+                opacity: 0,
+            }}
+            animate={{
+                top: 0,
+                scale: 1,
+                opacity: 1,
+            }}
+            transition={{
+                delay: 0.125,
+            }}>
             <div className="card-body">
                 <div className="card-title">
                     <h2 className="h6">Account password</h2>
@@ -134,6 +149,6 @@ export default function UserPasswordChanger(props: IUserPasswordChangerPropertie
                     { message && <div className="mt-3 alert alert-success">{ message }</div> }
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

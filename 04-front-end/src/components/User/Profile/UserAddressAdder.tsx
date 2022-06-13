@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { api } from "../../../api/api";
 import IUser from "../../../models/IUser.model";
+import { motion } from "framer-motion";
 
 interface IUserAddressAdderProperties {
     onAddressChange: (user: IUser) => void;
@@ -62,7 +63,21 @@ export default function UserAddressAdder(props: IUserAddressAdderProperties) {
     }
 
     return (
-        <div className="row">
+        <motion.div className="row"
+            initial={{
+                position: "relative",
+                top: 20,
+                scale: 0.75,
+                opacity: 0,
+            }}
+            animate={{
+                top: 0,
+                scale: 1,
+                opacity: 1,
+            }}
+            transition={{
+                delay: 0.125,
+            }}>
             <div className="col col-10">
                 <div className="row mb-3">
                     <div className="col col-12 col-lg-6 form-group">
@@ -125,6 +140,6 @@ export default function UserAddressAdder(props: IUserAddressAdderProperties) {
 
                 { error && <p className="alert alert-danger">{ error }</p> }
             </div>
-        </div>
+        </motion.div>
     );
 }

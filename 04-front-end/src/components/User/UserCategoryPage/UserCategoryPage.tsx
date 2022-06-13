@@ -4,6 +4,7 @@ import IItem from "../../../models/IItem.model";
 import ItemPreview from "../Item/ItemPreview";
 import { useParams } from "react-router-dom";
 import { api } from "../../../api/api";
+import { motion } from "framer-motion";
 
 export interface IUserCategoryPageUrlParams extends Record<string, string | undefined> {
     id: string
@@ -57,7 +58,22 @@ export default function UserCategoryPage(props: IUserCategoryProperties) {
     }
 
     return (
-        <div className="card mb-4">
+        <motion.div
+            className="card mb-4"   
+            initial={{
+                position: "relative",
+                top: 20,
+                scale: 0.75,
+                opacity: 0,
+            }}
+            animate={{
+                top: 0,
+                scale: 1,
+                opacity: 1,
+            }}
+            transition={{
+                delay: 0.125,
+            }}>
             <div className="card-body">
                 <div className="card-title">{ loading ? <p>Loading...</p> : <h2 className="h4">{ category?.name }</h2> }</div>
                 <div className="card-text">
@@ -68,6 +84,6 @@ export default function UserCategoryPage(props: IUserCategoryProperties) {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

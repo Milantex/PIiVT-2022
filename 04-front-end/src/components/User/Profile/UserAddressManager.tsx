@@ -4,6 +4,7 @@ import { useState } from "react";
 import IUser from "../../../models/IUser.model";
 import UserAddressAdder from "./UserAddressAdder";
 import UserAddressChanger from "./UserAddressChanger";
+import { motion } from "framer-motion";
 
 interface IUserAddressManagerProperties {
     user: IUser;
@@ -14,7 +15,21 @@ export default function UserAddressManager(props: IUserAddressManagerProperties)
     const [ newAddressFormShowing, setNewAddressFormShowing ] = useState<boolean>(false);
 
     return (
-        <div className="card">
+        <motion.div className="card"
+            initial={{
+                position: "relative",
+                top: 20,
+                scale: 0.75,
+                opacity: 0,
+            }}
+            animate={{
+                top: 0,
+                scale: 1,
+                opacity: 1,
+            }}
+            transition={{
+                delay: 0.125,
+            }}>
             <div className="card-body">
                 <div className="card-title mb-4">
                     <h2 className="h6">
@@ -40,6 +55,6 @@ export default function UserAddressManager(props: IUserAddressManagerProperties)
                     }
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

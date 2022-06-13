@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
 import ICart from "../../models/ICart.model";
 import AppStore from "../../stores/AppStore";
+import { motion } from "framer-motion";
 
 export default function MenuUser() {
     const [ cartItemCount, setCartItemCount ] = useState<number>(0);
@@ -84,7 +85,24 @@ export default function MenuUser() {
 
                     <Link className="nav-item nav-link" to="/cart"
                         style={{ fontWeight: highlightCart ? "bold" : "normal" }}>
-                        <FontAwesomeIcon icon={ faBell } /> Cart ({ cartItemCount }) { highlightCart ? "Cart updated!" : "" }
+                        <FontAwesomeIcon icon={ faBell } /> Cart ({ cartItemCount }) { highlightCart && <motion.span
+                            initial={{
+                                position: "relative",
+                                top: 20,
+                                color: "#666",
+                                scale: 2,
+                                opacity: 0,
+                            }}
+                            animate={{
+                                top: [ 20, -20, 0 ],
+                                color: [ "#0d2", "#0d2", "#666" ],
+                                scale: 1,
+                                opacity: 1,
+                            }}
+                            transition={{
+                                duration: 0.75,
+                                delay: 0.125,
+                            }}>Cart updated!</motion.span> }
                     </Link>
 
                     <div className="nav-item nav-link" style={{ cursor: "pointer" }} onClick={ () => doUserLogout() }>
