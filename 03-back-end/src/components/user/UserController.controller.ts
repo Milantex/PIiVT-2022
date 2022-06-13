@@ -1,4 +1,4 @@
-import { IEditAddressDto } from './dto/IEditAddress.dto';
+import { EditAddressValidator, IEditAddressDto } from './dto/IEditAddress.dto';
 import { AddAddressValidator, IAddAddressDto } from './dto/IAddAddress.dto';
 import { Request, Response } from "express";
 import BaseController from "../../common/BaseController";
@@ -532,6 +532,10 @@ export default class UserController extends BaseController {
         const addressId = +req.params?.aid;
         const data = req.body as IEditAddressDto;
         const userId = req.authorisation?.id;
+
+        if (!EditAddressValidator(data)) {
+            return res.status(400).send(EditAddressValidator.errors);
+        }
 
         this.services.address.getById(addressId, {
             loadUserData: true,
