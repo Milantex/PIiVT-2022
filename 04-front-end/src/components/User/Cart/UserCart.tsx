@@ -28,7 +28,7 @@ export default function UserCart() {
         })
         .then(userData => {
             setUser(userData);
-            setSelectedAddress(userData.address[0].addressId);
+            setSelectedAddress(userData.addresses[0].addressId);
         })
         .catch(() => {
             // Show errors
@@ -69,7 +69,18 @@ export default function UserCart() {
             }
         })
         .then(() => {
+            return api("get", "/api/cart", "user");
+        })
+        .then(res => {
+            if (res.status !== "ok") {
+                throw new Error("Could not make this order!");
+            }
+
+            return res.data;
+        })
+        .then(newCart => {
             navigator("/orders");
+            AppStore.dispatch( { type: "cart.update", value: newCart } );
         })
         .catch(() => {
             // Show errors
